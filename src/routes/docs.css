@@ -209,6 +209,40 @@ a { color: inherit; }
   line-height: 1.6;
   color: var(--pui-fg-dim);
 }
+
+/* ---------- Install: package-manager tabs ---------- */
+.install-tabs {
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius);
+  overflow: hidden;
+  background: #0a0a12;
+  color-scheme: dark;
+}
+.install-tabs__strip {
+  display: flex;
+  gap: 2px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.install-tab {
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #8a8a99;
+  font-family: var(--pui-font-mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 120ms ease, background-color 120ms ease;
+}
+.install-tab:hover { color: #d5d5e0; }
+.install-tab--active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f5fa;
+}
+/* The code block sits flush inside the tabbed container. */
+.install-tabs .example__code { border-top: 0; }
+.install-tabs .code-block { background: transparent; }
 .cp-subprops {
   margin-top: 24px;
 }
