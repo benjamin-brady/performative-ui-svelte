@@ -33,6 +33,7 @@ import { BROWSER as browser } from 'esm-env';
 import { cn } from '$lib/utils/cn';
 import { untrack } from 'svelte';
 import { Dialog } from 'bits-ui';
+import { onClickOutside } from 'runed';
 
 let {
 open: controlledOpen = undefined,
@@ -55,6 +56,7 @@ let isOpen = $derived(isControlled ? controlledOpen === true : internalOpen);
 let portalTarget = $derived(container ?? undefined);
 // svelte-ignore state_referenced_locally
 let dialogOpen = $state(controlledOpen ?? defaultOpen);
+let contentRef = $state<HTMLElement | null>(null);
 const containedShortcutKeys = new Set(['[', ']', 'j', 'k', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
 
 function setOpen(next: boolean) {
@@ -66,6 +68,18 @@ onOpenChange?.(next);
 function containShortcutKeys(event: KeyboardEvent) {
 if (containedShortcutKeys.has(event.key)) event.stopPropagation();
 }
+
+const backdropClickOutside = onClickOutside(() => contentRef, () => setOpen(false), {
+immediate: false
+});
+
+$effect(() => {
+if (isOpen && closeOnBackdrop) {
+backdropClickOutside.start();
+} else {
+backdropClickOutside.stop();
+}
+});
 
 $effect(() => {
 dialogOpen = isOpen;
@@ -88,9 +102,10 @@ data-slot="popover-overlay"
 class="fixed inset-0 z-50 bg-slate-950/45 backdrop-blur-sm"
 />
 <Dialog.Content
+bind:ref={contentRef}
 data-slot="popover-content"
 escapeKeydownBehavior={closeOnEscape ? 'close' : 'ignore'}
-interactOutsideBehavior={closeOnBackdrop ? 'close' : 'ignore'}
+interactOutsideBehavior="ignore"
 class={cn(
 'fixed left-1/2 top-1/2 z-50 w-[min(calc(100vw-2rem),28rem)] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/70 bg-white/95 p-6 text-slate-950 shadow-2xl shadow-slate-950/20 outline-none backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/95 dark:text-slate-50',
 className
