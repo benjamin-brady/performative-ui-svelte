@@ -1,0 +1,36 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "chat-fab",
+  "type": "registry:ui",
+  "title": "ChatFAB",
+  "description": "Floating chat button with composable popover header and body.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "sparkle"
+  ],
+  "categories": [
+    "Conversation"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/ChatFAB.svelte",
+      "target": "$lib/components/ChatFAB.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLButtonAttributes } from 'svelte/elements';\n\n\texport const CHAT_FAB_CLOSE = Symbol('pui-chat-fab-close');\n\n\texport { default as ChatFABHeader } from './ChatFABHeader.svelte';\n\texport { default as ChatFABBody } from './ChatFABBody.svelte';\n\n\texport interface ChatFABProps extends Omit<HTMLButtonAttributes, 'popover'> {\n\t\t/** Button label. */\n\t\tlabel?: string | Snippet;\n\t\t/** Controlled open state. */\n\t\topen?: boolean;\n\t\t/** Default open state for uncontrolled mode. */\n\t\tdefaultOpen?: boolean;\n\t\tonOpenChange?: (open: boolean) => void;\n\t\t/** Popover contents. Compose ChatFABHeader / ChatFABBody inside. */\n\t\tpopover?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { setContext } from 'svelte';\n\timport { cn } from '$lib/utils/cn';\n\timport Sparkle from './Sparkle.svelte';\n\n\tlet {\n\t\tlabel = 'Ask AI',\n\t\topen,\n\t\tdefaultOpen,\n\t\tonOpenChange,\n\t\tpopover,\n\t\tclass: className,\n\t\tonclick,\n\t\t...rest\n\t}: ChatFABProps = $props();\n\n\t// svelte-ignore state_referenced_locally\n\tlet internal = $state(defaultOpen ?? false);\n\tlet controlled = $derived(open !== undefined);\n\tlet isOpen = $derived(controlled ? !!open : internal);\n\n\tconst setOpen = (next: boolean) => {\n\t\tif (!controlled) internal = next;\n\t\tonOpenChange?.(next);\n\t};\n\tconst toggle = () => setOpen(!isOpen);\n\tconst close = () => setOpen(false);\n\n\tsetContext(CHAT_FAB_CLOSE, close);\n\n\tfunction handleClick(e: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement }) {\n\t\tonclick?.(e);\n\t\ttoggle();\n\t}\n</script>\n\n<button class={cn('pui-fab', className)} onclick={handleClick} aria-expanded={isOpen} {...rest}>\n\t<Sparkle />\n\t<span>{#if typeof label === 'string'}{label}{:else}{@render label()}{/if}</span>\n</button>\n{#if isOpen}\n\t<div role=\"dialog\" class=\"pui-fab-popover\">\n\t\t{@render popover?.()}\n\t</div>\n{/if}\n"
+    },
+    {
+      "path": "src/lib/components/ChatFABHeader.svelte",
+      "target": "$lib/components/ChatFABHeader.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface ChatFABHeaderProps extends HTMLAttributes<HTMLDivElement> {\n\t\tonClose?: () => void;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { getContext } from 'svelte';\n\timport { cn } from '$lib/utils/cn';\n\timport Sparkle from './Sparkle.svelte';\n\timport { CHAT_FAB_CLOSE } from './ChatFAB.svelte';\n\n\tlet { onClose, class: className, children, ...rest }: ChatFABHeaderProps = $props();\n\tconst ctxClose = getContext<() => void>(CHAT_FAB_CLOSE) ?? (() => {});\n</script>\n\n<div class={cn('pui-fab-popover__header', className)} {...rest}>\n\t<Sparkle />\n\t<span>{@render children?.()}</span>\n\t<button type=\"button\" aria-label=\"Close\" class=\"pui-fab-popover__close\" onclick={onClose ?? ctxClose}>\n\t\t×\n\t</button>\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/ChatFABBody.svelte",
+      "target": "$lib/components/ChatFABBody.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface ChatFABBodyProps extends HTMLAttributes<HTMLDivElement> {\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { class: className, children, ...rest }: ChatFABBodyProps = $props();\n</script>\n\n<div class={cn('pui-fab-popover__body', className)} {...rest}>{@render children?.()}</div>\n"
+    }
+  ]
+}

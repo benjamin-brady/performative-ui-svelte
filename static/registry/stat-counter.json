@@ -1,0 +1,24 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "stat-counter",
+  "type": "registry:ui",
+  "title": "StatCounter",
+  "description": "Animated count-up statistic powered by a reusable counter hook.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "use-counter"
+  ],
+  "categories": [
+    "Social Proof"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/StatCounter.svelte",
+      "target": "$lib/components/StatCounter.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { HTMLAttributes } from 'svelte/elements';\n\timport type { UseCounterOptions } from '$lib/hooks/useCounter.svelte';\n\n\texport interface StatCounterProps extends HTMLAttributes<HTMLSpanElement>, UseCounterOptions {\n\t\t/** Format the displayed number. Default: locale-string with commas. */\n\t\tformat?: (value: number) => string;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\timport { useCounter } from '$lib/hooks/useCounter.svelte';\n\n\tlet {\n\t\ttarget,\n\t\tdurationMs,\n\t\tfrom,\n\t\tease,\n\t\tformat = (n: number) => n.toLocaleString(),\n\t\tclass: className,\n\t\t...rest\n\t}: StatCounterProps = $props();\n\n\t// svelte-ignore state_referenced_locally\n\tconst counter = useCounter({ target, durationMs, from, ease });\n</script>\n\n<span class={cn('pui-stat', className)} {...rest}>{format(counter.value)}</span>\n"
+    }
+  ]
+}

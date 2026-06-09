@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "community-badge",
+  "type": "registry:ui",
+  "title": "CommunityBadge",
+  "description": "Inline community/social proof badge with optional avatar stack.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Social Proof"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/CommunityBadge.svelte",
+      "target": "$lib/components/CommunityBadge.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAnchorAttributes } from 'svelte/elements';\n\n\ttype CommunityBadgeNode = string | Snippet;\n\n\texport interface CommunityBadgeProps extends Omit<HTMLAnchorAttributes, 'title'> {\n\t\t/** Icon src (svg). Apply your own filter if needed. */\n\t\ticon?: string;\n\t\t/** Render any node in place of <img>. */\n\t\ticonNode?: Snippet;\n\t\ttitle: CommunityBadgeNode;\n\t\tsubtitle: CommunityBadgeNode;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { icon, iconNode, title, subtitle, class: className, ...rest }: CommunityBadgeProps = $props();\n</script>\n\n<a class={cn('pui-community', className)} {...rest}>\n\t{#if iconNode}\n\t\t{@render iconNode()}\n\t{:else if icon}\n\t\t<img class=\"pui-community__icon\" src={icon} alt=\"\" />\n\t{/if}\n\t<div>\n\t\t<div class=\"pui-community__top\">\n\t\t\t{#if typeof title === 'string'}{title}{:else}{@render title()}{/if}\n\t\t</div>\n\t\t<div class=\"pui-community__bottom\">\n\t\t\t{#if typeof subtitle === 'string'}{subtitle}{:else}{@render subtitle()}{/if}\n\t\t</div>\n\t</div>\n</a>\n"
+    }
+  ]
+}

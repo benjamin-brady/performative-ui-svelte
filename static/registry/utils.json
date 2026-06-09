@@ -1,0 +1,22 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "utils",
+  "type": "registry:lib",
+  "title": "Utilities",
+  "description": "Shared class-name helper for clsx composition and Tailwind conflict merging.",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "categories": [
+    "Utilities"
+  ],
+  "files": [
+    {
+      "path": "src/lib/utils/cn.ts",
+      "target": "$lib/utils/cn.ts",
+      "type": "registry:lib",
+      "content": "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport type { ClassValue };\n\nexport function cn(...inputs: ClassValue[]): string {\n\treturn twMerge(clsx(inputs));\n}\n"
+    }
+  ]
+}

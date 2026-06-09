@@ -1,0 +1,42 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "before-after",
+  "type": "registry:ui",
+  "title": "BeforeAfter",
+  "description": "Before/after comparison layout with compound panels and center arrow.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "sparkle"
+  ],
+  "categories": [
+    "Pricing & Conversion"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/BeforeAfter.svelte",
+      "target": "$lib/components/BeforeAfter.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport { default as BeforeAfterAfter } from './BeforeAfterAfter.svelte';\nexport { default as BeforeAfterArrow } from './BeforeAfterArrow.svelte';\nexport { default as BeforeAfterBefore } from './BeforeAfterBefore.svelte';\n\nexport interface BeforeAfterProps extends HTMLAttributes<HTMLDivElement> {\n/** Quick form: pass arrays and get the canonical layout. */\nbefore?: Content[];\nafter?: Content[];\n/** Brand name shown over the arrow (\"with Synthetica\"). */\nbrand?: Content;\n/** Optional override labels. */\nbeforeLabel?: Content;\nafterLabel?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\nimport BeforePanel from './BeforeAfterBefore.svelte';\nimport AfterPanel from './BeforeAfterAfter.svelte';\nimport Arrow from './BeforeAfterArrow.svelte';\n\nlet {\nbefore,\nafter,\nbrand,\nbeforeLabel = 'Before',\nafterLabel = 'After',\nclass: className,\nchildren,\n...rest\n}: BeforeAfterProps = $props();\n</script>\n\n<div class={cn('pui-ba', className)} {...rest}>\n{#if children}\n{@render children()}\n{:else}\n<BeforePanel label={beforeLabel}>\n<ul>\n{#each before ?? [] as item, i (i)}\n<li>{#if typeof item === 'string'}{item}{:else if item}{@render item()}{/if}</li>\n{/each}\n</ul>\n</BeforePanel>\n<Arrow {brand} />\n<AfterPanel label={afterLabel}>\n<ul>\n{#each after ?? [] as item, i (i)}\n<li>{#if typeof item === 'string'}{item}{:else if item}{@render item()}{/if}</li>\n{/each}\n</ul>\n</AfterPanel>\n{/if}\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/BeforeAfterBefore.svelte",
+      "target": "$lib/components/BeforeAfterBefore.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface BeforeAfterBeforeProps extends HTMLAttributes<HTMLDivElement> {\nlabel?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { label = 'Before', class: className, children, ...rest }: BeforeAfterBeforeProps = $props();\n</script>\n\n<div class={cn('pui-ba__panel pui-ba__panel--before', className)} {...rest}>\n<div class=\"pui-ba__tag\">\n{#if typeof label === 'string'}{label}{:else if label}{@render label()}{/if}\n</div>\n{@render children?.()}\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/BeforeAfterAfter.svelte",
+      "target": "$lib/components/BeforeAfterAfter.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface BeforeAfterAfterProps extends HTMLAttributes<HTMLDivElement> {\nlabel?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { label = 'After', class: className, children, ...rest }: BeforeAfterAfterProps = $props();\n</script>\n\n<div class={cn('pui-ba__panel pui-ba__panel--after', className)} {...rest}>\n<div class=\"pui-ba__tag\">\n{#if typeof label === 'string'}{label}{:else if label}{@render label()}{/if}\n</div>\n{@render children?.()}\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/BeforeAfterArrow.svelte",
+      "target": "$lib/components/BeforeAfterArrow.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface BeforeAfterArrowProps extends HTMLAttributes<HTMLDivElement> {\nbrand?: Content;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\nimport Sparkle from './Sparkle.svelte';\n\nlet { brand, class: className, ...rest }: BeforeAfterArrowProps = $props();\n</script>\n\n<div class={cn('pui-ba__arrow', className)} {...rest}>\n<Sparkle />\n{#if brand}\n<span>with {#if typeof brand === 'string'}{brand}{:else}{@render brand()}{/if}</span>\n{:else}\n<span>after</span>\n{/if}\n<span>→</span>\n</div>\n"
+    }
+  ]
+}

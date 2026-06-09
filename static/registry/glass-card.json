@@ -1,0 +1,47 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "glass-card",
+  "type": "registry:ui",
+  "title": "GlassCard",
+  "description": "Glassmorphic card shell and compound content pieces.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Surfaces"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/GlassCard.svelte",
+      "target": "$lib/components/GlassCard.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport { default as GlassCardIcon } from './GlassCardIcon.svelte';\n\texport { default as GlassCardTitle } from './GlassCardTitle.svelte';\n\texport { default as GlassCardBody } from './GlassCardBody.svelte';\n\texport { default as GlassCardLink } from './GlassCardLink.svelte';\n\n\texport interface GlassCardProps extends HTMLAttributes<HTMLElement> {\n\t\t/** Apply the slow breathing glow animation. */\n\t\tbreathing?: boolean;\n\t\t/** Show the gradient halo on hover. */\n\t\tglowOnHover?: boolean;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet {\n\t\tbreathing,\n\t\tglowOnHover = true,\n\t\tclass: className,\n\t\tchildren,\n\t\t...rest\n\t}: GlassCardProps = $props();\n</script>\n\n<article\n\tclass={cn(\n\t\t'pui-glass-card',\n\t\tbreathing && 'pui-glass-card--breathing',\n\t\tglowOnHover && 'pui-glass-card--glow-hover',\n\t\tclassName\n\t)}\n\t{...rest}\n>\n\t{@render children?.()}\n</article>\n"
+    },
+    {
+      "path": "src/lib/components/GlassCardIcon.svelte",
+      "target": "$lib/components/GlassCardIcon.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface GlassCardIconProps extends HTMLAttributes<HTMLDivElement> {\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { class: className, children, ...rest }: GlassCardIconProps = $props();\n</script>\n\n<div class={cn('pui-glass-card__icon', className)} {...rest}>{@render children?.()}</div>\n"
+    },
+    {
+      "path": "src/lib/components/GlassCardTitle.svelte",
+      "target": "$lib/components/GlassCardTitle.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface GlassCardTitleProps extends HTMLAttributes<HTMLHeadingElement> {\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { class: className, children, ...rest }: GlassCardTitleProps = $props();\n</script>\n\n<h3 class={cn('pui-glass-card__title', className)} {...rest}>{@render children?.()}</h3>\n"
+    },
+    {
+      "path": "src/lib/components/GlassCardBody.svelte",
+      "target": "$lib/components/GlassCardBody.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface GlassCardBodyProps extends HTMLAttributes<HTMLParagraphElement> {\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { class: className, children, ...rest }: GlassCardBodyProps = $props();\n</script>\n\n<p class={cn('pui-glass-card__body', className)} {...rest}>{@render children?.()}</p>\n"
+    },
+    {
+      "path": "src/lib/components/GlassCardLink.svelte",
+      "target": "$lib/components/GlassCardLink.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAnchorAttributes } from 'svelte/elements';\n\n\texport interface GlassCardLinkProps extends HTMLAnchorAttributes {\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { class: className, children, ...rest }: GlassCardLinkProps = $props();\n</script>\n\n<a class={cn('pui-glass-card__link', className)} {...rest}>\n\t<span>{@render children?.()}</span>\n\t<span class=\"pui-arrow\">→</span>\n</a>\n"
+    }
+  ]
+}

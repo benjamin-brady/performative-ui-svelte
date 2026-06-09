@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "logo-marquee",
+  "type": "registry:ui",
+  "title": "LogoMarquee",
+  "description": "Scrolling logo or text marquee for social proof strips.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Social Proof"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/LogoMarquee.svelte",
+      "target": "$lib/components/LogoMarquee.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\ttype MarqueeNode = string | Snippet;\n\n\texport type MarqueeItem =\n\t\t| { kind: 'img'; src: string; alt?: string }\n\t\t| { kind: 'node'; node: MarqueeNode; key?: string };\n\n\texport interface LogoMarqueeProps extends HTMLAttributes<HTMLDivElement> {\n\t\tlogos: MarqueeItem[];\n\t\t/** Seconds for one full loop. */\n\t\tspeed?: number;\n\t\t/** Gap between logos in px. */\n\t\tgap?: number;\n\t\t/** Apply edge-fade mask. */\n\t\tfade?: boolean;\n\t\t/** Pause animation on hover. */\n\t\tpauseOnHover?: boolean;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet {\n\t\tlogos,\n\t\tspeed = 40,\n\t\tgap = 56,\n\t\tfade = true,\n\t\tpauseOnHover,\n\t\tclass: className,\n\t\tstyle,\n\t\t...rest\n\t}: LogoMarqueeProps = $props();\n\n\tlet mergedStyle = $derived(\n\t\t`${style ? style + ';' : ''}--pui-marquee-speed:${speed}s;--pui-marquee-gap:${gap}px`\n\t);\n\n\tfunction itemKey(item: MarqueeItem, index: number) {\n\t\treturn item.kind === 'img' ? `a${index}` : (item.key ?? `b${index}`);\n\t}\n</script>\n\n<div\n\tclass={cn(\n\t\t'pui-marquee',\n\t\tfade && 'pui-marquee--fade',\n\t\tpauseOnHover && 'pui-marquee--paused-on-hover',\n\t\tclassName\n\t)}\n\tstyle={mergedStyle}\n\taria-label=\"Trusted by\"\n\t{...rest}\n>\n\t<div class=\"pui-marquee__track\">\n\t\t{#each logos as item, i (itemKey(item, i))}\n\t\t\t<span class=\"pui-marquee__item\">\n\t\t\t\t{#if item.kind === 'img'}\n\t\t\t\t\t<img src={item.src} alt={item.alt ?? ''} />\n\t\t\t\t{:else if typeof item.node === 'string'}\n\t\t\t\t\t{item.node}\n\t\t\t\t{:else}\n\t\t\t\t\t{@render item.node()}\n\t\t\t\t{/if}\n\t\t\t</span>\n\t\t{/each}\n\t\t{#each logos as item, i (itemKey(item, i + logos.length))}\n\t\t\t<span class=\"pui-marquee__item\">\n\t\t\t\t{#if item.kind === 'img'}\n\t\t\t\t\t<img src={item.src} alt={item.alt ?? ''} />\n\t\t\t\t{:else if typeof item.node === 'string'}\n\t\t\t\t\t{item.node}\n\t\t\t\t{:else}\n\t\t\t\t\t{@render item.node()}\n\t\t\t\t{/if}\n\t\t\t</span>\n\t\t{/each}\n\t</div>\n</div>\n"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "chat-bubble",
+  "type": "registry:ui",
+  "title": "ChatBubble",
+  "description": "Assistant or user chat bubble with optional sparkle affordance.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "sparkle"
+  ],
+  "categories": [
+    "Conversation"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/ChatBubble.svelte",
+      "target": "$lib/components/ChatBubble.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport type ChatRole = 'user' | 'ai';\n\n\texport interface ChatBubbleProps extends HTMLAttributes<HTMLDivElement> {\n\t\trole: ChatRole;\n\t\t/** AI-only: the agent name shown in the meta row. */\n\t\tagent?: string | Snippet;\n\t\t/** AI-only: text in the thinking pill (e.g. \"reasoning…\"). False to hide. */\n\t\tthinking?: string | Snippet | false;\n\t\t/** AI-only: replace the leading sparkle. */\n\t\ticon?: Snippet | false;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\timport Sparkle from './Sparkle.svelte';\n\n\tlet { role, agent, thinking, icon, class: className, children, ...rest }: ChatBubbleProps = $props();\n</script>\n\n<div\n\tclass={cn('pui-bubble', role === 'user' ? 'pui-bubble--user' : 'pui-bubble--ai', className)}\n\t{...rest}\n>\n\t{#if role === 'ai' && (agent || thinking !== false || icon !== false)}\n\t\t<div class=\"pui-bubble__meta\">\n\t\t\t{#if icon !== false}{#if icon}{@render icon()}{:else}<Sparkle />{/if}{/if}\n\t\t\t{#if typeof agent === 'string'}<span>{agent}</span>{:else if agent}<span>{@render agent()}</span>{/if}\n\t\t\t{#if thinking !== false}\n\t\t\t\t<span class=\"pui-bubble__thinking-pill\">\n\t\t\t\t\t<span class=\"pui-spinner pui-spinner--sm\"></span>\n\t\t\t\t\t<span>{#if typeof thinking === 'string'}{thinking}{:else if thinking}{@render thinking()}{:else}thinking…{/if}</span>\n\t\t\t\t</span>\n\t\t\t{/if}\n\t\t</div>\n\t{/if}\n\t<div class=\"pui-bubble__stream\">{@render children?.()}</div>\n</div>\n"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "mock-ide",
+  "type": "registry:ui",
+  "title": "MockIDE",
+  "description": "Mock code editor surface with chrome and token-streaming body.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Surfaces"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/MockIDE.svelte",
+      "target": "$lib/components/MockIDE.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport type IdeTokenClass = 'key' | 'str' | 'num' | 'com' | 'fn' | '';\n\texport interface IdeToken {\n\t\t/** Raw source text including whitespace. */\n\t\tc: string;\n\t\t/** Token class for syntax color. Empty string for plain. */\n\t\tcls?: IdeTokenClass;\n\t}\n\n\texport { default as MockIDEChrome } from './MockIDEChrome.svelte';\n\texport { default as MockIDEBody } from './MockIDEBody.svelte';\n\n\texport interface MockIDEProps extends HTMLAttributes<HTMLDivElement> {\n\t\t/** Filename shown in the tab. */\n\t\tfilename?: string;\n\t\t/** Tokens to type out (in order). If omitted, renders an empty body. */\n\t\ttokens?: IdeToken[];\n\t\t/** Loop after finishing. */\n\t\tloop?: boolean;\n\t\t/** ms range per character. */\n\t\tcharMs?: [number, number];\n\t\t/** Label for the \"AI is writing…\" pill. Pass false to hide. */\n\t\tthinkingLabel?: string | Snippet | false;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\timport MockIDEBody from './MockIDEBody.svelte';\n\timport MockIDEChrome from './MockIDEChrome.svelte';\n\n\tlet {\n\t\tfilename,\n\t\ttokens,\n\t\tloop = true,\n\t\tcharMs = [14, 42],\n\t\tthinkingLabel = 'AI is writing…',\n\t\tclass: className,\n\t\tchildren,\n\t\t...rest\n\t}: MockIDEProps = $props();\n</script>\n\n<div data-theme=\"dark\" class={cn('pui-ide', className)} {...rest}>\n\t{#if children}\n\t\t{@render children()}\n\t{:else}\n\t\t<MockIDEChrome {filename} thinking={thinkingLabel} />\n\t\t<MockIDEBody tokens={tokens ?? []} {loop} {charMs} />\n\t{/if}\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/MockIDEChrome.svelte",
+      "target": "$lib/components/MockIDEChrome.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface MockIDEChromeProps extends HTMLAttributes<HTMLDivElement> {\n\t\tfilename?: string;\n\t\tthinking?: string | Snippet | false;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { filename, thinking, class: className, children, ...rest }: MockIDEChromeProps = $props();\n</script>\n\n<div class={cn('pui-ide__chrome', className)} {...rest}>\n\t<span class=\"pui-ide__dot pui-ide__dot--red\"></span>\n\t<span class=\"pui-ide__dot pui-ide__dot--yellow\"></span>\n\t<span class=\"pui-ide__dot pui-ide__dot--green\"></span>\n\t{#if filename}<span class=\"pui-ide__tab\">{filename}</span>{/if}\n\t{@render children?.()}\n\t{#if thinking !== false}\n\t\t<span class=\"pui-ide__thinking\">\n\t\t\t<span class=\"pui-spinner\"></span>\n\t\t\t<span>{#if typeof thinking === 'string'}{thinking}{:else}{@render thinking?.()}{/if}</span>\n\t\t</span>\n\t{/if}\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/MockIDEBody.svelte",
+      "target": "$lib/components/MockIDEBody.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { HTMLAttributes } from 'svelte/elements';\n\timport type { IdeToken } from './MockIDE.svelte';\n\n\texport interface MockIDEBodyProps extends HTMLAttributes<HTMLPreElement> {\n\t\ttokens: IdeToken[];\n\t\tloop?: boolean;\n\t\tcharMs?: [number, number];\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { tokens, loop = true, charMs = [14, 42], class: className, ...rest }: MockIDEBodyProps = $props();\n\n\tlet preRef: HTMLPreElement | undefined = $state();\n\tlet tick = $state(0);\n\n\t$effect(() => {\n\t\ttick;\n\t\tconst el = preRef;\n\t\tif (!el || !tokens.length) return;\n\t\tlet cancelled = false;\n\t\tlet timer: ReturnType<typeof setTimeout> | null = null;\n\t\tlet tokenIdx = 0;\n\t\tlet charIdx = 0;\n\n\t\tconst caret = '<span class=\"pui-caret\"></span>';\n\t\tconst escape = (s: string) =>\n\t\t\ts.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n\n\t\tconst run = () => {\n\t\t\tif (cancelled) return;\n\t\t\tif (tokenIdx >= tokens.length) {\n\t\t\t\tif (loop) {\n\t\t\t\t\ttimer = setTimeout(() => {\n\t\t\t\t\t\ttokenIdx = 0;\n\t\t\t\t\t\tcharIdx = 0;\n\t\t\t\t\t\tel.innerHTML = caret;\n\t\t\t\t\t\ttick += 1;\n\t\t\t\t\t\trun();\n\t\t\t\t\t}, 3000);\n\t\t\t\t}\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tconst tok = tokens[tokenIdx];\n\t\t\tcharIdx += 1;\n\t\t\tif (charIdx > tok.c.length) {\n\t\t\t\ttokenIdx += 1;\n\t\t\t\tcharIdx = 0;\n\t\t\t\trun();\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tlet html = '';\n\t\t\tfor (let k = 0; k < tokenIdx; k++) {\n\t\t\t\tconst t = tokens[k];\n\t\t\t\thtml += t.cls ? `<span class=\"pui-tok-${t.cls}\">${escape(t.c)}</span>` : escape(t.c);\n\t\t\t}\n\t\t\tconst partial = tok.c.slice(0, charIdx);\n\t\t\thtml += tok.cls ? `<span class=\"pui-tok-${tok.cls}\">${escape(partial)}</span>` : escape(partial);\n\t\t\thtml += caret;\n\t\t\tel.innerHTML = html;\n\t\t\tconst [lo, hi] = charMs;\n\t\t\tconst ms = lo + Math.random() * (hi - lo) + (partial.endsWith('\\n') ? 120 : 0);\n\t\t\ttimer = setTimeout(run, ms);\n\t\t};\n\t\tel.innerHTML = caret;\n\t\trun();\n\t\treturn () => {\n\t\t\tcancelled = true;\n\t\t\tif (timer) clearTimeout(timer);\n\t\t};\n\t});\n</script>\n\n<pre bind:this={preRef} class={cn('pui-ide__body', className)} {...rest}></pre>\n"
+    }
+  ]
+}

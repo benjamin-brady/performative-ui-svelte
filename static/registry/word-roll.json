@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "word-roll",
+  "type": "registry:ui",
+  "title": "WordRoll",
+  "description": "Vertical slide-roll word rotator for headline alternates.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Heroes"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/WordRoll.svelte",
+      "target": "$lib/components/WordRoll.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface WordRollProps extends HTMLAttributes<HTMLSpanElement> {\n/** Words to cycle through. */\nwords: string[];\n/** ms each word holds before rolling out. Default 2200. */\nintervalMs?: number;\n/** ms of the slide animation. Default 500. */\ntransitionMs?: number;\n/** Direction the active word rolls in from. */\ndirection?: 'up' | 'down';\n/** Paint each word with the AI gradient. */\ngradient?: boolean;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet {\nwords,\nintervalMs = 2200,\ntransitionMs = 500,\ndirection = 'up',\ngradient,\nclass: className,\nstyle,\n...rest\n}: WordRollProps = $props();\n\nlet i = $state(0);\nlet prev = $derived((i - 1 + words.length) % words.length);\nlet mergedStyle = $derived(`${style ? style + ';' : ''}--pui-roll-ms:${transitionMs}ms`);\n\n$effect(() => {\nif (!words.length) return;\nconst t = setInterval(() => {\ni = (i + 1) % words.length;\n}, intervalMs);\nreturn () => clearInterval(t);\n});\n</script>\n\n<span\nclass={cn('pui-roll', direction === 'down' && 'pui-roll--down', gradient && 'pui-roll--gradient', className)}\nstyle={mergedStyle}\n{...rest}\n>\n<span class=\"pui-roll__sizer\" aria-hidden=\"true\">{words[i]}</span>\n{#each words as w, idx (idx)}\n<span\nclass={cn(\n'pui-roll__word',\nidx === i && 'pui-roll__word--active',\nidx === prev && i !== prev && 'pui-roll__word--past'\n)}\naria-hidden={idx === i ? undefined : 'true'}\n>\n{w}\n</span>\n{/each}\n</span>\n"
+    }
+  ]
+}

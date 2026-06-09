@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "aurora",
+  "type": "registry:ui",
+  "title": "Aurora",
+  "description": "Animated radial-gradient aurora background layer.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Backgrounds"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/Aurora.svelte",
+      "target": "$lib/components/Aurora.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface AuroraBlob {\n\t\tcolor: string;\n\t\tx: number;\n\t\ty: number;\n\t\tsize?: number;\n\t}\n\n\texport interface AuroraProps extends HTMLAttributes<HTMLDivElement> {\n\t\t/** Color blobs. Each {color, x, y, size} renders one radial gradient. */\n\t\tblobs?: AuroraBlob[];\n\t\t/** Blur amount in px. */\n\t\tblur?: number;\n\t\t/** Disable the slow drift animation. */\n\t\tstatic?: boolean;\n\t\t/** Lava-lamp mode: blobs drift, repel each other, spring home. */\n\t\tanimated?: boolean;\n\t\t/** When `animated`, how aggressively blobs push apart. 0 disables. */\n\t\trepulsion?: number;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tconst DEFAULT_BLOBS: AuroraBlob[] = [\n\t\t{ color: 'rgba(124,58,237,0.45)', x: 20, y: 30, size: 60 },\n\t\t{ color: 'rgba(236,72,153,0.35)', x: 80, y: 25, size: 50 },\n\t\t{ color: 'rgba(6,182,212,0.30)', x: 50, y: 80, size: 50 }\n\t];\n\n\tlet {\n\t\tblobs = DEFAULT_BLOBS,\n\t\tblur = 50,\n\t\tstatic: isStatic = false,\n\t\tanimated = false,\n\t\trepulsion = 0.18,\n\t\tclass: className,\n\t\tstyle,\n\t\t...rest\n\t}: AuroraProps = $props();\n\n\tlet blobEls: Array<HTMLDivElement | null> = $state([]);\n\n\tlet mergedStyle = $derived(`${style ? style + ';' : ''}filter:blur(${blur}px) saturate(140%)`);\n\n\t$effect(() => {\n\t\tif (!animated) return;\n\t\tconst state = blobs.map((b) => ({\n\t\t\tx: b.x,\n\t\t\ty: b.y,\n\t\t\thomeX: b.x,\n\t\t\thomeY: b.y,\n\t\t\tsize: b.size ?? 50,\n\t\t\tvx: (Math.random() - 0.5) * 0.06,\n\t\t\tvy: (Math.random() - 0.5) * 0.06\n\t\t}));\n\n\t\tlet raf = 0;\n\t\tconst tick = () => {\n\t\t\tfor (let i = 0; i < state.length; i++) {\n\t\t\t\tconst b = state[i];\n\t\t\t\tb.vx *= 0.965;\n\t\t\t\tb.vy *= 0.965;\n\t\t\t\tb.vx += (b.homeX - b.x) * 0.0009;\n\t\t\t\tb.vy += (b.homeY - b.y) * 0.0009;\n\n\t\t\t\tfor (let j = 0; j < state.length; j++) {\n\t\t\t\t\tif (i === j) continue;\n\t\t\t\t\tconst o = state[j];\n\t\t\t\t\tconst dx = b.x - o.x;\n\t\t\t\t\tconst dy = b.y - o.y;\n\t\t\t\t\tconst d = Math.hypot(dx, dy);\n\t\t\t\t\tconst minDist = (b.size + o.size) * 0.4;\n\t\t\t\t\tif (d < minDist && d > 0.001) {\n\t\t\t\t\t\tconst force = ((minDist - d) / minDist) * repulsion;\n\t\t\t\t\t\tb.vx += (dx / d) * force;\n\t\t\t\t\t\tb.vy += (dy / d) * force;\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tb.vx += (Math.random() - 0.5) * 0.012;\n\t\t\t\tb.vy += (Math.random() - 0.5) * 0.012;\n\t\t\t\tb.x += b.vx;\n\t\t\t\tb.y += b.vy;\n\n\t\t\t\tconst min = -10;\n\t\t\t\tconst max = 110;\n\t\t\t\tif (b.x < min) {\n\t\t\t\t\tb.x = min;\n\t\t\t\t\tb.vx = Math.abs(b.vx) * 0.6;\n\t\t\t\t}\n\t\t\t\tif (b.x > max) {\n\t\t\t\t\tb.x = max;\n\t\t\t\t\tb.vx = -Math.abs(b.vx) * 0.6;\n\t\t\t\t}\n\t\t\t\tif (b.y < min) {\n\t\t\t\t\tb.y = min;\n\t\t\t\t\tb.vy = Math.abs(b.vy) * 0.6;\n\t\t\t\t}\n\t\t\t\tif (b.y > max) {\n\t\t\t\t\tb.y = max;\n\t\t\t\t\tb.vy = -Math.abs(b.vy) * 0.6;\n\t\t\t\t}\n\n\t\t\t\tconst el = blobEls[i];\n\t\t\t\tif (el) {\n\t\t\t\t\tel.style.left = `${b.x}%`;\n\t\t\t\t\tel.style.top = `${b.y}%`;\n\t\t\t\t}\n\t\t\t}\n\t\t\traf = requestAnimationFrame(tick);\n\t\t};\n\t\traf = requestAnimationFrame(tick);\n\t\treturn () => cancelAnimationFrame(raf);\n\t});\n</script>\n\n<div\n\taria-hidden=\"true\"\n\tclass={cn('pui-aurora', !isStatic && !animated && 'pui-aurora--drift', className)}\n\tstyle={mergedStyle}\n\t{...rest}\n>\n\t{#each blobs as b, i (i)}\n\t\t{@const size = b.size ?? 50}\n\t\t<div\n\t\t\tbind:this={blobEls[i]}\n\t\t\tclass=\"pui-aurora__blob\"\n\t\t\tstyle=\"position:absolute;left:{b.x}%;top:{b.y}%;width:{size}%;height:{size}%;background:radial-gradient(circle at center, {b.color} 0%, transparent 70%);transform:translate(-50%, -50%);pointer-events:none;border-radius:50%\"\n\t\t></div>\n\t{/each}\n</div>\n"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "pricing-card",
+  "type": "registry:ui",
+  "title": "PricingCard",
+  "description": "Composable pricing card shell with tier, amount, feature, flag, and CTA pieces.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "sparkle"
+  ],
+  "categories": [
+    "Pricing & Conversion"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/PricingCard.svelte",
+      "target": "$lib/components/PricingCard.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport { default as PricingAmount } from './PricingAmount.svelte';\nexport { default as PricingBlurb } from './PricingBlurb.svelte';\nexport { default as PricingCTA } from './PricingCTA.svelte';\nexport { default as PricingFeatures } from './PricingFeatures.svelte';\nexport { default as PricingFlag } from './PricingFlag.svelte';\nexport { default as PricingTier } from './PricingTier.svelte';\n\nexport interface PricingCardProps extends HTMLAttributes<HTMLElement> {\n/** Apply the \"Pro\" tier glow + lift. */\nfeatured?: boolean;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { featured = false, class: className, children, ...rest }: PricingCardProps = $props();\n</script>\n\n<article class={cn('pui-price', featured && 'pui-price--featured', className)} {...rest}>\n{@render children?.()}\n</article>\n"
+    },
+    {
+      "path": "src/lib/components/PricingTier.svelte",
+      "target": "$lib/components/PricingTier.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingTierProps extends HTMLAttributes<HTMLDivElement> {\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingTierProps = $props();\n</script>\n\n<div class={cn('pui-price__tier', className)} {...rest}>{@render children?.()}</div>\n"
+    },
+    {
+      "path": "src/lib/components/PricingAmount.svelte",
+      "target": "$lib/components/PricingAmount.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface PricingAmountProps extends HTMLAttributes<HTMLDivElement> {\n/** Suffix like \"/mo\". Renders smaller, dimmer. */\nunit?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { unit, class: className, children, ...rest }: PricingAmountProps = $props();\n</script>\n\n<div class={cn('pui-price__amount', className)} {...rest}>\n{@render children?.()}\n{#if typeof unit === 'string'}\n<span class=\"pui-price__amount-unit\">{unit}</span>\n{:else if unit}\n<span class=\"pui-price__amount-unit\">{@render unit()}</span>\n{/if}\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/PricingBlurb.svelte",
+      "target": "$lib/components/PricingBlurb.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingBlurbProps extends HTMLAttributes<HTMLParagraphElement> {\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingBlurbProps = $props();\n</script>\n\n<p class={cn('pui-price__blurb', className)} {...rest}>{@render children?.()}</p>\n"
+    },
+    {
+      "path": "src/lib/components/PricingFeatures.svelte",
+      "target": "$lib/components/PricingFeatures.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingFeaturesProps extends HTMLAttributes<HTMLUListElement> {\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingFeaturesProps = $props();\n</script>\n\n<ul class={cn('pui-price__features', className)} {...rest}>{@render children?.()}</ul>\n"
+    },
+    {
+      "path": "src/lib/components/PricingFlag.svelte",
+      "target": "$lib/components/PricingFlag.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingFlagProps extends HTMLAttributes<HTMLDivElement> {\n/** Hide the leading sparkle. */\nhideSparkle?: boolean;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\nimport Sparkle from './Sparkle.svelte';\n\nlet { hideSparkle = false, class: className, children, ...rest }: PricingFlagProps = $props();\n</script>\n\n<div class={cn('pui-price__flag', className)} {...rest}>\n{#if !hideSparkle}<Sparkle solid />{/if}\n<span>{@render children?.()}</span>\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/PricingCTA.svelte",
+      "target": "$lib/components/PricingCTA.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingCTAProps extends HTMLAttributes<HTMLAnchorElement> {\nhref?: string;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingCTAProps = $props();\n</script>\n\n<a class={cn('pui-btn pui-btn--glow pui-btn--block', className)} {...rest}>\n<span>{@render children?.()}</span>\n</a>\n"
+    }
+  ]
+}

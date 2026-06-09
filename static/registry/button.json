@@ -1,0 +1,24 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "Polymorphic performative button with glow, shimmer, ghost, solid, and wave variants.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "sparkle"
+  ],
+  "categories": [
+    "Primitives"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/Button.svelte",
+      "target": "$lib/components/Button.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport type ButtonVariant = 'glow' | 'shimmer' | 'ghost' | 'solid' | 'wave';\n\texport type ButtonSize = 'sm' | 'md' | 'lg';\n\n\texport interface ButtonProps extends HTMLAttributes<HTMLElement> {\n\t\tvariant?: ButtonVariant;\n\t\tsize?: ButtonSize;\n\t\t/** Render a ✦ to the right of the label. */\n\t\tsparkle?: boolean;\n\t\t/** Show a spinner and disable. */\n\t\tloading?: boolean;\n\t\t/** Full-width. */\n\t\tblock?: boolean;\n\t\t/** Override the rendered tag (e.g. 'a'). */\n\t\tas?: string;\n\t\t/** Native disabled (only applied when rendering a <button>). */\n\t\tdisabled?: boolean;\n\t\t/** Native href, when rendered as an anchor. */\n\t\thref?: string;\n\t\ttype?: 'button' | 'submit' | 'reset';\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\timport Sparkle from './Sparkle.svelte';\n\n\tlet {\n\t\tvariant = 'glow',\n\t\tsize = 'md',\n\t\tsparkle = false,\n\t\tloading = false,\n\t\tblock = false,\n\t\tas = 'button',\n\t\tclass: className,\n\t\tdisabled = false,\n\t\tchildren,\n\t\t...rest\n\t}: ButtonProps = $props();\n\n\tlet isButton = $derived(as === 'button');\n\n\t// svelte:element exposes only generic HTMLAttributes, so `disabled` is\n\t// applied via a spread record rather than a direct attribute.\n\tlet attrs = $derived({\n\t\t...rest,\n\t\tdisabled: isButton ? disabled || loading : undefined,\n\t\t'aria-busy': loading || undefined\n\t} as Record<string, unknown>);\n</script>\n\n<svelte:element\n\tthis={as}\n\tclass={cn(\n\t\t'pui-btn',\n\t\t`pui-btn--${variant}`,\n\t\tsize !== 'md' && `pui-btn--${size}`,\n\t\tblock && 'pui-btn--block',\n\t\tclassName\n\t)}\n\t{...attrs}\n>\n\t{#if loading}<span class=\"pui-btn__spinner\" aria-hidden=\"true\"></span>{/if}\n\t<span>{@render children?.()}</span>\n\t{#if sparkle}<Sparkle />{/if}\n</svelte:element>\n"
+    }
+  ]
+}

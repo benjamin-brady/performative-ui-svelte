@@ -1,0 +1,24 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "ascii-hero",
+  "type": "registry:ui",
+  "title": "AsciiHero",
+  "description": "Canvas-rendered ASCII particle hero field.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "use-ascii-field"
+  ],
+  "categories": [
+    "Heroes"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/AsciiHero.svelte",
+      "target": "$lib/components/AsciiHero.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { HTMLAttributes } from 'svelte/elements';\nimport type { UseAsciiFieldOptions } from '$lib/hooks/useAsciiField.svelte';\n\nexport interface AsciiHeroProps extends HTMLAttributes<HTMLDivElement>, UseAsciiFieldOptions {\n/**\n * Visual treatment:\n *   - \"panel\" (default): bordered card with backdrop. Use as a hero.\n *   - \"bare\": no chrome. Use as a background layer (`position: absolute; inset: 0`).\n */\nvariant?: 'panel' | 'bare';\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\nimport { useAsciiField } from '$lib/hooks/useAsciiField.svelte';\n\nlet {\nvariant = 'panel',\ncols,\nrows,\nfontSize,\nfontFamily,\ncharRamp,\ncolorful,\npalette,\nbaseOpacity,\nreactive,\nrippleStrength,\nrippleRadius,\nspotlightOpacity,\nspotlightRadius,\nframeMs,\nclass: className,\n...rest\n}: AsciiHeroProps = $props();\n\nlet hostEl: HTMLDivElement | null = $state(null);\nlet canvasEl: HTMLCanvasElement | null = $state(null);\n\nconst hostRef = { get current() { return hostEl; } };\nconst canvasRef = { get current() { return canvasEl; } };\n\nuseAsciiField(canvasRef, hostRef, {\nget cols() { return cols; },\nget rows() { return rows; },\nget fontSize() { return fontSize; },\nget fontFamily() { return fontFamily; },\nget charRamp() { return charRamp; },\nget colorful() { return colorful; },\nget palette() { return palette; },\nget baseOpacity() { return baseOpacity; },\nget reactive() { return reactive; },\nget rippleStrength() { return rippleStrength; },\nget rippleRadius() { return rippleRadius; },\nget spotlightOpacity() { return spotlightOpacity; },\nget spotlightRadius() { return spotlightRadius; },\nget frameMs() { return frameMs; }\n});\n</script>\n\n<div\nbind:this={hostEl}\nclass={cn('pui-ascii', variant === 'panel' && 'pui-ascii--panel', className)}\naria-hidden=\"true\"\n{...rest}\n>\n<canvas bind:this={canvasEl}></canvas>\n</div>\n"
+    }
+  ]
+}
