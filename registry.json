@@ -205,6 +205,9 @@
       "type": "registry:ui",
       "title": "Button",
       "description": "Polymorphic performative button with glow, shimmer, ghost, solid, and wave variants.",
+      "dependencies": [
+        "tailwind-variants"
+      ],
       "registryDependencies": [
         "utils",
         "theme",

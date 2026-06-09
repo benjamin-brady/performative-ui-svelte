@@ -175,6 +175,7 @@ export const registryItems: RegistryItem[] = [
     description:
       "Polymorphic performative button with glow, shimmer, ghost, solid, and wave variants.",
     files: ["Button"],
+    dependencies: ["tailwind-variants"],
     registryDependencies: ["sparkle"],
     categories: ["Primitives"],
   }),

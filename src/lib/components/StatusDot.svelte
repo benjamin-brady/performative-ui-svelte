@@ -20,7 +20,7 @@
 		...rest
 	}: StatusDotProps = $props();
 
-	let mergedStyle = $derived(color ? `${style ? `${style};` : ''}--pui-dot-color:${color}` : style);
+	let mergedStyle = $derived(color ? `${style ? `${style};` : ''}background:${color};color:${color}` : style);
 </script>
 
 <span
