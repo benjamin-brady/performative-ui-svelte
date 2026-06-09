@@ -28,6 +28,12 @@
 
 <span
 	aria-hidden="true"
-	class={cn('pui-sparkle', !isStatic && 'pui-sparkle--blink', solid && 'pui-sparkle--solid', className)}
+	data-slot="sparkle"
+	class={cn(
+		'inline-block bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] bg-clip-text font-bold text-transparent',
+		!isStatic && 'animate-[pui-twinkle_2.4s_ease-in-out_infinite]',
+		solid && 'bg-none text-current',
+		className
+	)}
 	{...rest}
 >{glyph}{@render children?.()}</span>

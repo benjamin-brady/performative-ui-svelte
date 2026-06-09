@@ -20,12 +20,17 @@
 		...rest
 	}: StatusDotProps = $props();
 
-	let mergedStyle = $derived(color ? `${style ? style + ';' : ''}background:${color};color:${color}` : style);
+	let mergedStyle = $derived(color ? `${style ? `${style};` : ''}--pui-dot-color:${color}` : style);
 </script>
 
 <span
 	aria-hidden="true"
-	class={cn('pui-dot', !isStatic && 'pui-dot--pulse', className)}
+	data-slot="status-dot"
+	class={cn(
+		'inline-block size-1.5 rounded-full bg-[var(--pui-dot-color,var(--pui-success))] text-[var(--pui-dot-color,var(--pui-success))] shadow-[0_0_10px_currentColor]',
+		!isStatic && 'animate-[pui-pulse-dot_1.6s_ease-in-out_infinite]',
+		className
+	)}
 	style={mergedStyle}
 	{...rest}
 ></span>
