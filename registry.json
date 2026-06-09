@@ -793,7 +793,6 @@
       "registryDependencies": [
         "utils",
         "theme",
-        "pui-styles",
         "button"
       ],
       "categories": [
@@ -819,8 +818,7 @@
       ],
       "registryDependencies": [
         "utils",
-        "theme",
-        "pui-styles"
+        "theme"
       ],
       "categories": [
         "Pricing & Conversion"

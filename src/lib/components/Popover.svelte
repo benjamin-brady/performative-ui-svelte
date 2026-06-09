@@ -95,7 +95,7 @@ class={cn(
 'fixed left-1/2 top-1/2 z-50 w-[min(calc(100vw-2rem),28rem)] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/70 bg-white/95 p-6 text-slate-950 shadow-2xl shadow-slate-950/20 outline-none backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/95 dark:text-slate-50',
 className
 )}
-onkeydowncapture={containShortcutKeys}
+onkeydown={containShortcutKeys}
 >
 {#if title}
 <Dialog.Title

@@ -7,7 +7,6 @@
   "registryDependencies": [
     "utils",
     "theme",
-    "pui-styles",
     "button"
   ],
   "categories": [

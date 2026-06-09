@@ -71,6 +71,7 @@ const ui = (
   item: Omit<RegistryItem, "type" | "files" | "registryDependencies"> & {
     files: string[];
     registryDependencies?: string[];
+    puiStyles?: boolean;
   },
 ): RegistryItem => ({
   ...item,
@@ -79,7 +80,7 @@ const ui = (
   registryDependencies: unique([
     "utils",
     "theme",
-    "pui-styles",
+    ...(item.puiStyles === false ? [] : ["pui-styles"]),
     ...(item.registryDependencies ?? []),
   ]),
 });
@@ -371,6 +372,7 @@ export const registryItems: RegistryItem[] = [
       "Email capture form that composes the performative Button component.",
     files: ["WaitlistForm"],
     registryDependencies: ["button"],
+    puiStyles: false,
     categories: ["Pricing & Conversion"],
   }),
   ui({
@@ -380,6 +382,7 @@ export const registryItems: RegistryItem[] = [
       "Timed modal popover with Bits UI Portal support and controlled state.",
     files: ["Popover"],
     dependencies: ["bits-ui", "esm-env"],
+    puiStyles: false,
     categories: ["Pricing & Conversion"],
   }),
 ];
