@@ -1,75 +1,3 @@
-<script lang="ts" module>
-	type Base = 'dark' | 'light';
-
-	interface ColorToken {
-		/** CSS custom property name without the leading `--`. */
-		key: string;
-		label: string;
-		dark: string;
-		light: string;
-	}
-
-	/** The user-facing color tokens, grouped for the control panel. */
-	const COLOR_GROUPS: { title: string; tokens: ColorToken[] }[] = [
-		{
-			title: 'Surfaces',
-			tokens: [
-				{ key: 'pui-bg', label: 'Background', dark: '#08080d', light: '#ffffff' },
-				{ key: 'pui-bg-elev', label: 'Elevated', dark: '#11111a', light: '#f7f7f9' },
-				{ key: 'pui-bg-soft', label: 'Soft', dark: '#191923', light: '#ededf1' },
-				{ key: 'pui-border', label: 'Border', dark: '#2b2b39', light: '#e5e5ea' },
-				{ key: 'pui-border-bright', label: 'Border bright', dark: '#383849', light: '#d2d2db' }
-			]
-		},
-		{
-			title: 'Text',
-			tokens: [
-				{ key: 'pui-fg', label: 'Foreground', dark: '#f5f5f8', light: '#16161d' },
-				{ key: 'pui-fg-dim', label: 'Dimmed', dark: '#aaaab8', light: '#5b5b69' },
-				{ key: 'pui-fg-mute', label: 'Muted', dark: '#76768b', light: '#919199' }
-			]
-		},
-		{
-			title: 'Gradient',
-			tokens: [
-				{ key: 'pui-grad-from', label: 'From', dark: '#7c3aed', light: '#7c3aed' },
-				{ key: 'pui-grad-mid', label: 'Mid', dark: '#ec4899', light: '#ec4899' },
-				{ key: 'pui-grad-to', label: 'To', dark: '#38bdf8', light: '#38bdf8' }
-			]
-		},
-		{
-			title: 'Semantic',
-			tokens: [
-				{ key: 'pui-success', label: 'Success', dark: '#22c55e', light: '#22c55e' },
-				{ key: 'pui-danger', label: 'Danger', dark: '#f87171', light: '#f87171' },
-				{ key: 'pui-warn', label: 'Warning', dark: '#fbbf24', light: '#fbbf24' }
-			]
-		}
-	];
-
-	const ALL_TOKENS = COLOR_GROUPS.flatMap((g) => g.tokens);
-
-	const FONT_PRESETS: { label: string; value: string }[] = [
-		{
-			label: 'Inter',
-			value: '"Inter", ui-sans-serif, system-ui, -apple-system, sans-serif'
-		},
-		{
-			label: 'System UI',
-			value: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif'
-		},
-		{ label: 'Geist', value: '"Geist", ui-sans-serif, system-ui, sans-serif' },
-		{ label: 'Satoshi', value: '"Satoshi", ui-sans-serif, system-ui, sans-serif' },
-		{
-			label: 'Mono',
-			value: '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace'
-		}
-	];
-
-	/** Default base radius (in px); the original theme ships 0.75rem = 12px. */
-	const DEFAULT_RADIUS_PX = 12;
-</script>
-
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import GradientText from '$lib/components/GradientText.svelte';
@@ -82,69 +10,63 @@
 		GlassCardBody,
 		GlassCardLink
 	} from '$lib/components/GlassCard.svelte';
-
-	function defaultsFor(base: Base): Record<string, string> {
-		return Object.fromEntries(ALL_TOKENS.map((t) => [t.key, base === 'dark' ? t.dark : t.light]));
-	}
+	import {
+		COLOR_GROUPS,
+		FONT_PRESETS,
+		PRESETS,
+		DEFAULT_RADIUS_PX,
+		defaultsFor,
+		radiusScale,
+		themeEntries,
+		gradientPreview,
+		buildThemeCss,
+		type Base,
+		type Preset
+	} from './theme-presets';
 
 	let base = $state<Base>('dark');
 	let colors = $state<Record<string, string>>(defaultsFor('dark'));
 	let radiusPx = $state(DEFAULT_RADIUS_PX);
 	let fontSans = $state(FONT_PRESETS[0].value);
+	let activePreset = $state<string>('performative');
+
+	function applyPreset(preset: Preset) {
+		base = preset.base;
+		colors = { ...preset.colors };
+		radiusPx = preset.radiusPx;
+		fontSans = preset.font;
+		activePreset = preset.id;
+	}
 
 	function selectBase(next: Base) {
 		base = next;
 		// Load that base's palette so the picker starts from sensible values.
 		colors = defaultsFor(next);
+		activePreset = '';
 	}
 
 	function reset() {
-		colors = defaultsFor(base);
-		radiusPx = DEFAULT_RADIUS_PX;
-		fontSans = FONT_PRESETS[0].value;
+		applyPreset(PRESETS[0]);
 	}
 
-	// Derive the four-step radius scale from a single slider, preserving the
-	// original ratios (sm 0.667 · base 1 · lg 1.5 · xl 1.833).
-	function rem(px: number): string {
-		return `${Math.round((px / 16) * 1000) / 1000}rem`;
+	function setColor(key: string, value: string) {
+		colors[key] = value;
+		activePreset = '';
 	}
-	let radii = $derived({
-		'pui-radius-sm': rem(radiusPx * 0.667),
-		'pui-radius': rem(radiusPx),
-		'pui-radius-lg': rem(radiusPx * 1.5),
-		'pui-radius-xl': rem(radiusPx * 1.833)
-	});
 
-	// Every token, flattened — used for both the live preview and the export.
-	let tokenEntries = $derived<[string, string][]>([
-		...ALL_TOKENS.map((t): [string, string] => [t.key, colors[t.key]]),
-		...Object.entries(radii),
-		['pui-font-sans', fontSans]
-	]);
+	let radii = $derived(radiusScale(radiusPx));
+
+	let themeState = $derived({ base, colors, radiusPx, font: fontSans });
 
 	// Inline custom-property string applied to the preview wrapper so the real
 	// components resolve against the tweaked tokens.
-	let previewStyle = $derived(tokenEntries.map(([k, v]) => `--${k}: ${v};`).join(' '));
+	let previewStyle = $derived(
+		themeEntries(themeState)
+			.map(([k, v]) => `${k}: ${v};`)
+			.join(' ')
+	);
 
-	let generatedCss = $derived.by(() => {
-		const selector =
-			base === 'dark' ? ':root,\n[data-theme="dark"]' : '[data-theme="light"]';
-		const lines: string[] = [];
-		lines.push('/* Generated with the performative-ui theme generator */');
-		lines.push(`${selector} {`);
-		lines.push(`  color-scheme: ${base};`);
-		for (const group of COLOR_GROUPS) {
-			lines.push(`  /* ${group.title} */`);
-			for (const t of group.tokens) lines.push(`  --${t.key}: ${colors[t.key]};`);
-		}
-		lines.push('  /* Corner radius */');
-		for (const [k, v] of Object.entries(radii)) lines.push(`  --${k}: ${v};`);
-		lines.push('  /* Type */');
-		lines.push(`  --pui-font-sans: ${fontSans};`);
-		lines.push('}');
-		return lines.join('\n');
-	});
+	let generatedCss = $derived(buildThemeCss(themeState));
 
 	let copied = $state(false);
 	async function copyCss() {
@@ -177,6 +99,27 @@
 		<button type="button" class="tg__reset" onclick={reset}>Reset</button>
 	</div>
 
+	<!-- Presets -->
+	<div class="tg__presets">
+		<span class="tg__presets-label">Presets</span>
+		<div class="tg__presets-grid">
+			{#each PRESETS as preset (preset.id)}
+				<button
+					type="button"
+					class={'tg__preset' + (activePreset === preset.id ? ' tg__preset--active' : '')}
+					aria-pressed={activePreset === preset.id}
+					onclick={() => applyPreset(preset)}
+				>
+					<span
+						class="tg__preset-swatch"
+						style={`background: ${gradientPreview(preset.colors)};`}
+					></span>
+					<span class="tg__preset-name">{preset.name}</span>
+				</button>
+			{/each}
+		</div>
+	</div>
+
 	<div class="tg__grid">
 		<!-- Controls -->
 		<div class="tg__controls">
@@ -190,7 +133,7 @@
 									type="color"
 									class="tg__color"
 									value={colors[token.key]}
-									oninput={(e) => (colors[token.key] = e.currentTarget.value)}
+									oninput={(e) => setColor(token.key, e.currentTarget.value)}
 									aria-label={token.label}
 								/>
 								<span class="tg__swatch-meta">
