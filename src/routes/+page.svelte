@@ -7,7 +7,6 @@
 	import Rotator from '$lib/components/Rotator.svelte';
 	import Aurora from '$lib/components/Aurora.svelte';
 	import AsciiHero from '$lib/components/AsciiHero.svelte';
-	import Button from '$lib/components/Button.svelte';
 </script>
 
 <svelte:head>
@@ -40,7 +39,6 @@
 		<p class="lede">Components that signal how oversubscribed your funding round is.</p>
 		<div class="home-install">bunx shadcn-svelte@latest add {REGISTRY_BASE_URL}/registry/button.json</div>
 		<div class="home-cta-row">
-			<Button as="a" href="{base}/demo" variant="glow" size="sm" sparkle>View live demo</Button>
 			<a
 				class="pui-btn pui-btn--ghost pui-btn--sm"
 				href="https://github.com/benjamin-brady/performative-ui-svelte"
