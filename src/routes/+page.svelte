@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { COMPONENTS, CATEGORIES } from '$lib/docs/catalog';
 	import StickyBanner from '$lib/components/StickyBanner.svelte';
 	import EyebrowPill from '$lib/components/EyebrowPill.svelte';
@@ -61,7 +62,7 @@
 			</h2>
 			<div class="home-grid" style="padding-top:20px;padding-bottom:32px">
 				{#each items as c (c.slug)}
-					<a href="/components/{c.slug}" class="home-card">
+					<a href="{base}/components/{c.slug}" class="home-card">
 						<span class="home-card__cat">{c.category}</span>
 						<span class="home-card__name">{c.name}</span>
 						<span class="home-card__snark">{c.snark}</span>

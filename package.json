@@ -7,7 +7,11 @@
 	"type": "module",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/benbrady/performative-ui-svelte.git"
+		"url": "git+https://github.com/benjamin-brady/performative-ui-svelte.git"
+	},
+	"homepage": "https://benjamin-brady.github.io/performative-ui-svelte/",
+	"bugs": {
+		"url": "https://github.com/benjamin-brady/performative-ui-svelte/issues"
 	},
 	"keywords": [
 		"svelte",

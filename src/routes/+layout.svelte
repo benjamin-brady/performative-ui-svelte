@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { base } from '$app/paths';
 	import { PersistedState } from 'runed';
 	import { COMPONENTS, CATEGORIES, ORDERED_COMPONENTS } from '$lib/docs/catalog';
 	import '$lib/styles/pui.css';
@@ -44,16 +45,16 @@
 			const t = e.target;
 			if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement) return;
 			if (e.metaKey || e.ctrlKey || e.altKey) return;
-			const idx = ORDERED_COMPONENTS.findIndex((c) => `/components/${c.slug}` === pathname);
+			const idx = ORDERED_COMPONENTS.findIndex((c) => `${base}/components/${c.slug}` === pathname);
 			const prev = idx > 0 ? ORDERED_COMPONENTS[idx - 1] : null;
 			const next =
 				idx >= 0 && idx < ORDERED_COMPONENTS.length - 1 ? ORDERED_COMPONENTS[idx + 1] : null;
 			if (e.key === ']' && next) {
 				e.preventDefault();
-				goto(`/components/${next.slug}`);
+				goto(`${base}/components/${next.slug}`);
 			} else if (e.key === '[' && prev) {
 				e.preventDefault();
-				goto(`/components/${prev.slug}`);
+				goto(`${base}/components/${prev.slug}`);
 			}
 		};
 		document.addEventListener('keydown', onKey);
@@ -75,7 +76,7 @@
 
 	<aside class="sidebar">
 		<div class="sidebar__brand-row">
-			<a href="/" class="sidebar__brand">
+			<a href={base || '/'} class="sidebar__brand">
 				<span class="sidebar__mark">◣</span>
 				<span>performative-ui</span>
 			</a>
@@ -105,9 +106,9 @@
 				<nav class="sidebar__nav">
 					{#each COMPONENTS.filter((c) => c.category === cat) as c (c.slug)}
 						<a
-							href="/components/{c.slug}"
+							href="{base}/components/{c.slug}"
 							class={'sidebar__link' +
-								(pathname === `/components/${c.slug}` ? ' sidebar__link--active' : '')}
+								(pathname === `${base}/components/${c.slug}` ? ' sidebar__link--active' : '')}
 						>
 							{c.name}
 						</a>

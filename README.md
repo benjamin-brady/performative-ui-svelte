@@ -9,7 +9,7 @@ A Svelte port of [performative-ui](https://github.com/vorpus/performativeUI) by 
 Not published to npm yet. Install directly from GitHub:
 
 ```sh
-npm install github:benbrady/performative-ui-svelte
+npm install github:benjamin-brady/performative-ui-svelte
 ```
 
 The GitHub install runs the package `prepare` script, which builds `dist/` with `@sveltejs/package`. Keep lifecycle scripts enabled for this dependency.

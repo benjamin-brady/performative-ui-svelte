@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
+	import { base } from '$app/paths';
 	import type { ComponentMeta } from './catalog';
 	import { ORDERED_COMPONENTS } from './catalog';
 	import PropsTable from './PropsTable.svelte';
@@ -47,7 +48,7 @@
 	</section>
 
 	{#if next}
-		<a href="/components/{next.slug}" class="cp-skim-next">
+		<a href="{base}/components/{next.slug}" class="cp-skim-next">
 			<span class="cp-skim-next__label">Next</span>
 			<span class="cp-skim-next__name">{next.name}</span>
 			<span class="cp-skim-next__hint"><kbd>]</kbd></span>
