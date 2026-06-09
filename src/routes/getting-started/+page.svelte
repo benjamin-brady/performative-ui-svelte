@@ -28,6 +28,11 @@
 	const pm = $derived(managers.find((m) => m.id === selected.current) ?? managers[0]);
 	const tabs = managers.map((m) => ({ id: m.id, label: m.label }));
 
+	// `shadcn-svelte add` needs an absolute URL it can fetch, not a site-relative
+	// path. Use the published registry origin (matches the README) so the commands
+	// are copy-pasteable from anywhere, including the local dev preview.
+	const registryBase = 'https://benjamin-brady.github.io/performative-ui-svelte/registry';
+
 	const createProject = $derived(`# Scaffold a fresh SvelteKit app (Svelte 5)
 ${pm.exec} sv create my-app
 
@@ -36,9 +41,9 @@ cd my-app
 ${pm.install}`);
 
 	const addComponents = $derived(`# Pull owned-code components from the registry
-${pm.exec} shadcn-svelte@latest add ${base}/registry/button.json
-${pm.exec} shadcn-svelte@latest add ${base}/registry/gradient-text.json
-${pm.exec} shadcn-svelte@latest add ${base}/registry/sparkle.json`);
+${pm.exec} shadcn-svelte@latest add ${registryBase}/button.json
+${pm.exec} shadcn-svelte@latest add ${registryBase}/gradient-text.json
+${pm.exec} shadcn-svelte@latest add ${registryBase}/sparkle.json`);
 
 	const tailwindCss = `@import "tailwindcss";
 
