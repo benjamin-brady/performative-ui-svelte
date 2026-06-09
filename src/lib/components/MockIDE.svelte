@@ -45,7 +45,7 @@
 	}: MockIDEProps = $props();
 </script>
 
-<div data-theme="dark" class={cn('pui-ide', className)} {...rest}>
+<div data-slot="mock-ide" data-theme="dark" class={cn('overflow-hidden rounded-[var(--pui-radius)] border border-pui-border-bright bg-[#0a0a10] font-mono shadow-[0_30px_80px_oklch(0_0_0/0.55),0_0_60px_oklch(0.541_0.251_293/0.18)]', className)} {...rest}>
 	{#if children}
 		{@render children()}
 	{:else}

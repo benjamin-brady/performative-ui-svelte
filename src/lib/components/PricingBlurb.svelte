@@ -13,4 +13,4 @@ import { cn } from '$lib/utils/cn';
 let { class: className, children, ...rest }: PricingBlurbProps = $props();
 </script>
 
-<p class={cn('pui-price__blurb', className)} {...rest}>{@render children?.()}</p>
+<p data-slot="pricing-blurb" class={cn('mb-[22px] mt-0 text-[13px] text-pui-fg-dim', className)} {...rest}>{@render children?.()}</p>

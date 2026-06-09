@@ -62,7 +62,8 @@ get frameMs() { return frameMs; }
 
 <div
 bind:this={hostEl}
-class={cn('pui-ascii', variant === 'panel' && 'pui-ascii--panel', className)}
+data-slot="ascii-hero"
+class={cn('relative block select-none [&_canvas]:absolute [&_canvas]:inset-0 [&_canvas]:block [&_canvas]:size-full', variant === 'panel' && 'mx-auto min-h-[280px] w-[min(720px,100%)] cursor-crosshair overflow-hidden rounded-[var(--pui-radius)] border border-pui-border bg-[var(--pui-ascii-panel-fill)] shadow-[0_0_60px_oklch(0.541_0.251_293/0.15)]', className)}
 aria-hidden="true"
 {...rest}
 >

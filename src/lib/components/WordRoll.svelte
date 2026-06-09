@@ -43,17 +43,20 @@ return () => clearInterval(t);
 </script>
 
 <span
-class={cn('pui-roll', direction === 'down' && 'pui-roll--down', gradient && 'pui-roll--gradient', className)}
+data-slot="word-roll"
+class={cn('relative inline-block [clip-path:inset(0)]', className)}
 style={mergedStyle}
 {...rest}
 >
-<span class="pui-roll__sizer" aria-hidden="true">{words[i]}</span>
+<span data-slot="word-roll-sizer" class="pointer-events-none inline-block whitespace-nowrap invisible" aria-hidden="true">{words[i]}</span>
 {#each words as w, idx (idx)}
 <span
 class={cn(
-'pui-roll__word',
-idx === i && 'pui-roll__word--active',
-idx === prev && i !== prev && 'pui-roll__word--past'
+'absolute left-0 top-0 inline-block whitespace-nowrap opacity-0 transition-[transform,opacity] duration-[var(--pui-roll-ms,500ms)] ease-pui',
+gradient && 'bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] bg-[length:200%_200%] bg-clip-text text-transparent animate-[pui-grad-shift_8s_ease_infinite]',
+idx === i && 'translate-y-0 opacity-100',
+idx !== i && idx !== prev && (direction === 'down' ? '-translate-y-full' : 'translate-y-full'),
+idx === prev && i !== prev && (direction === 'down' ? 'translate-y-full' : '-translate-y-full')
 )}
 aria-hidden={idx === i ? undefined : 'true'}
 >

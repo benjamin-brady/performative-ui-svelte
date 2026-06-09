@@ -13,4 +13,4 @@
 	let { class: className, children, ...rest }: ChatFABBodyProps = $props();
 </script>
 
-<div class={cn('pui-fab-popover__body', className)} {...rest}>{@render children?.()}</div>
+<div data-slot="chat-fab-body" class={cn('p-4', className)} {...rest}>{@render children?.()}</div>
