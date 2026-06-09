@@ -53,6 +53,8 @@ let internalOpen = $state(defaultOpen);
 let isControlled = $derived(controlledOpen !== undefined);
 let isOpen = $derived(isControlled ? controlledOpen : internalOpen);
 let portalTarget = $derived(container ?? undefined);
+const titleId = `pui-popover-title-${Math.random().toString(36).slice(2)}`;
+let dialogRef: HTMLDivElement | undefined = $state();
 
 function setOpen(next: boolean) {
 if (!isControlled) internalOpen = next;
@@ -98,29 +100,75 @@ return () => {
 document.body.style.overflow = prev;
 };
 });
+
+$effect(() => {
+if (!browser || !isOpen || !dialogRef) return;
+const prevFocus = document.activeElement as HTMLElement | null;
+const SELECTOR =
+'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
+const getFocusable = () =>
+Array.from(dialogRef!.querySelectorAll<HTMLElement>(SELECTOR));
+(getFocusable()[0] ?? dialogRef)?.focus();
+const trap = (e: KeyboardEvent) => {
+if (e.key !== 'Tab') return;
+const els = getFocusable();
+if (!els.length) {
+	e.preventDefault();
+	dialogRef?.focus();
+	return;
+}
+if (!dialogRef?.contains(document.activeElement)) {
+	e.preventDefault();
+	(e.shiftKey ? els[els.length - 1] : els[0]).focus();
+	return;
+}
+const first = els[0];
+const last = els[els.length - 1];
+if (e.shiftKey && document.activeElement === first) {
+	e.preventDefault();
+	last.focus();
+} else if (!e.shiftKey && document.activeElement === last) {
+	e.preventDefault();
+	first.focus();
+}
+};
+document.addEventListener('keydown', trap);
+return () => {
+document.removeEventListener('keydown', trap);
+prevFocus?.focus();
+};
+});
 </script>
 
 {#if isOpen && browser}
 <Portal to={portalTarget}>
-<div class="pui-popover-overlay" role="dialog" aria-modal="true">
-<div
-class="pui-popover-backdrop"
-aria-hidden="true"
-onclick={closeOnBackdrop ? () => setOpen(false) : undefined}
-></div>
-<div class={cn('pui-popover', className)}>
-{#if title}
-<div class="pui-popover__title">
-{#if typeof title === 'string'}{title}{:else}{@render title()}{/if}
-</div>
-{/if}
-<div class="pui-popover__body">{@render children?.()}</div>
-{#if closeLabel !== false}
-<button type="button" class="pui-popover__dismiss" onclick={() => setOpen(false)}>
-{#if typeof closeLabel === 'string'}{closeLabel}{:else if closeLabel}{@render closeLabel()}{/if}
-</button>
-{/if}
-</div>
+<div class="pui-popover-overlay">
+	<div
+		class="pui-popover-backdrop"
+		aria-hidden="true"
+		onclick={closeOnBackdrop ? () => setOpen(false) : undefined}
+	></div>
+	<div
+		class={cn('pui-popover', className)}
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby={title ? titleId : undefined}
+		aria-label={!title ? 'Dialog' : undefined}
+		tabindex="-1"
+		bind:this={dialogRef}
+	>
+		{#if title}
+		<div class="pui-popover__title" id={titleId}>
+			{#if typeof title === 'string'}{title}{:else}{@render title()}{/if}
+		</div>
+		{/if}
+		<div class="pui-popover__body">{@render children?.()}</div>
+		{#if closeLabel !== false}
+		<button type="button" class="pui-popover__dismiss" onclick={() => setOpen(false)}>
+			{#if typeof closeLabel === 'string'}{closeLabel}{:else if closeLabel}{@render closeLabel()}{/if}
+		</button>
+		{/if}
+	</div>
 </div>
 </Portal>
 {/if}

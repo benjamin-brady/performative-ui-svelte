@@ -68,7 +68,7 @@
 			</span>
 		{/each}
 		{#each logos as item, i (itemKey(item, i + logos.length))}
-			<span class="pui-marquee__item">
+			<span class="pui-marquee__item" aria-hidden="true">
 				{#if item.kind === 'img'}
 					<img src={item.src} alt={item.alt ?? ''} />
 				{:else if typeof item.node === 'string'}

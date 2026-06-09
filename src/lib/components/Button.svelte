@@ -36,6 +36,7 @@
 		loading = false,
 		block = false,
 		as = 'button',
+		type = 'button',
 		class: className,
 		disabled = false,
 		children,
@@ -44,10 +45,11 @@
 
 	let isButton = $derived(as === 'button');
 
-	// svelte:element exposes only generic HTMLAttributes, so `disabled` is
-	// applied via a spread record rather than a direct attribute.
+	// svelte:element exposes only generic HTMLAttributes, so `disabled` and
+	// `type` are applied via a spread record rather than direct attributes.
 	let attrs = $derived({
 		...rest,
+		type: isButton ? type : undefined,
 		disabled: isButton ? disabled || loading : undefined,
 		'aria-busy': loading || undefined
 	} as Record<string, unknown>);

@@ -46,7 +46,7 @@
 		"build": "vite build",
 		"package": "svelte-kit sync && svelte-package",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync && svelte-package || echo ''",
+		"prepare": "svelte-kit sync && svelte-package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
@@ -60,6 +60,7 @@
 		"@sveltejs/package": "^2.5.8",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@types/node": "^24.10.1",
+		"runed": "^0.37.1",
 		"svelte": "^5.55.2",
 		"svelte-check": "^4.4.6",
 		"typescript": "^6.0.2",
@@ -67,7 +68,6 @@
 	},
 	"dependencies": {
 		"bits-ui": "^2.18.1",
-		"esm-env": "^1.2.2",
-		"runed": "^0.37.1"
+		"esm-env": "^1.2.2"
 	}
 }

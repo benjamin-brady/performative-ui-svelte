@@ -3,9 +3,6 @@
  * performative AI-startup landing page tropes. Tongue firmly in cheek.
  */
 
-// Styles, imported here so consumers get them via the package entry.
-import './styles/pui.css';
-
 // Atoms
 export { default as Sparkle, type SparkleProps } from './components/Sparkle.svelte';
 export { default as GradientText, type GradientTextProps } from './components/GradientText.svelte';

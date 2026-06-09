@@ -77,6 +77,8 @@
 
 	let menuOpen = $state(false);
 	let modelWrapRef: HTMLDivElement | undefined = $state();
+	let menuRef: HTMLDivElement | undefined = $state();
+	let modelButtonRef: HTMLButtonElement | undefined = $state();
 
 	$effect(() => {
 		if (!menuOpen) return;
@@ -87,6 +89,14 @@
 		};
 		document.addEventListener('mousedown', onDown);
 		return () => document.removeEventListener('mousedown', onDown);
+	});
+
+	$effect(() => {
+		if (!menuOpen || !menuRef) return;
+		const active =
+			menuRef.querySelector<HTMLElement>('[aria-checked="true"]') ??
+			menuRef.querySelector<HTMLElement>('[role="menuitemradio"]');
+		active?.focus();
 	});
 
 	function setValue(v: string) {
@@ -118,6 +128,7 @@
 		oninput={(e) => setValue(e.currentTarget.value)}
 		onkeydown={handleKey}
 		{placeholder}
+		aria-label={placeholder}
 		{rows}
 	></textarea>
 	<div class="pui-promptbox__toolbar">
@@ -139,6 +150,7 @@
 				<button
 					type="button"
 					class="pui-promptbox__model"
+					bind:this={modelButtonRef}
 					onclick={() => (menuOpen = !menuOpen)}
 					aria-expanded={menuOpen}
 					aria-haspopup="menu"
@@ -149,7 +161,29 @@
 					</svg>
 				</button>
 				{#if menuOpen}
-					<div class="pui-promptbox__menu" role="menu">
+					<div
+						class="pui-promptbox__menu"
+						role="menu"
+						tabindex="-1"
+						bind:this={menuRef}
+						onkeydown={(e) => {
+							const items = Array.from(
+								(e.currentTarget as HTMLElement).querySelectorAll<HTMLElement>('[role="menuitemradio"]')
+							);
+							const idx = items.indexOf(document.activeElement as HTMLElement);
+							if (e.key === 'ArrowDown') {
+								e.preventDefault();
+								items[(idx + 1) % items.length]?.focus();
+							} else if (e.key === 'ArrowUp') {
+								e.preventDefault();
+								items[(idx - 1 + items.length) % items.length]?.focus();
+							} else if (e.key === 'Escape') {
+								e.preventDefault();
+								menuOpen = false;
+								modelButtonRef?.focus();
+							}
+						}}
+					>
 						{#each models as m (m)}
 							<button
 								type="button"
@@ -157,6 +191,7 @@
 								onclick={() => setModel(m)}
 								role="menuitemradio"
 								aria-checked={m === model}
+								tabindex={m === model ? 0 : -1}
 							>
 								<span>{m}</span>
 								{#if m === model}

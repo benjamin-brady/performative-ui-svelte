@@ -28,6 +28,7 @@
                         var(--pui-grad-from),
                         var(--pui-grad-mid),
                         var(--pui-grad-to));
+  --pui-on-gradient:  #08080b;
 
   /* Accent statuses. */
   --pui-success:      #22c55e;
@@ -373,7 +374,7 @@ button:hover > .pui-arrow,
 .pui-btn--lg { padding: 14px 22px; font-size: 15px; }
 
 .pui-btn--solid {
-  color: var(--pui-bg);
+  color: var(--pui-on-gradient);
   background: var(--pui-grad);
   background-size: 200% 200%;
   border: 0;
@@ -808,12 +809,12 @@ button:hover > .pui-arrow,
 .pui-promptbox__send {
   background: var(--pui-grad);
   background-size: 200% 200%;
-  color: #0a0a12;
+  color: var(--pui-on-gradient);
   border-color: transparent;
   animation: pui-grad-shift 6s ease infinite;
 }
 .pui-promptbox__send:hover {
-  color: #0a0a12;
+  color: var(--pui-on-gradient);
   background: var(--pui-grad);
   background-size: 200% 200%;
   border-color: transparent;
@@ -1470,3 +1471,83 @@ button:hover > .pui-arrow,
 .pui-community__icon { width: 28px; height: 28px; opacity: 0.85; filter: var(--pui-logo-filter); }
 .pui-community__top { font-size: 14px; font-weight: 600; }
 .pui-community__bottom { margin-top: 2px; font-size: 12px; color: var(--pui-fg-mute); font-family: var(--pui-font-mono); }
+
+/* =============================================================
+   Button: generic focus, disabled/loading, and spinner states
+   ============================================================= */
+.pui-btn:focus-visible {
+  outline: 2px solid var(--pui-grad-from);
+  outline-offset: 3px;
+}
+
+.pui-prompt:focus-within,
+.pui-promptbox:focus-within,
+.pui-waitlist:focus-within {
+  box-shadow: var(--pui-shadow-card),
+              0 0 0 2px var(--pui-grad-from),
+              0 0 32px rgba(124,58,237,0.18);
+}
+
+.pui-promptbox__iconbtn:focus-visible,
+.pui-promptbox__model:focus-visible,
+.pui-promptbox__menu-item:focus-visible,
+.pui-fab:focus-visible,
+.pui-fab-popover__close:focus-visible,
+.pui-popover__dismiss:focus-visible,
+.pui-glass-card__link:focus-visible,
+.pui-community:focus-visible {
+  outline: 2px solid var(--pui-grad-from);
+  outline-offset: 3px;
+}
+
+/* Mute all variants when disabled or loading */
+.pui-btn:disabled,
+.pui-btn[aria-busy="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+/* Keep wave's own disabled rule but also silence its halo */
+.pui-btn--wave:disabled::before,
+.pui-btn--wave[aria-busy="true"]::before { display: none; }
+
+/* =============================================================
+   Light-theme overrides: wave button legible contrast
+   ============================================================= */
+[data-theme="light"] .pui-btn--wave {
+  color: var(--pui-fg-dim);
+  border-color: rgba(100, 80, 180, 0.3);
+}
+[data-theme="light"] .pui-btn--wave:hover {
+  color: var(--pui-fg);
+  border-color: rgba(100, 80, 180, 0.55);
+}
+
+/* =============================================================
+   prefers-reduced-motion: stop infinite decorative animations
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  /* Freeze all infinite ambient/decorative loops */
+  .pui-aurora--drift,
+  .pui-gradient-text--animate,
+  .pui-roll--gradient .pui-roll__word,
+  .pui-btn--glow::before,
+  .pui-btn--wave,
+  .pui-btn--wave::before,
+  .pui-promptbox__send,
+  .pui-marquee__track,
+  .pui-sparkle-field__item,
+  .pui-glass-card--breathing,
+  .pui-sparkle--blink,
+  .pui-dot--pulse {
+    animation: none;
+  }
+  /* Functional indicators: keep visible but collapse duration */
+  .pui-btn__spinner,
+  .pui-spinner,
+  .pui-caret,
+  .pui-rotator__cursor--blink {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}

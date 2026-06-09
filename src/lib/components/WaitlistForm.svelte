@@ -66,7 +66,7 @@ height="18"
 {/if}
 </span>
 {/if}
-<input class="pui-waitlist__input" type="email" {placeholder} bind:value />
+<input class="pui-waitlist__input" type="email" {placeholder} bind:value aria-label={placeholder} />
 <Button type="submit" variant="solid">
 {#if typeof ctaLabel === 'string'}{ctaLabel}{:else if ctaLabel}{@render ctaLabel()}{/if}
 </Button>

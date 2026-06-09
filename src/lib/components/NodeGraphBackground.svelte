@@ -58,7 +58,6 @@ let height = 0;
 let dpr = 1;
 const mouse = { x: -9999, y: -9999 };
 let raf = 0;
-
 type Node = { x: number; y: number; vx: number; vy: number; r: number; color: string };
 let nodes: Node[] = [];
 
@@ -73,7 +72,7 @@ y: hMin + Math.random() * (hMax - hMin),
 vx: (Math.random() - 0.5) * speed * 2,
 vy: (Math.random() - 0.5) * speed * 2,
 r: 1 + Math.random() * 1.6,
-color: colors[Math.floor(Math.random() * colors.length)]
+color: colors.length ? colors[Math.floor(Math.random() * colors.length)] : '#a78bfa'
 }));
 };
 
@@ -153,9 +152,8 @@ raf = requestAnimationFrame(tick);
 };
 
 const onMove = (e: MouseEvent) => {
-const rect = host.getBoundingClientRect();
-mouse.x = e.clientX - rect.left;
-mouse.y = e.clientY - rect.top;
+mouse.x = e.offsetX;
+mouse.y = e.offsetY;
 };
 const onLeave = () => {
 mouse.x = -9999;

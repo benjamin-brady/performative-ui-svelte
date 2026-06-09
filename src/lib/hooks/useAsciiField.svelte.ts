@@ -86,6 +86,7 @@ let cellW = 0;
 let cellH = 0;
 let baseField = new Float32Array(0);
 let dpr = 1;
+// Canvas-relative mouse position — computed in onMove, not per-frame.
 const mouse = { x: -9999, y: -9999 };
 
 const seed = () => {
@@ -141,17 +142,18 @@ return;
 }
 
 const time = t * 0.001;
-const rect = canvas.getBoundingClientRect();
-const cx = (mouse.x - rect.left) / cellW;
-const cy = (mouse.y - rect.top) / cellH;
+// mouse is already canvas-relative (set by onMove); use sentinel to detect outside.
+const cx = mouse.x / cellW;
+const cy = mouse.y / cellH;
 const margin = 24;
-const mouseInside =
-mouse.x >= rect.left - margin &&
-mouse.x <= rect.right + margin &&
-mouse.y >= rect.top - margin &&
-mouse.y <= rect.bottom + margin;
+const mouseInside = mouse.x > -9000;
+const withinCanvas =
+mouse.x >= -margin &&
+mouse.x <= cols * cellW + margin &&
+mouse.y >= -margin &&
+mouse.y <= rows * cellH + margin;
 
-ctx.clearRect(0, 0, rect.width, rect.height);
+ctx.clearRect(0, 0, cols * cellW, rows * cellH);
 
 const rampMax = charRamp.length - 1;
 const useSpotlight = typeof spotlightOpacity === 'number' && spotlightOpacity !== baseOpacity;
@@ -168,7 +170,7 @@ const d2 = dx * dx + dy * dy;
 const d = Math.sqrt(d2);
 
 const ripple =
-reactive && mouseInside
+reactive && mouseInside && withinCanvas
 ? rippleStrength * Math.exp(-d2 / 80) -
 0.6 * Math.exp(-((d - rippleRadius) * (d - rippleRadius)) / 30)
 : 0;
@@ -178,7 +180,7 @@ const ch = charRamp[Math.floor(v * rampMax)];
 if (ch === ' ') continue;
 
 let alpha = baseOpacity;
-if (useSpotlight && mouseInside) {
+if (useSpotlight && mouseInside && withinCanvas) {
 const spot = Math.exp(-d2 / spotR2);
 alpha = baseOpacity + (spotlightOpacity! - baseOpacity) * spot;
 if (alpha < 0) alpha = 0;
@@ -203,8 +205,10 @@ raf = requestAnimationFrame(render);
 };
 
 const onMove = (e: MouseEvent) => {
-mouse.x = e.clientX;
-mouse.y = e.clientY;
+// Store canvas-relative coords so render() avoids getBoundingClientRect per frame.
+const rect = canvas.getBoundingClientRect();
+mouse.x = e.clientX - rect.left;
+mouse.y = e.clientY - rect.top;
 };
 
 const ro = new ResizeObserver(resize);

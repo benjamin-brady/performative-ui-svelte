@@ -65,6 +65,7 @@
 		class="pui-prompt__input"
 		type="text"
 		{placeholder}
+		aria-label={placeholder}
 		value={v}
 		oninput={handleInput}
 		autocomplete="off"
