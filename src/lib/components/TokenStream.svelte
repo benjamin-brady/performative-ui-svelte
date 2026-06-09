@@ -28,7 +28,7 @@
 	const stream = useTokenStream({ text, speedMs, tokenize, loop, loopDelayMs, onComplete });
 </script>
 
-<span class={cn(className)} {...rest}>
+<span data-slot="token-stream" class={cn(className)} {...rest}>
 	{stream.output}
-	{#if !hideCaret && stream.isStreaming}<span class="pui-bubble__stream-caret"></span>{/if}
+	{#if !hideCaret && stream.isStreaming}<span data-slot="token-stream-caret" class="ml-px inline-block h-3.5 w-2 animate-[pui-caret_1s_steps(2,start)_infinite] bg-pui-fg align-[-2px]"></span>{/if}
 </span>

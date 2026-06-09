@@ -1,0 +1,25 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "prompt-hero",
+  "type": "registry:ui",
+  "title": "PromptHero",
+  "description": "Single-line AI prompt hero with CTA and rotating placeholders.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "button",
+    "sparkle"
+  ],
+  "categories": [
+    "Heroes"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/PromptHero.svelte",
+      "target": "$lib/components/PromptHero.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface PromptHeroProps extends Omit<HTMLAttributes<HTMLFormElement>, 'onSubmit' | 'onChange'> {\n\t\tplaceholder?: string;\n\t\t/** Initial value of the input. */\n\t\tdefaultValue?: string;\n\t\t/** Controlled value. If set, parent must pair with onChange. */\n\t\tvalue?: string;\n\t\tonChange?: (value: string) => void;\n\t\t/** Fires with the current value when the form submits. */\n\t\tonSubmit?: (value: string) => void;\n\t\t/** Replace the leading ✦ with a custom node, or pass `false` to remove. */\n\t\tleading?: Snippet | false;\n\t\t/** CTA label. Default: \"Generate\". */\n\t\tctaLabel?: string | Snippet;\n\t\t/** Hide the trailing CTA. */\n\t\thideCta?: boolean;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { untrack } from 'svelte';\n\timport { cn } from '$lib/utils/cn';\n\timport Button from './Button.svelte';\n\timport Sparkle from './Sparkle.svelte';\n\n\tlet {\n\t\tplaceholder = 'Describe what you want to build…',\n\t\tdefaultValue,\n\t\tvalue,\n\t\tonChange,\n\t\tonSubmit,\n\t\tleading,\n\t\tctaLabel = 'Generate',\n\t\thideCta,\n\t\tclass: className,\n\t\t...rest\n\t}: PromptHeroProps = $props();\n\n\tlet isControlled = $derived(value !== undefined);\n\tlet internal = $state(untrack(() => defaultValue ?? ''));\n\tlet v = $derived(isControlled ? (value ?? '') : internal);\n\n\tfunction handle(e: SubmitEvent) {\n\t\te.preventDefault();\n\t\tonSubmit?.(v);\n\t}\n\n\tfunction handleInput(e: Event) {\n\t\tconst next = (e.currentTarget as HTMLInputElement).value;\n\t\tif (!isControlled) internal = next;\n\t\tonChange?.(next);\n\t}\n</script>\n\n<form data-slot=\"prompt-hero\" class={cn('flex w-full items-center gap-2 rounded-2xl border border-pui-border-bright bg-[var(--pui-glass-deep)] py-2 pl-[18px] pr-2 shadow-[var(--pui-shadow-card),0_0_0_1px_oklch(0.541_0.251_293/0.18),0_0_32px_oklch(0.541_0.251_293/0.18)] backdrop-blur-[10px]', className)} onsubmit={handle} {...rest}>\n\t{#if leading !== false}\n\t\t<span data-slot=\"prompt-hero-icon\" class=\"text-lg\">\n\t\t\t{#if leading}{@render leading()}{:else}<Sparkle />{/if}\n\t\t</span>\n\t{/if}\n\t<input\n\t\tdata-slot=\"prompt-hero-input\"\n\t\tclass=\"flex-1 border-0 bg-transparent py-3 font-sans text-[15px] text-pui-fg outline-0 placeholder:text-pui-fg-mute\"\n\t\ttype=\"text\"\n\t\t{placeholder}\n\t\tvalue={v}\n\t\toninput={handleInput}\n\t\tautocomplete=\"off\"\n\t/>\n\t{#if !hideCta}\n\t\t<Button type=\"submit\" variant=\"glow\" sparkle>\n\t\t\t{#if typeof ctaLabel === 'string'}{ctaLabel}{:else}{@render ctaLabel?.()}{/if}\n\t\t</Button>\n\t{/if}\n</form>\n"
+    }
+  ]
+}

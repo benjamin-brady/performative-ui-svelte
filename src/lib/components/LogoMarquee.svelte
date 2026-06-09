@@ -45,19 +45,19 @@
 </script>
 
 <div
+	data-slot="logo-marquee"
 	class={cn(
-		'pui-marquee',
-		fade && 'pui-marquee--fade',
-		pauseOnHover && 'pui-marquee--paused-on-hover',
+		'relative overflow-hidden',
+		fade && '[mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)] [-webkit-mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]',
 		className
 	)}
 	style={mergedStyle}
 	aria-label="Trusted by"
 	{...rest}
 >
-	<div class="pui-marquee__track">
+	<div data-slot="logo-marquee-track" class={cn('flex w-max items-center animate-[pui-marquee_var(--pui-marquee-speed,40s)_linear_infinite]', pauseOnHover && 'hover:[animation-play-state:paused]')}>
 		{#each logos as item, i (itemKey(item, i))}
-			<span class="pui-marquee__item">
+			<span data-slot="logo-marquee-item" class="mr-[var(--pui-marquee-gap,56px)] inline-flex items-center [&_img]:h-7 [&_img]:w-auto [&_img]:opacity-70 [&_img]:transition-[opacity,filter] [&_img]:duration-200 [&_img]:ease-pui [&_img]:[filter:var(--pui-logo-filter)] hover:[&_img]:opacity-100 hover:[&_img]:[filter:var(--pui-logo-filter-hover)]">
 				{#if item.kind === 'img'}
 					<img src={item.src} alt={item.alt ?? ''} />
 				{:else if typeof item.node === 'string'}
@@ -68,7 +68,7 @@
 			</span>
 		{/each}
 		{#each logos as item, i (itemKey(item, i + logos.length))}
-			<span class="pui-marquee__item">
+			<span data-slot="logo-marquee-item" class="mr-[var(--pui-marquee-gap,56px)] inline-flex items-center [&_img]:h-7 [&_img]:w-auto [&_img]:opacity-70 [&_img]:transition-[opacity,filter] [&_img]:duration-200 [&_img]:ease-pui [&_img]:[filter:var(--pui-logo-filter)] hover:[&_img]:opacity-100 hover:[&_img]:[filter:var(--pui-logo-filter-hover)]">
 				{#if item.kind === 'img'}
 					<img src={item.src} alt={item.alt ?? ''} />
 				{:else if typeof item.node === 'string'}

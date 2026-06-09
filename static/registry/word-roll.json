@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "word-roll",
+  "type": "registry:ui",
+  "title": "WordRoll",
+  "description": "Vertical slide-roll word rotator for headline alternates.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Heroes"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/WordRoll.svelte",
+      "target": "$lib/components/WordRoll.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface WordRollProps extends HTMLAttributes<HTMLSpanElement> {\n/** Words to cycle through. */\nwords: string[];\n/** ms each word holds before rolling out. Default 2200. */\nintervalMs?: number;\n/** ms of the slide animation. Default 500. */\ntransitionMs?: number;\n/** Direction the active word rolls in from. */\ndirection?: 'up' | 'down';\n/** Paint each word with the AI gradient. */\ngradient?: boolean;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet {\nwords,\nintervalMs = 2200,\ntransitionMs = 500,\ndirection = 'up',\ngradient,\nclass: className,\nstyle,\n...rest\n}: WordRollProps = $props();\n\nlet i = $state(0);\nlet prev = $derived((i - 1 + words.length) % words.length);\nlet mergedStyle = $derived(`${style ? style + ';' : ''}--pui-roll-ms:${transitionMs}ms`);\n\n$effect(() => {\nif (!words.length) return;\nconst t = setInterval(() => {\ni = (i + 1) % words.length;\n}, intervalMs);\nreturn () => clearInterval(t);\n});\n</script>\n\n<span\ndata-slot=\"word-roll\"\nclass={cn('relative inline-block [clip-path:inset(0)]', className)}\nstyle={mergedStyle}\n{...rest}\n>\n<span data-slot=\"word-roll-sizer\" class=\"pointer-events-none inline-block whitespace-nowrap invisible\" aria-hidden=\"true\">{words[i]}</span>\n{#each words as w, idx (idx)}\n<span\nclass={cn(\n'absolute left-0 top-0 inline-block whitespace-nowrap opacity-0 transition-[transform,opacity] duration-[var(--pui-roll-ms,500ms)] ease-pui',\ngradient && 'bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] bg-[length:200%_200%] bg-clip-text text-transparent animate-[pui-grad-shift_8s_ease_infinite]',\nidx === i && 'translate-y-0 opacity-100',\nidx !== i && idx !== prev && (direction === 'down' ? '-translate-y-full' : 'translate-y-full'),\nidx === prev && i !== prev && (direction === 'down' ? 'translate-y-full' : '-translate-y-full')\n)}\naria-hidden={idx === i ? undefined : 'true'}\n>\n{w}\n</span>\n{/each}\n</span>\n"
+    }
+  ]
+}

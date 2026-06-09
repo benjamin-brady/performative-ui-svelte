@@ -1,0 +1,24 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "chat-bubble",
+  "type": "registry:ui",
+  "title": "ChatBubble",
+  "description": "Assistant or user chat bubble with optional sparkle affordance.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "sparkle"
+  ],
+  "categories": [
+    "Conversation"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/ChatBubble.svelte",
+      "target": "$lib/components/ChatBubble.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport type ChatRole = 'user' | 'ai';\n\n\texport interface ChatBubbleProps extends HTMLAttributes<HTMLDivElement> {\n\t\trole: ChatRole;\n\t\t/** AI-only: the agent name shown in the meta row. */\n\t\tagent?: string | Snippet;\n\t\t/** AI-only: text in the thinking pill (e.g. \"reasoning…\"). False to hide. */\n\t\tthinking?: string | Snippet | false;\n\t\t/** AI-only: replace the leading sparkle. */\n\t\ticon?: Snippet | false;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\timport Sparkle from './Sparkle.svelte';\n\n\tlet { role, agent, thinking, icon, class: className, children, ...rest }: ChatBubbleProps = $props();\n</script>\n\n<div\n\tdata-slot=\"chat-bubble\"\n\tclass={cn(\n\t\t'max-w-[88%] rounded-[18px] px-[18px] py-3.5 font-sans text-[15px] leading-[1.55] text-pui-fg',\n\t\trole === 'user'\n\t\t\t? 'ml-auto rounded-br bg-[var(--pui-bubble-user-fill)] border border-pui-border-bright'\n\t\t\t: 'mr-auto rounded-bl border border-[oklch(0.541_0.251_293/0.35)] bg-[var(--pui-glass-deep)] shadow-[0_0_32px_oklch(0.541_0.251_293/0.18)]',\n\t\tclassName\n\t)}\n\t{...rest}\n>\n\t{#if role === 'ai' && (agent || thinking !== false || icon !== false)}\n\t\t<div data-slot=\"chat-bubble-meta\" class=\"mb-2 inline-flex items-center gap-2 font-mono text-xs text-pui-fg-mute\">\n\t\t\t{#if icon !== false}{#if icon}{@render icon()}{:else}<Sparkle />{/if}{/if}\n\t\t\t{#if typeof agent === 'string'}<span>{agent}</span>{:else if agent}<span>{@render agent()}</span>{/if}\n\t\t\t{#if thinking !== false}\n\t\t\t\t<span data-slot=\"chat-bubble-thinking\" class=\"inline-flex items-center gap-1.5 rounded-full border border-pui-border-bright px-2 py-0.5 text-[11px]\">\n\t\t\t\t\t<span class=\"inline-block size-2 animate-[pui-spin_0.9s_linear_infinite] rounded-full border-[1.2px] border-white/20 border-t-pui-grad-mid\"></span>\n\t\t\t\t\t<span>{#if typeof thinking === 'string'}{thinking}{:else if thinking}{@render thinking()}{:else}thinking…{/if}</span>\n\t\t\t\t</span>\n\t\t\t{/if}\n\t\t</div>\n\t{/if}\n\t<div data-slot=\"chat-bubble-stream\" class=\"whitespace-pre-wrap text-[15px] leading-[1.6]\">{@render children?.()}</div>\n</div>\n"
+    }
+  ]
+}

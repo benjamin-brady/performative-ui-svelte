@@ -29,10 +29,11 @@
 </script>
 
 <article
+	data-slot="glass-card"
 	class={cn(
-		'pui-glass-card',
-		breathing && 'pui-glass-card--breathing',
-		glowOnHover && 'pui-glass-card--glow-hover',
+		'relative overflow-hidden rounded-[var(--pui-radius-xl)] border border-[var(--pui-overlay-strong)] bg-[linear-gradient(180deg,var(--pui-overlay),transparent)] px-[26px] pb-6 pt-7 font-sans backdrop-blur-xl transition-[transform,border-color] duration-200 ease-pui before:absolute before:inset-[-1px] before:-z-10 before:rounded-[inherit] before:bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] before:opacity-0 before:transition-opacity before:duration-200 hover:-translate-y-0.5 hover:border-white/15',
+		breathing && 'animate-[pui-breathe_6s_ease-in-out_infinite]',
+		glowOnHover && 'hover:before:opacity-35 hover:before:blur-[14px]',
 		className
 	)}
 	{...rest}

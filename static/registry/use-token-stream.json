@@ -1,0 +1,18 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "use-token-stream",
+  "type": "registry:hook",
+  "title": "useTokenStream",
+  "description": "Headless token streaming state used by TokenStream.",
+  "categories": [
+    "Utilities"
+  ],
+  "files": [
+    {
+      "path": "src/lib/hooks/useTokenStream.svelte.ts",
+      "target": "$lib/hooks/useTokenStream.svelte.ts",
+      "type": "registry:hook",
+      "content": "import { untrack } from 'svelte';\n\nexport interface UseTokenStreamOptions {\n\ttext: string;\n\t/** [min, max] ms between tokens. Single number → fixed delay. */\n\tspeedMs?: number | [number, number];\n\t/** Tokenizer: split text into atoms. Default: words+whitespace. */\n\ttokenize?: (text: string) => string[];\n\tloop?: boolean;\n\t/** ms to wait after a full pass before clearing & restarting. */\n\tloopDelayMs?: number;\n\tonComplete?: () => void;\n}\n\nexport interface UseTokenStreamResult {\n\treadonly output: string;\n\treadonly isStreaming: boolean;\n\treadonly isComplete: boolean;\n}\n\nconst defaultTokenize = (s: string) => s.split(/(\\s+)/);\n\n/** Reveals `text` token-by-token. The fake AI-streaming demo. */\nexport function useTokenStream(options: UseTokenStreamOptions): UseTokenStreamResult {\n\tlet output = $state('');\n\tlet isComplete = $state(false);\n\tlet onCompleteCurrent = options.onComplete;\n\n\t$effect(() => {\n\t\tonCompleteCurrent = options.onComplete;\n\t});\n\n\t$effect(() => {\n\t\tconst { text, speedMs, tokenize, loop, loopDelayMs } = untrack(() => ({\n\t\t\ttext: options.text,\n\t\t\tspeedMs: options.speedMs ?? [18, 80],\n\t\t\ttokenize: options.tokenize ?? defaultTokenize,\n\t\t\tloop: options.loop ?? false,\n\t\t\tloopDelayMs: options.loopDelayMs ?? 6000\n\t\t}));\n\n\t\tlet cancelled = false;\n\t\tlet timer: ReturnType<typeof setTimeout> | null = null;\n\t\tconst tokens = tokenize(text);\n\n\t\tconst pickDelay = () =>\n\t\t\tArray.isArray(speedMs) ? speedMs[0] + Math.random() * (speedMs[1] - speedMs[0]) : speedMs;\n\n\t\tconst run = () => {\n\t\t\tlet i = 0;\n\t\t\tlet buf = '';\n\t\t\tconst tick = () => {\n\t\t\t\tif (cancelled) return;\n\t\t\t\tif (i >= tokens.length) {\n\t\t\t\t\tisComplete = true;\n\t\t\t\t\tonCompleteCurrent?.();\n\t\t\t\t\tif (loop) {\n\t\t\t\t\t\ttimer = setTimeout(() => {\n\t\t\t\t\t\t\tif (cancelled) return;\n\t\t\t\t\t\t\tisComplete = false;\n\t\t\t\t\t\t\toutput = '';\n\t\t\t\t\t\t\trun();\n\t\t\t\t\t\t}, loopDelayMs);\n\t\t\t\t\t}\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tbuf += tokens[i];\n\t\t\t\ti += 1;\n\t\t\t\toutput = buf;\n\t\t\t\ttimer = setTimeout(tick, pickDelay());\n\t\t\t};\n\t\t\ttick();\n\t\t};\n\t\trun();\n\t\treturn () => {\n\t\t\tcancelled = true;\n\t\t\tif (timer) clearTimeout(timer);\n\t\t};\n\t});\n\n\treturn {\n\t\tget output() {\n\t\t\treturn output;\n\t\t},\n\t\tget isStreaming() {\n\t\t\treturn !isComplete;\n\t\t},\n\t\tget isComplete() {\n\t\t\treturn isComplete;\n\t\t}\n\t};\n}\n"
+    }
+  ]
+}

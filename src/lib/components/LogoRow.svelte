@@ -25,18 +25,18 @@
 	}
 </script>
 
-<div class={cn('pui-logo-row', className)} {...rest}>
+<div data-slot="logo-row" class={cn('text-center font-sans', className)} {...rest}>
 	{#if heading}
-		<p class="pui-logo-row__heading">
+		<p data-slot="logo-row-heading" class="mb-[18px] text-[11px] uppercase tracking-[0.18em] text-pui-fg-mute">
 			{#if typeof heading === 'string'}{heading}{:else}{@render heading()}{/if}
 		</p>
 	{/if}
-	<div class="pui-logo-row__items">
+	<div data-slot="logo-row-items" class="inline-flex flex-wrap items-center justify-center gap-7 opacity-75 [&_img]:h-6 [&_img]:w-auto [&_img]:opacity-75 [&_img]:[filter:var(--pui-logo-filter)]">
 		{#each logos as item, i (itemKey(item, i))}
 			{#if item.kind === 'img'}
 				<img src={item.src} alt={item.alt ?? ''} />
 			{:else}
-				<span class="pui-logo-row__text">
+				<span data-slot="logo-row-text" class="whitespace-nowrap text-base font-bold tracking-[0.04em] text-[var(--pui-logo-text-strong)]">
 					{#if typeof item.node === 'string'}{item.node}{:else}{@render item.node()}{/if}
 				</span>
 			{/if}

@@ -194,6 +194,6 @@ return color;
 }
 </script>
 
-<div bind:this={hostEl} aria-hidden="true" class={cn('pui-node-graph', className)} {...rest}>
+<div bind:this={hostEl} data-slot="node-graph-background" aria-hidden="true" class={cn('pointer-events-auto absolute inset-0 z-[1]', className)} {...rest}>
 <canvas bind:this={canvasEl}></canvas>
 </div>

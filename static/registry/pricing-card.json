@@ -1,0 +1,60 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "pricing-card",
+  "type": "registry:ui",
+  "title": "PricingCard",
+  "description": "Composable pricing card shell with tier, amount, feature, flag, and CTA pieces.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles",
+    "sparkle"
+  ],
+  "categories": [
+    "Pricing & Conversion"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/PricingCard.svelte",
+      "target": "$lib/components/PricingCard.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport { default as PricingAmount } from './PricingAmount.svelte';\nexport { default as PricingBlurb } from './PricingBlurb.svelte';\nexport { default as PricingCTA } from './PricingCTA.svelte';\nexport { default as PricingFeatures } from './PricingFeatures.svelte';\nexport { default as PricingFlag } from './PricingFlag.svelte';\nexport { default as PricingTier } from './PricingTier.svelte';\n\nexport interface PricingCardProps extends HTMLAttributes<HTMLElement> {\n/** Apply the \"Pro\" tier glow + lift. */\nfeatured?: boolean;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { featured = false, class: className, children, ...rest }: PricingCardProps = $props();\n</script>\n\n<article data-slot=\"pricing-card\" class={cn('relative flex h-full flex-col rounded-[var(--pui-radius-xl)] border border-pui-border-bright bg-pui-bg-elev px-7 py-[30px] font-sans text-pui-fg', featured && 'border-[oklch(0.541_0.251_293/0.55)] bg-[linear-gradient(180deg,oklch(0.541_0.251_293/0.08),var(--pui-bg-elev))] shadow-[0_0_80px_oklch(0.541_0.251_293/0.2)]', className)} {...rest}>\n{@render children?.()}\n</article>\n"
+    },
+    {
+      "path": "src/lib/components/PricingTier.svelte",
+      "target": "$lib/components/PricingTier.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingTierProps extends HTMLAttributes<HTMLDivElement> {\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingTierProps = $props();\n</script>\n\n<div data-slot=\"pricing-tier\" class={cn('font-mono text-xs uppercase tracking-[0.12em] text-pui-fg-dim', className)} {...rest}>{@render children?.()}</div>\n"
+    },
+    {
+      "path": "src/lib/components/PricingAmount.svelte",
+      "target": "$lib/components/PricingAmount.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface PricingAmountProps extends HTMLAttributes<HTMLDivElement> {\n/** Suffix like \"/mo\". Renders smaller, dimmer. */\nunit?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { unit, class: className, children, ...rest }: PricingAmountProps = $props();\n</script>\n\n<div data-slot=\"pricing-amount\" class={cn('mb-0.5 mt-2 text-[44px] font-extrabold tracking-[-0.035em]', className)} {...rest}>\n{@render children?.()}\n{#if typeof unit === 'string'}\n<span data-slot=\"pricing-amount-unit\" class=\"ml-1 text-sm font-medium text-pui-fg-mute\">{unit}</span>\n{:else if unit}\n<span data-slot=\"pricing-amount-unit\" class=\"ml-1 text-sm font-medium text-pui-fg-mute\">{@render unit()}</span>\n{/if}\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/PricingBlurb.svelte",
+      "target": "$lib/components/PricingBlurb.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingBlurbProps extends HTMLAttributes<HTMLParagraphElement> {\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingBlurbProps = $props();\n</script>\n\n<p data-slot=\"pricing-blurb\" class={cn('mb-[22px] mt-0 text-[13px] text-pui-fg-dim', className)} {...rest}>{@render children?.()}</p>\n"
+    },
+    {
+      "path": "src/lib/components/PricingFeatures.svelte",
+      "target": "$lib/components/PricingFeatures.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingFeaturesProps extends HTMLAttributes<HTMLUListElement> {\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingFeaturesProps = $props();\n</script>\n\n<ul data-slot=\"pricing-features\" class={cn('mb-6 mt-0 flex-1 list-none p-0 [&_li]:border-t [&_li]:border-dashed [&_li]:border-pui-border [&_li]:py-[9px] [&_li]:text-[13.5px] [&_li]:text-pui-fg-dim [&_li]:before:mr-1.5 [&_li]:before:font-bold [&_li]:before:text-success [&_li]:before:content-[\"✓\"]', className)} {...rest}>{@render children?.()}</ul>\n"
+    },
+    {
+      "path": "src/lib/components/PricingFlag.svelte",
+      "target": "$lib/components/PricingFlag.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingFlagProps extends HTMLAttributes<HTMLDivElement> {\n/** Hide the leading sparkle. */\nhideSparkle?: boolean;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\nimport Sparkle from './Sparkle.svelte';\n\nlet { hideSparkle = false, class: className, children, ...rest }: PricingFlagProps = $props();\n</script>\n\n<div data-slot=\"pricing-flag\" class={cn('absolute left-1/2 top-[-12px] inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#1a1a26] shadow-[0_6px_24px_oklch(0.656_0.242_354.3/0.4)]', className)} {...rest}>\n{#if !hideSparkle}<Sparkle solid />{/if}\n<span>{@render children?.()}</span>\n</div>\n"
+    },
+    {
+      "path": "src/lib/components/PricingCTA.svelte",
+      "target": "$lib/components/PricingCTA.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\nexport interface PricingCTAProps extends HTMLAttributes<HTMLAnchorElement> {\nhref?: string;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { class: className, children, ...rest }: PricingCTAProps = $props();\n</script>\n\n<a data-slot=\"pricing-cta\" class={cn('relative inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-[10px] border border-[var(--pui-button-dark-border)] bg-[var(--pui-button-dark-fill)] px-[18px] py-2.5 font-sans text-sm font-semibold text-pui-fg no-underline shadow-[var(--pui-glow)] transition-[transform,box-shadow,background,border-color] duration-200 ease-pui before:absolute before:inset-[-2px] before:-z-10 before:rounded-[12px] before:bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] before:bg-[length:300%_300%] before:opacity-55 before:blur-xl before:animate-[pui-grad-shift_5s_ease_infinite] hover:shadow-[var(--pui-glow-strong)] active:translate-y-px', className)} {...rest}>\n<span>{@render children?.()}</span>\n</a>\n"
+    }
+  ]
+}

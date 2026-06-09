@@ -18,7 +18,14 @@
 	let { icon, statusColor, class: className, children, ...rest }: EyebrowPillProps = $props();
 </script>
 
-<span class={cn('pui-eyebrow', className)} {...rest}>
+<span
+	data-slot="eyebrow-pill"
+	class={cn(
+		'inline-flex items-center gap-2 rounded-full border border-pui-border-bright bg-[var(--pui-glass-soft)] px-3.5 py-1.5 font-sans text-[13px] text-pui-fg-dim backdrop-blur-md transition-colors hover:border-pui-fg-mute hover:text-pui-fg',
+		className
+	)}
+	{...rest}
+>
 	{#if icon === false}
 		<!-- hidden -->
 	{:else if icon}

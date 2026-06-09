@@ -24,20 +24,20 @@
 		spotlightOpacity={0.9}
 		spotlightRadius={10}
 		fontSize={11}
-		style="position:absolute;inset:0;z-index:1"
+		class="home-hero__ascii"
 	/>
-	<div style="position:relative;z-index:3">
+	<div class="home-hero__content">
 		<EyebrowPill>{COMPONENTS.length} components · MIT licensed</EyebrowPill>
-		<h2 style="margin-top:16px">
-			<span style="display:block">AI-native Svelte components for</span>
-			<span style="display:block;min-height:1.1em;max-width:100%;overflow-wrap:break-word">
+		<h2 class="home-hero__title">
+			<span class="home-hero__title-line">AI-native Svelte components for</span>
+			<span class="home-hero__title-line home-hero__title-line--rotating">
 				<GradientText>
 					<Rotator words={['AI startups', 'frontier labs', 'the next ChatGPT', 'your moat']} />
 				</GradientText>
 			</span>
 		</h2>
 		<p class="lede">Components that signal how oversubscribed your funding round is.</p>
-		<div class="home-install">npm install github:benjamin-brady/performative-ui-svelte</div>
+		<div class="home-install">bunx shadcn-svelte@latest add {base}/registry/button.json</div>
 		<div class="home-cta-row">
 			<a
 				class="pui-btn pui-btn--ghost pui-btn--sm"
@@ -48,15 +48,15 @@
 				★ Star on GitHub
 			</a>
 		</div>
-		<p style="margin-top:16px;font-size:13px;color:var(--pui-fg-mute)">
+		<p class="home-attribution">
 			A Svelte port of
 			<a
-				style="color:var(--pui-fg);text-decoration:underline"
+				class="home-attribution__link"
 				href="https://github.com/vorpus/performativeUI"
 				target="_blank"
 				rel="noreferrer">performative-ui</a>, originally created by
 			<a
-				style="color:var(--pui-fg);text-decoration:underline"
+				class="home-attribution__link"
 				href="https://github.com/vorpus"
 				target="_blank"
 				rel="noreferrer">vorpus</a>.
@@ -68,12 +68,10 @@
 	{@const items = COMPONENTS.filter((c) => c.category === cat)}
 	{#if items.length}
 		<section>
-			<h2
-				style="font-family:var(--pui-font-mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--pui-fg-mute);padding:20px 56px 0;margin:0"
-			>
+			<h2 class="home-category-title">
 				{cat}
 			</h2>
-			<div class="home-grid" style="padding-top:20px;padding-bottom:32px">
+			<div class="home-grid home-grid--category">
 				{#each items as c (c.slug)}
 					<a href="{base}/components/{c.slug}" class="home-card">
 						<span class="home-card__cat">{c.category}</span>

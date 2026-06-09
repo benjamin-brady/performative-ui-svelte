@@ -1,1 +1,369 @@
-/* Base app styles. Component + docs styles live in pui.css and docs.css. */
+@import "tailwindcss";
+
+@source "./lib";
+@source "./routes";
+
+@custom-variant dark (&:is([data-theme="dark"] *));
+@custom-variant light (&:is([data-theme="light"] *));
+@custom-variant data-open (&[data-state="open"]);
+@custom-variant data-closed (&[data-state="closed"]);
+@custom-variant data-active (&[data-active="true"]);
+@custom-variant data-disabled (&[data-disabled="true"]);
+@custom-variant data-side-top (&[data-side="top"]);
+@custom-variant data-side-right (&[data-side="right"]);
+@custom-variant data-side-bottom (&[data-side="bottom"]);
+@custom-variant data-side-left (&[data-side="left"]);
+
+:root,
+.pui-theme,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --pui-bg: oklch(0.091 0.012 285.8);
+  --pui-bg-elev: oklch(0.129 0.014 285.8);
+  --pui-bg-soft: oklch(0.171 0.018 285.8);
+  --pui-border: oklch(0.242 0.023 285.8);
+  --pui-border-bright: oklch(0.301 0.028 285.8);
+  --pui-fg: oklch(0.967 0.004 286.4);
+  --pui-fg-dim: oklch(0.735 0.029 286.4);
+  --pui-fg-mute: oklch(0.551 0.032 286.4);
+
+  --pui-grad-from: oklch(0.541 0.251 293);
+  --pui-grad-mid: oklch(0.656 0.242 354.3);
+  --pui-grad-to: oklch(0.713 0.143 215.2);
+  --pui-grad: linear-gradient(
+    120deg,
+    var(--pui-grad-from),
+    var(--pui-grad-mid),
+    var(--pui-grad-to)
+  );
+
+  --pui-success: oklch(0.723 0.219 149.6);
+  --pui-danger: oklch(0.711 0.166 22.2);
+  --pui-warn: oklch(0.852 0.199 91.9);
+
+  --pui-glow: 0 0 24px oklch(0.541 0.251 293 / 45%);
+  --pui-glow-strong:
+    0 0 48px oklch(0.541 0.251 293 / 55%),
+    0 0 96px oklch(0.656 0.242 354.3 / 25%);
+
+  --pui-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --pui-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --pui-font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+
+  --pui-radius-sm: 0.5rem;
+  --pui-radius: 0.75rem;
+  --pui-radius-lg: 1.125rem;
+  --pui-radius-xl: 1.375rem;
+  --pui-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --pui-glass: oklch(0.13 0.014 285.8 / 85%);
+  --pui-glass-deep: oklch(0.13 0.014 285.8 / 78%);
+  --pui-glass-soft: oklch(0.13 0.014 285.8 / 55%);
+  --pui-overlay: oklch(1 0 0 / 4%);
+  --pui-overlay-strong: oklch(1 0 0 / 7%);
+  --pui-overlay-bright: oklch(1 0 0 / 12%);
+  --pui-button-dark-fill: linear-gradient(
+    180deg,
+    oklch(0.191 0.024 285.8),
+    oklch(0.129 0.018 285.8)
+  );
+  --pui-button-dark-popover-fill: linear-gradient(
+    180deg,
+    oklch(0.151 0.02 285.8),
+    oklch(0.101 0.014 285.8)
+  );
+  --pui-button-dark-border: oklch(1 0 0 / 8%);
+  --pui-bubble-user-fill: linear-gradient(
+    135deg,
+    oklch(0.191 0.024 285.8),
+    oklch(0.151 0.02 285.8)
+  );
+  --pui-ascii-panel-fill: linear-gradient(
+    180deg,
+    oklch(0.171 0.018 285.8 / 60%),
+    oklch(0.091 0.012 285.8 / 60%)
+  );
+  --pui-shadow-card: 0 10px 40px oklch(0 0 0 / 55%);
+  --pui-shadow-deep: 0 30px 80px oklch(0 0 0 / 55%);
+  --pui-shadow-fab: 0 10px 40px oklch(0 0 0 / 55%);
+  --pui-grid-dot: oklch(1 0 0 / 2.5%);
+  --pui-logo-filter: invert(92%) grayscale(100%) brightness(0.85);
+  --pui-logo-filter-hover: invert(100%);
+  --pui-logo-text: oklch(1 0 0 / 55%);
+  --pui-logo-text-strong: oklch(1 0 0 / 70%);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --pui-bg: oklch(1 0 0);
+  --pui-bg-elev: oklch(0.976 0.004 286.3);
+  --pui-bg-soft: oklch(0.937 0.006 286.3);
+  --pui-border: oklch(0.912 0.008 286.3);
+  --pui-border-bright: oklch(0.852 0.012 286.3);
+  --pui-fg: oklch(0.127 0.012 285.8);
+  --pui-fg-dim: oklch(0.411 0.019 286.2);
+  --pui-fg-mute: oklch(0.63 0.022 286.2);
+
+  --pui-glow: 0 0 24px oklch(0.541 0.251 293 / 18%);
+  --pui-glow-strong:
+    0 0 48px oklch(0.541 0.251 293 / 22%),
+    0 0 96px oklch(0.656 0.242 354.3 / 12%);
+  --pui-glass: oklch(1 0 0 / 85%);
+  --pui-glass-deep: oklch(1 0 0 / 78%);
+  --pui-glass-soft: oklch(1 0 0 / 60%);
+  --pui-overlay: oklch(0 0 0 / 4%);
+  --pui-overlay-strong: oklch(0 0 0 / 6%);
+  --pui-overlay-bright: oklch(0 0 0 / 10%);
+  --pui-button-dark-fill: linear-gradient(
+    180deg,
+    oklch(1 0 0),
+    oklch(0.961 0.006 286.3)
+  );
+  --pui-button-dark-popover-fill: linear-gradient(
+    180deg,
+    oklch(1 0 0),
+    oklch(0.945 0.008 286.3)
+  );
+  --pui-button-dark-border: oklch(0 0 0 / 12%);
+  --pui-bubble-user-fill: linear-gradient(
+    135deg,
+    oklch(0.969 0.006 286.3),
+    oklch(0.922 0.011 286.3)
+  );
+  --pui-ascii-panel-fill: linear-gradient(
+    180deg,
+    oklch(0.976 0.004 286.3 / 60%),
+    oklch(1 0 0 / 40%)
+  );
+  --pui-shadow-card: 0 10px 30px oklch(0 0 0 / 8%);
+  --pui-shadow-deep: 0 20px 50px oklch(0 0 0 / 10%);
+  --pui-shadow-fab: 0 10px 30px oklch(0 0 0 / 12%);
+  --pui-grid-dot: oklch(0 0 0 / 4.5%);
+  --pui-logo-filter: grayscale(100%) brightness(0.6);
+  --pui-logo-filter-hover: none;
+  --pui-logo-text: oklch(0 0 0 / 65%);
+  --pui-logo-text-strong: oklch(0 0 0 / 80%);
+}
+
+@theme inline {
+  --color-background: var(--pui-bg);
+  --color-foreground: var(--pui-fg);
+  --color-card: var(--pui-bg-elev);
+  --color-card-foreground: var(--pui-fg);
+  --color-popover: var(--pui-bg-elev);
+  --color-popover-foreground: var(--pui-fg);
+  --color-primary: var(--pui-grad-from);
+  --color-primary-foreground: var(--pui-bg);
+  --color-secondary: var(--pui-bg-soft);
+  --color-secondary-foreground: var(--pui-fg);
+  --color-muted: var(--pui-bg-soft);
+  --color-muted-foreground: var(--pui-fg-mute);
+  --color-accent: var(--pui-overlay-strong);
+  --color-accent-foreground: var(--pui-fg);
+  --color-destructive: var(--pui-danger);
+  --color-border: var(--pui-border);
+  --color-input: var(--pui-border-bright);
+  --color-ring: var(--pui-grad-from);
+  --color-success: var(--pui-success);
+  --color-warning: var(--pui-warn);
+  --color-pui-bg: var(--pui-bg);
+  --color-pui-bg-elev: var(--pui-bg-elev);
+  --color-pui-bg-soft: var(--pui-bg-soft);
+  --color-pui-fg: var(--pui-fg);
+  --color-pui-fg-dim: var(--pui-fg-dim);
+  --color-pui-fg-mute: var(--pui-fg-mute);
+  --color-pui-border: var(--pui-border);
+  --color-pui-border-bright: var(--pui-border-bright);
+  --color-pui-grad-from: var(--pui-grad-from);
+  --color-pui-grad-mid: var(--pui-grad-mid);
+  --color-pui-grad-to: var(--pui-grad-to);
+  --radius-sm: var(--pui-radius-sm);
+  --radius-md: var(--pui-radius);
+  --radius-lg: var(--pui-radius-lg);
+  --radius-xl: var(--pui-radius-xl);
+  --font-sans: var(--pui-font-sans);
+  --font-mono: var(--pui-font-mono);
+  --font-serif: var(--pui-font-serif);
+  --ease-pui: var(--pui-ease);
+  --animate-pui-grad-shift: pui-grad-shift 8s ease infinite;
+  --animate-pui-twinkle: pui-twinkle 2.4s ease-in-out infinite;
+  --animate-pui-caret: pui-caret 1.05s steps(2, start) infinite;
+  --animate-pui-spin: pui-spin 0.9s linear infinite;
+  --animate-pui-pulse-dot: pui-pulse-dot 1.6s ease-in-out infinite;
+  --animate-pui-bob: pui-bob 2.2s var(--pui-ease) infinite;
+  --animate-pui-marquee: pui-marquee var(--pui-marquee-speed, 40s) linear
+    infinite;
+  --animate-pui-shimmer: pui-shimmer 3.5s ease-in-out infinite;
+  --animate-pui-aurora-drift: pui-aurora-drift 16s ease-in-out infinite
+    alternate;
+  --animate-pui-breathe: pui-breathe 4s ease-in-out infinite;
+  --animate-pui-float-up: pui-float-up linear infinite;
+  --animate-pui-wave-shift: pui-wave-shift 2s linear infinite;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: var(--pui-border);
+  }
+
+  html,
+  body {
+    min-height: 100%;
+    margin: 0;
+    background: var(--pui-bg);
+    color: var(--pui-fg);
+    font-family: var(--pui-font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-width: 320px;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--pui-grad-mid), transparent 65%);
+    color: var(--pui-fg);
+  }
+}
+
+@keyframes pui-grad-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pui-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85) rotate(15deg);
+  }
+}
+
+@keyframes pui-caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes pui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pui-pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+@keyframes pui-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes pui-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pui-shimmer {
+  0% {
+    left: -120%;
+  }
+  60%,
+  100% {
+    left: 120%;
+  }
+}
+
+@keyframes pui-aurora-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-3%, 2%, 0) scale(1.08);
+  }
+}
+
+@keyframes pui-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 oklch(0.541 0.251 293 / 0%);
+  }
+  50% {
+    box-shadow: 0 0 40px oklch(0.541 0.251 293 / 18%);
+  }
+}
+
+@keyframes pui-float-up {
+  0% {
+    transform: translateY(20px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--pui-sparkle-peak, 1);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pui-wave-shift {
+  from {
+    background-position:
+      0% 50%,
+      0% 50%,
+      -100% 50%;
+  }
+  to {
+    background-position:
+      0% 50%,
+      0% 50%,
+      100% 50%;
+  }
+}

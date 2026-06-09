@@ -13,4 +13,4 @@ import { cn } from '$lib/utils/cn';
 let { class: className, children, ...rest }: PricingTierProps = $props();
 </script>
 
-<div class={cn('pui-price__tier', className)} {...rest}>{@render children?.()}</div>
+<div data-slot="pricing-tier" class={cn('font-mono text-xs uppercase tracking-[0.12em] text-pui-fg-dim', className)} {...rest}>{@render children?.()}</div>

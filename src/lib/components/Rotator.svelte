@@ -40,15 +40,14 @@
 	const tw = useTypewriter({ words, typeMs, deleteMs, holdMs, loop, onWordReached });
 </script>
 
-<span class={cn('pui-rotator', className)} {...rest}>
+<span data-slot="rotator" class={cn('inline-block text-left', className)} {...rest}>
 	{#if renderWord}{@render renderWord(tw.word, tw.index)}{:else}{tw.word}{/if}
 	{#if !hideCursor}
 		<span
 			aria-hidden="true"
 			class={cn(
-				'pui-rotator__cursor',
-				cursor === undefined && 'pui-rotator__cursor--block',
-				'pui-rotator__cursor--blink'
+				'ml-0.5 inline-block animate-[pui-caret_1.05s_steps(2,start)_infinite] bg-none text-pui-fg [-webkit-text-fill-color:currentColor]',
+				cursor === undefined && 'h-[1.05em] w-[0.55em] rounded-px bg-current align-[-0.18em]'
 			)}
 		>{cursor}</span>
 	{/if}

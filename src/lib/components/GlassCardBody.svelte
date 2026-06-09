@@ -13,4 +13,4 @@
 	let { class: className, children, ...rest }: GlassCardBodyProps = $props();
 </script>
 
-<p class={cn('pui-glass-card__body', className)} {...rest}>{@render children?.()}</p>
+<p data-slot="glass-card-body" class={cn('mb-[18px] mt-0 text-sm leading-[1.6] text-pui-fg-dim', className)} {...rest}>{@render children?.()}</p>

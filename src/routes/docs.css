@@ -122,6 +122,19 @@ a { color: inherit; }
   padding: 6px 9px;
 }
 
+.sidebar__attribution {
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--pui-border);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--pui-fg-mute);
+}
+.sidebar__attribution-link {
+  color: var(--pui-fg-mute);
+  text-decoration: underline;
+}
+
 /* ---------- Component page header (the snark block) ---------- */
 .cp-header {
   padding-bottom: 26px;
@@ -188,6 +201,22 @@ a { color: inherit; }
   line-height: 1.65;
   color: var(--pui-fg-dim);
   max-width: 720px;
+}
+
+.cp-install-copy {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--pui-fg-dim);
+}
+.cp-subprops {
+  margin-top: 24px;
+}
+.cp-subprops__title {
+  margin-bottom: 8px;
+  font-family: var(--pui-font-mono);
+  font-size: 13px;
+  color: var(--pui-fg);
 }
 
 /* ---------- Example block: demo + code ---------- */
@@ -385,6 +414,45 @@ a { color: inherit; }
   line-height: 1.55;
   color: var(--pui-fg-dim);
 }
+
+.home-hero__ascii {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.home-hero__content {
+  position: relative;
+  z-index: 3;
+}
+.home-hero h2.home-hero__title {
+  margin-top: 16px;
+}
+.home-hero__title-line {
+  display: block;
+}
+.home-hero__title-line--rotating {
+  min-height: 1.1em;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.home-attribution {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--pui-fg-mute);
+}
+.home-attribution__link {
+  color: var(--pui-fg);
+  text-decoration: underline;
+}
+.home-category-title {
+  margin: 0;
+  padding: 20px 56px 0;
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pui-fg-mute);
+}
 .home-install {
   display: inline-flex;
   align-items: center;
@@ -418,6 +486,10 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
+}
+.home-grid.home-grid--category {
+  padding-top: 20px;
+  padding-bottom: 32px;
 }
 .home-card {
   display: flex;
@@ -465,7 +537,7 @@ a { color: inherit; }
 @media (max-width: 860px) {
   .docs { grid-template-columns: 1fr; }
   .docs__main { padding: 32px 24px 100px; }
-  .home-hero, .home-grid { padding-left: 24px; padding-right: 24px; }
+  .home-hero, .home-grid, .home-category-title { padding-left: 24px; padding-right: 24px; }
 
   /* Hamburger toggle, fixed top-right, always above everything.
      Sized for a comfortable thumb tap (48×48, above the 44-Apple /

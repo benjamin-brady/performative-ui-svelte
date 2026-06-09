@@ -22,6 +22,6 @@ import { cn } from '$lib/utils/cn';
 let { featured = false, class: className, children, ...rest }: PricingCardProps = $props();
 </script>
 
-<article class={cn('pui-price', featured && 'pui-price--featured', className)} {...rest}>
+<article data-slot="pricing-card" class={cn('relative flex h-full flex-col rounded-[var(--pui-radius-xl)] border border-pui-border-bright bg-pui-bg-elev px-7 py-[30px] font-sans text-pui-fg', featured && 'border-[oklch(0.541_0.251_293/0.55)] bg-[linear-gradient(180deg,oklch(0.541_0.251_293/0.08),var(--pui-bg-elev))] shadow-[0_0_80px_oklch(0.541_0.251_293/0.2)]', className)} {...rest}>
 {@render children?.()}
 </article>

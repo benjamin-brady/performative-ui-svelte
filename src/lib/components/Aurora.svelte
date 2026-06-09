@@ -44,7 +44,7 @@
 
 	let blobEls: Array<HTMLDivElement | null> = $state([]);
 
-	let mergedStyle = $derived(`${style ? style + ';' : ''}filter:blur(${blur}px) saturate(140%)`);
+	let mergedStyle = $derived(`${style ? style + ';' : ''}--pui-aurora-blur:${blur}px`);
 
 	$effect(() => {
 		if (!animated) return;
@@ -120,7 +120,8 @@
 
 <div
 	aria-hidden="true"
-	class={cn('pui-aurora', !isStatic && !animated && 'pui-aurora--drift', className)}
+	data-slot="aurora"
+	class={cn('pointer-events-none absolute inset-[-20%] z-0 blur-[var(--pui-aurora-blur)] saturate-[1.4]', !isStatic && !animated && 'animate-[pui-aurora-drift_16s_ease-in-out_infinite_alternate]', className)}
 	style={mergedStyle}
 	{...rest}
 >
@@ -128,8 +129,9 @@
 		{@const size = b.size ?? 50}
 		<div
 			bind:this={blobEls[i]}
-			class="pui-aurora__blob"
-			style="position:absolute;left:{b.x}%;top:{b.y}%;width:{size}%;height:{size}%;background:radial-gradient(circle at center, {b.color} 0%, transparent 70%);transform:translate(-50%, -50%);pointer-events:none;border-radius:50%"
+			data-slot="aurora-blob"
+			class="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,var(--pui-aurora-color)_0%,transparent_70%)]"
+			style="left:{b.x}%;top:{b.y}%;width:{size}%;height:{size}%;--pui-aurora-color:{b.color}"
 		></div>
 	{/each}
 </div>

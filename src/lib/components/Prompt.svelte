@@ -111,20 +111,21 @@
 	}
 </script>
 
-<form class={cn('pui-promptbox', className)} onsubmit={submit} {...rest}>
+<form data-slot="prompt" class={cn('flex w-full max-w-[720px] flex-col gap-2.5 rounded-[18px] border border-pui-border-bright bg-[var(--pui-glass)] px-3.5 pb-2.5 pt-3.5 font-sans shadow-[var(--pui-shadow-card),0_0_0_1px_oklch(0.541_0.251_293/0.18),0_0_32px_oklch(0.541_0.251_293/0.18)] backdrop-blur-[10px]', className)} onsubmit={submit} {...rest}>
 	<textarea
-		class="pui-promptbox__textarea"
+		data-slot="prompt-textarea"
+		class="min-h-[60px] w-full resize-none border-0 bg-transparent px-1 pb-0 pt-1 font-[inherit] text-[15px] leading-normal text-pui-fg outline-0 placeholder:text-pui-fg-mute"
 		value={value}
 		oninput={(e) => setValue(e.currentTarget.value)}
 		onkeydown={handleKey}
 		{placeholder}
 		{rows}
 	></textarea>
-	<div class="pui-promptbox__toolbar">
+	<div data-slot="prompt-toolbar" class="flex items-center gap-1.5">
 		{#if !hideAddContext}
 			<button
 				type="button"
-				class="pui-promptbox__iconbtn"
+				class="inline-flex size-[30px] cursor-pointer items-center justify-center rounded-lg border border-pui-border-bright bg-[var(--pui-overlay)] p-0 text-pui-fg-dim transition-[background,color,border-color,box-shadow,transform] duration-150 ease-pui hover:border-[#3a3a4e] hover:bg-[var(--pui-overlay-strong)] hover:text-pui-fg active:translate-y-px"
 				onclick={onAddContext}
 				title="Add context"
 				aria-label="Add context"
@@ -135,10 +136,10 @@
 			</button>
 		{/if}
 		{#if !hideModel && models.length > 0}
-			<div class="pui-promptbox__model-wrap" bind:this={modelWrapRef}>
+			<div data-slot="prompt-model-wrap" class="relative" bind:this={modelWrapRef}>
 				<button
 					type="button"
-					class="pui-promptbox__model"
+					class="inline-flex h-[30px] cursor-pointer items-center gap-1.5 rounded-lg border border-pui-border-bright bg-[var(--pui-overlay)] py-0 pl-3 pr-2.5 font-mono text-[12.5px] text-pui-fg-dim transition-[background,color,border-color] duration-150 ease-pui hover:border-[#3a3a4e] hover:bg-[var(--pui-overlay-strong)] hover:text-pui-fg"
 					onclick={() => (menuOpen = !menuOpen)}
 					aria-expanded={menuOpen}
 					aria-haspopup="menu"
@@ -149,11 +150,11 @@
 					</svg>
 				</button>
 				{#if menuOpen}
-					<div class="pui-promptbox__menu" role="menu">
+					<div data-slot="prompt-menu" class="absolute bottom-[calc(100%+6px)] left-0 z-10 min-w-[220px] rounded-xl border border-pui-border-bright bg-pui-bg-elev p-1 shadow-[var(--pui-shadow-deep),0_0_0_1px_oklch(0.541_0.251_293/0.10)]" role="menu">
 						{#each models as m (m)}
 							<button
 								type="button"
-								class={cn('pui-promptbox__menu-item', m === model && 'pui-promptbox__menu-item--active')}
+								class={cn('flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg border-0 bg-transparent px-3 py-2 text-left font-mono text-[13px] text-pui-fg transition-colors duration-100 ease-pui hover:bg-[oklch(0.541_0.251_293/0.14)]', m === model && 'bg-[linear-gradient(180deg,oklch(0.541_0.251_293/0.18),oklch(0.656_0.242_354.3/0.06))] hover:bg-[linear-gradient(180deg,oklch(0.541_0.251_293/0.22),oklch(0.656_0.242_354.3/0.10))]')}
 								onclick={() => setModel(m)}
 								role="menuitemradio"
 								aria-checked={m === model}
@@ -170,12 +171,12 @@
 				{/if}
 			</div>
 		{/if}
-		<div class="pui-promptbox__spacer"></div>
+		<div data-slot="prompt-spacer" class="flex-1"></div>
 		{@render toolbarExtras?.()}
 		{#if !hideVoice}
 			<button
 				type="button"
-				class="pui-promptbox__iconbtn"
+				class="inline-flex size-[30px] cursor-pointer items-center justify-center rounded-lg border border-pui-border-bright bg-[var(--pui-overlay)] p-0 text-pui-fg-dim transition-[background,color,border-color,box-shadow,transform] duration-150 ease-pui hover:border-[#3a3a4e] hover:bg-[var(--pui-overlay-strong)] hover:text-pui-fg active:translate-y-px"
 				onclick={onVoice}
 				title="Voice mode"
 				aria-label="Voice mode"
@@ -190,7 +191,7 @@
 		{#if !hideSend}
 			<button
 				type="submit"
-				class="pui-promptbox__iconbtn pui-promptbox__send"
+				class="inline-flex size-[30px] animate-[pui-grad-shift_6s_ease_infinite] cursor-pointer items-center justify-center rounded-lg border border-transparent bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] bg-[length:200%_200%] p-0 text-[#0a0a12] transition-[background,color,border-color,box-shadow,transform] duration-150 ease-pui hover:border-transparent hover:bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] hover:bg-[length:200%_200%] hover:text-[#0a0a12] hover:shadow-[0_0_18px_oklch(0.541_0.251_293/0.55)] active:translate-y-px"
 				title="Send"
 				aria-label="Send"
 			>

@@ -55,14 +55,15 @@
 	}
 </script>
 
-<form class={cn('pui-prompt', className)} onsubmit={handle} {...rest}>
+<form data-slot="prompt-hero" class={cn('flex w-full items-center gap-2 rounded-2xl border border-pui-border-bright bg-[var(--pui-glass-deep)] py-2 pl-[18px] pr-2 shadow-[var(--pui-shadow-card),0_0_0_1px_oklch(0.541_0.251_293/0.18),0_0_32px_oklch(0.541_0.251_293/0.18)] backdrop-blur-[10px]', className)} onsubmit={handle} {...rest}>
 	{#if leading !== false}
-		<span class="pui-prompt__icon">
+		<span data-slot="prompt-hero-icon" class="text-lg">
 			{#if leading}{@render leading()}{:else}<Sparkle />{/if}
 		</span>
 	{/if}
 	<input
-		class="pui-prompt__input"
+		data-slot="prompt-hero-input"
+		class="flex-1 border-0 bg-transparent py-3 font-sans text-[15px] text-pui-fg outline-0 placeholder:text-pui-fg-mute"
 		type="text"
 		{placeholder}
 		value={v}

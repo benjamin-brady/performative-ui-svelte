@@ -26,4 +26,4 @@
 	const counter = useCounter({ target, durationMs, from, ease });
 </script>
 
-<span class={cn('pui-stat', className)} {...rest}>{format(counter.value)}</span>
+<span data-slot="stat-counter" class={cn('font-sans text-[length:inherit] font-extrabold leading-none tracking-[-0.04em] [font-variant-numeric:tabular-nums]', className)} {...rest}>{format(counter.value)}</span>

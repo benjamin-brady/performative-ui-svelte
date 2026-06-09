@@ -17,11 +17,11 @@ import { cn } from '$lib/utils/cn';
 let { unit, class: className, children, ...rest }: PricingAmountProps = $props();
 </script>
 
-<div class={cn('pui-price__amount', className)} {...rest}>
+<div data-slot="pricing-amount" class={cn('mb-0.5 mt-2 text-[44px] font-extrabold tracking-[-0.035em]', className)} {...rest}>
 {@render children?.()}
 {#if typeof unit === 'string'}
-<span class="pui-price__amount-unit">{unit}</span>
+<span data-slot="pricing-amount-unit" class="ml-1 text-sm font-medium text-pui-fg-mute">{unit}</span>
 {:else if unit}
-<span class="pui-price__amount-unit">{@render unit()}</span>
+<span data-slot="pricing-amount-unit" class="ml-1 text-sm font-medium text-pui-fg-mute">{@render unit()}</span>
 {/if}
 </div>

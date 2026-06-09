@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "sparkle",
+  "type": "registry:ui",
+  "title": "Sparkle",
+  "description": "Four-point gradient sparkle glyph with optional twinkle animation.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Atoms"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/Sparkle.svelte",
+      "target": "$lib/components/Sparkle.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface SparkleProps extends HTMLAttributes<HTMLSpanElement> {\n\t\t/** The glyph to render. Default: ✦. */\n\t\tglyph?: string;\n\t\t/** Skip the gradient fill (renders in currentColor). */\n\t\tsolid?: boolean;\n\t\t/** Stop the twinkle animation. */\n\t\tstatic?: boolean;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet {\n\t\tglyph = '✦',\n\t\tsolid = false,\n\t\tstatic: isStatic = false,\n\t\tclass: className,\n\t\tchildren,\n\t\t...rest\n\t}: SparkleProps = $props();\n</script>\n\n<span\n\taria-hidden=\"true\"\n\tdata-slot=\"sparkle\"\n\tclass={cn(\n\t\t'inline-block bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] bg-clip-text font-bold text-transparent',\n\t\t!isStatic && 'animate-[pui-twinkle_2.4s_ease-in-out_infinite]',\n\t\tsolid && 'bg-none text-current',\n\t\tclassName\n\t)}\n\t{...rest}\n>{glyph}{@render children?.()}</span>\n"
+    }
+  ]
+}

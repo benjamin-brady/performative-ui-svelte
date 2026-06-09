@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "gradient-text",
+  "type": "registry:ui",
+  "title": "GradientText",
+  "description": "Gradient-clipped text wrapper with optional animated shift.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Atoms"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/GradientText.svelte",
+      "target": "$lib/components/GradientText.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface GradientTextProps extends HTMLAttributes<HTMLElement> {\n\t\t/** Disable the slow gradient shift (still gradient-colored, just static). */\n\t\tstatic?: boolean;\n\t\t/** Render as a different tag (e.g. h1, em). */\n\t\tas?: string;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet {\n\t\tas = 'span',\n\t\tstatic: isStatic = false,\n\t\tclass: className,\n\t\tchildren,\n\t\t...rest\n\t}: GradientTextProps = $props();\n</script>\n\n<svelte:element\n\tthis={as}\n\tdata-slot=\"gradient-text\"\n\tclass={cn(\n\t\t'inline-block bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] bg-[length:200%_200%] bg-clip-text text-transparent [-webkit-text-fill-color:transparent]',\n\t\t!isStatic && 'animate-[pui-grad-shift_8s_ease_infinite]',\n\t\tclassName\n\t)}\n\t{...rest}\n>{@render children?.()}</svelte:element>\n"
+    }
+  ]
+}

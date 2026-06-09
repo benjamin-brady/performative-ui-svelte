@@ -18,10 +18,10 @@
 	const ctxClose = getContext<() => void>(CHAT_FAB_CLOSE) ?? (() => {});
 </script>
 
-<div class={cn('pui-fab-popover__header', className)} {...rest}>
+<div data-slot="chat-fab-header" class={cn('flex items-center gap-2 border-b border-pui-border px-4 py-3.5 text-sm font-semibold', className)} {...rest}>
 	<Sparkle />
 	<span>{@render children?.()}</span>
-	<button type="button" aria-label="Close" class="pui-fab-popover__close" onclick={onClose ?? ctxClose}>
+	<button type="button" aria-label="Close" class="ml-auto cursor-pointer border-0 bg-transparent px-1 py-0 text-[22px] leading-none text-pui-fg-mute" onclick={onClose ?? ctxClose}>
 		×
 	</button>
 </div>

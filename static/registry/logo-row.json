@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+  "name": "logo-row",
+  "type": "registry:ui",
+  "title": "LogoRow",
+  "description": "Centered row of customer logos or text marks.",
+  "registryDependencies": [
+    "utils",
+    "theme",
+    "pui-styles"
+  ],
+  "categories": [
+    "Social Proof"
+  ],
+  "files": [
+    {
+      "path": "src/lib/components/LogoRow.svelte",
+      "target": "$lib/components/LogoRow.svelte",
+      "type": "registry:ui",
+      "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\ttype LogoRowNode = string | Snippet;\n\n\texport type LogoRowItem =\n\t\t| { kind: 'img'; src: string; alt?: string }\n\t\t| { kind: 'node'; node: LogoRowNode; key?: string };\n\n\texport interface LogoRowProps extends HTMLAttributes<HTMLDivElement> {\n\t\t/** Header copy (\"Backed by\", \"From alumni of\", \"As seen in\"). */\n\t\theading?: LogoRowNode;\n\t\tlogos: LogoRowItem[];\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\n\tlet { heading, logos, class: className, ...rest }: LogoRowProps = $props();\n\n\tfunction itemKey(item: LogoRowItem, index: number) {\n\t\treturn item.kind === 'img' ? index : (item.key ?? index);\n\t}\n</script>\n\n<div data-slot=\"logo-row\" class={cn('text-center font-sans', className)} {...rest}>\n\t{#if heading}\n\t\t<p data-slot=\"logo-row-heading\" class=\"mb-[18px] text-[11px] uppercase tracking-[0.18em] text-pui-fg-mute\">\n\t\t\t{#if typeof heading === 'string'}{heading}{:else}{@render heading()}{/if}\n\t\t</p>\n\t{/if}\n\t<div data-slot=\"logo-row-items\" class=\"inline-flex flex-wrap items-center justify-center gap-7 opacity-75 [&_img]:h-6 [&_img]:w-auto [&_img]:opacity-75 [&_img]:[filter:var(--pui-logo-filter)]\">\n\t\t{#each logos as item, i (itemKey(item, i))}\n\t\t\t{#if item.kind === 'img'}\n\t\t\t\t<img src={item.src} alt={item.alt ?? ''} />\n\t\t\t{:else}\n\t\t\t\t<span data-slot=\"logo-row-text\" class=\"whitespace-nowrap text-base font-bold tracking-[0.04em] text-[var(--pui-logo-text-strong)]\">\n\t\t\t\t\t{#if typeof item.node === 'string'}{item.node}{:else}{@render item.node()}{/if}\n\t\t\t\t</span>\n\t\t\t{/if}\n\t\t{/each}\n\t</div>\n</div>\n"
+    }
+  ]
+}

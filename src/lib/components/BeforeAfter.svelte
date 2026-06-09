@@ -39,7 +39,7 @@ children,
 }: BeforeAfterProps = $props();
 </script>
 
-<div class={cn('pui-ba', className)} {...rest}>
+<div data-slot="before-after" class={cn('grid grid-cols-1 items-stretch gap-[18px] font-sans md:grid-cols-[1fr_auto_1fr]', className)} {...rest}>
 {#if children}
 {@render children()}
 {:else}

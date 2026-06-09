@@ -26,7 +26,7 @@
 		let tokenIdx = 0;
 		let charIdx = 0;
 
-		const caret = '<span class="pui-caret"></span>';
+		const caret = '<span data-slot="mock-ide-caret" class="inline-block h-3.5 w-2 animate-[pui-caret_1s_steps(2,start)_infinite] bg-pui-grad-mid align-[-2px] shadow-[0_0_8px_var(--pui-grad-mid)]"></span>';
 		const escape = (s: string) =>
 			s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -55,10 +55,10 @@
 			let html = '';
 			for (let k = 0; k < tokenIdx; k++) {
 				const t = tokens[k];
-				html += t.cls ? `<span class="pui-tok-${t.cls}">${escape(t.c)}</span>` : escape(t.c);
+				html += t.cls ? `<span data-token="${t.cls}">${escape(t.c)}</span>` : escape(t.c);
 			}
 			const partial = tok.c.slice(0, charIdx);
-			html += tok.cls ? `<span class="pui-tok-${tok.cls}">${escape(partial)}</span>` : escape(partial);
+			html += tok.cls ? `<span data-token="${tok.cls}">${escape(partial)}</span>` : escape(partial);
 			html += caret;
 			el.innerHTML = html;
 			const [lo, hi] = charMs;
@@ -74,4 +74,4 @@
 	});
 </script>
 
-<pre bind:this={preRef} class={cn('pui-ide__body', className)} {...rest}></pre>
+<pre bind:this={preRef} data-slot="mock-ide-body" class={cn('m-0 min-h-[280px] whitespace-pre-wrap px-[26px] py-[22px] font-mono text-[13px] leading-[1.65] text-[#d5d5e0] [&_[data-token=com]]:italic [&_[data-token=com]]:text-[#6b7280] [&_[data-token=fn]]:text-[#60a5fa] [&_[data-token=key]]:text-[#c084fc] [&_[data-token=num]]:text-[#fbbf24] [&_[data-token=str]]:text-[#6ee7b7]', className)} {...rest}></pre>
