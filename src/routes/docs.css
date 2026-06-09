@@ -1,0 +1,584 @@
+/* =============================================================
+   docs/styles.css, site chrome only.
+   Component styles come from performative-ui/styles.css.
+   ============================================================= */
+
+html, body, #root {
+  background: var(--pui-bg);
+  color: var(--pui-fg);
+  font-family: var(--pui-font-sans);
+  margin: 0;
+  min-height: 100%;
+}
+* { box-sizing: border-box; }
+a { color: inherit; }
+
+/* ---------- Layout ---------- */
+.docs {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+.docs__main {
+  padding: 56px 56px 120px;
+  max-width: 920px;
+  width: 100%;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--pui-border);
+  background: linear-gradient(180deg, var(--pui-bg-elev), var(--pui-bg));
+  /* No top padding — the sticky brand row owns the top spacing so
+     it sits flush with the sidebar's top edge. */
+  padding: 0 18px 40px;
+}
+/* Brand + theme toggle stay visible while the sidebar nav scrolls.
+   Sticky to the top of the sidebar's scroll viewport with a solid
+   backdrop so nav links pass under it cleanly. */
+.sidebar__brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: 0 -18px 8px;
+  padding: 16px 18px;
+  background: var(--pui-bg-elev);
+  border-bottom: 1px solid var(--pui-border);
+}
+.sidebar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--pui-font-mono);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 0 4px;
+  text-decoration: none;
+}
+.sidebar__theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--pui-border-bright);
+  color: var(--pui-fg-dim);
+  cursor: pointer;
+  transition: color 160ms var(--pui-ease),
+              background 160ms var(--pui-ease),
+              border-color 160ms var(--pui-ease);
+}
+.sidebar__theme-toggle:hover {
+  color: var(--pui-fg);
+  background: var(--pui-bg-elev);
+  border-color: var(--pui-fg-mute);
+}
+.sidebar__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: var(--pui-grad);
+  color: #000;
+  font-size: 13px;
+}
+.sidebar__section {
+  margin-top: 22px;
+}
+.sidebar__title {
+  margin: 0 8px 6px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pui-fg-mute);
+}
+.sidebar__nav { display: flex; flex-direction: column; gap: 1px; }
+.sidebar__link {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 13.5px;
+  color: var(--pui-fg-dim);
+  text-decoration: none;
+  transition: background 120ms ease, color 120ms ease;
+}
+.sidebar__link:hover { background: var(--pui-bg-soft); color: var(--pui-fg); }
+.sidebar__link--active {
+  background: linear-gradient(180deg, rgba(124,58,237,0.18), rgba(236,72,153,0.06));
+  color: var(--pui-fg);
+  border: 1px solid rgba(124,58,237,0.35);
+  padding: 6px 9px;
+}
+
+/* ---------- Component page header (the snark block) ---------- */
+.cp-header {
+  padding-bottom: 26px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--pui-border);
+}
+.cp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  color: var(--pui-fg-mute);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.cp-title {
+  margin: 0 0 8px;
+  font-size: 44px;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+.cp-snark {
+  margin: 0 0 16px;
+  font-family: var(--pui-font-serif);
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--pui-fg-dim);
+  max-width: 640px;
+}
+.cp-attribution {
+  font-family: var(--pui-font-mono);
+  font-size: 12.5px;
+  color: var(--pui-fg-mute);
+  line-height: 1.7;
+  max-width: 720px;
+}
+.cp-attribution a {
+  color: var(--pui-fg-dim);
+  border-bottom: 1px dashed rgba(255,255,255,0.12);
+  text-decoration: none;
+}
+.cp-attribution a:hover { color: var(--pui-fg); border-bottom-color: rgba(124,58,237,0.6); }
+
+.cp-section {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--pui-border);
+}
+.cp-section:first-of-type { border-top: 0; padding-top: 0; }
+.cp-section__title {
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  color: var(--pui-fg-mute);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+.cp-description {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--pui-fg-dim);
+  max-width: 720px;
+}
+
+/* ---------- Example block: demo + code ---------- */
+.example {
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius);
+  overflow: hidden;
+  margin-bottom: 22px;
+  background: var(--pui-bg-elev);
+}
+.example__title {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--pui-border);
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  color: var(--pui-fg-mute);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.example__demo {
+  position: relative;
+  padding: 36px;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 18px 18px, var(--pui-grid-dot) 1px, transparent 1.5px) 0 0/18px 18px,
+    var(--pui-bg);
+}
+/* Stretch demos drop the 36px padding so the inner content can go
+   full-bleed. Switch to a column flex so children stretch across
+   the horizontal axis (Aurora / FloatingSparkles wrappers have no
+   width and would otherwise collapse to 0), while justify-content
+   keeps short content (LogoMarquee, banners) vertically centered. */
+.example__demo--stretch {
+  padding: 0;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+.example__demo--inverted { background: var(--pui-bg-soft); }
+.example__code {
+  border-top: 1px solid var(--pui-border);
+  position: relative;
+}
+/* Code blocks stay dark regardless of theme — universal convention
+   for syntax-highlighted code. Pinning via :where to keep specificity
+   low so consumers can still override. */
+.code-block {
+  margin: 0;
+  padding: 18px 20px;
+  background: #0a0a12;
+  color: #d5d5e0;
+  font-family: var(--pui-font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+.example__code { color-scheme: dark; }
+[data-theme="light"] .code-block,
+[data-theme="light"] .example__code .code-copy {
+  /* override anything inherited from the light theme */
+}
+.code-copy {
+  position: absolute;
+  top: 10px; right: 10px;
+  padding: 4px 10px;
+  border: 1px solid var(--pui-border-bright);
+  border-radius: 7px;
+  background: var(--pui-bg-elev);
+  color: var(--pui-fg-dim);
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.code-copy:hover { color: var(--pui-fg); border-color: rgba(124,58,237,0.4); }
+
+/* ---------- Props table ---------- */
+.props {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius);
+  overflow: hidden;
+  font-size: 13.5px;
+}
+.props th, .props td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--pui-border);
+  vertical-align: top;
+}
+.props th {
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pui-fg-mute);
+  background: var(--pui-bg-soft);
+}
+.props td:nth-child(1) {
+  font-family: var(--pui-font-mono);
+  color: #c084fc;
+  white-space: nowrap;
+}
+.props td:nth-child(2) {
+  font-family: var(--pui-font-mono);
+  color: #6ee7b7;
+  font-size: 12.5px;
+}
+.props td:nth-child(3) {
+  font-family: var(--pui-font-mono);
+  color: var(--pui-fg-dim);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.props td:nth-child(4) { color: var(--pui-fg-dim); line-height: 1.5; }
+.props tr:last-child td { border-bottom: 0; }
+.props .req { color: var(--pui-danger); font-weight: 700; font-size: 11px; margin-left: 4px; }
+
+/* ---------- Skim-next card (component-page footer) ---------- */
+.cp-skim-next {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 48px;
+  padding: 18px 22px;
+  border: 1px solid var(--pui-border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--pui-fg);
+  background: var(--pui-overlay);
+  transition: border-color 200ms var(--pui-ease),
+              transform 200ms var(--pui-ease),
+              background 200ms var(--pui-ease);
+}
+.cp-skim-next:hover {
+  border-color: rgba(124, 58, 237, 0.45);
+  background: var(--pui-overlay-strong);
+}
+.cp-skim-next:hover .cp-skim-next__arrow { transform: translateX(4px); }
+.cp-skim-next__label {
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pui-fg-mute);
+}
+.cp-skim-next__name {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 600;
+}
+.cp-skim-next__hint {
+  font-family: var(--pui-font-mono);
+  font-size: 11px;
+  color: var(--pui-fg-mute);
+}
+.cp-skim-next__hint kbd {
+  font: inherit;
+  padding: 1px 6px;
+  border: 1px solid var(--pui-border-bright);
+  border-radius: 4px;
+  margin-right: 4px;
+}
+.cp-skim-next__arrow {
+  font-size: 18px;
+  color: var(--pui-fg-mute);
+  transition: transform 200ms var(--pui-ease);
+}
+
+/* ---------- Home page ---------- */
+.home-hero {
+  position: relative;
+  min-height: 540px;
+  padding: 80px 56px 100px;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+.home-hero h2 {
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+.home-hero p.lede {
+  max-width: 640px;
+  margin: 0 auto 28px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--pui-fg-dim);
+}
+.home-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: var(--pui-glass);
+  border: 1px solid var(--pui-border-bright);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-family: var(--pui-font-mono);
+  font-size: 13.5px;
+  color: var(--pui-fg);
+  margin-top: 22px;
+}
+.home-install::before {
+  content: "$ ";
+  color: var(--pui-fg-mute);
+  margin-right: 6px;
+}
+
+/* Row holding the GitHub Star iframe. buttons.js replaces the anchor
+   with an iframe sized exactly to its content, so we just inline-center
+   it via text-align (not flex, flex stretches the row to full width
+   and the iframe's visual center stays off-page-center). */
+.home-cta-row {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.home-grid {
+  padding: 60px 56px 100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.home-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  border-radius: var(--pui-radius);
+  border: 1px solid var(--pui-border);
+  background: var(--pui-bg-elev);
+  text-decoration: none;
+  color: var(--pui-fg);
+  transition: transform 200ms ease, border-color 200ms ease;
+}
+.home-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124,58,237,0.45);
+}
+.home-card__cat {
+  font-family: var(--pui-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pui-fg-mute);
+}
+.home-card__name { font-size: 15px; font-weight: 600; }
+.home-card__snark {
+  margin-top: 4px;
+  font-family: var(--pui-font-sans);
+  font-size: 13.5px;
+  color: var(--pui-fg-dim);
+  line-height: 1.5;
+}
+
+/* ---------- 404 ---------- */
+.notfound {
+  text-align: center;
+  padding: 120px 24px;
+  color: var(--pui-fg-dim);
+}
+
+/* ---------- Mobile chrome (hamburger + drawer) ---------- */
+.docs__menu-btn { display: none; }
+.docs__backdrop { display: none; }
+
+@media (max-width: 860px) {
+  .docs { grid-template-columns: 1fr; }
+  .docs__main { padding: 32px 24px 100px; }
+  .home-hero, .home-grid { padding-left: 24px; padding-right: 24px; }
+
+  /* Hamburger toggle, fixed top-right, always above everything.
+     Sized for a comfortable thumb tap (48×48, above the 44-Apple /
+     48-Google minimums) regardless of page zoom or content size.
+     Uses env(safe-area-inset-*) so it clears the iOS notch and
+     dynamic island. */
+  .docs__menu-btn {
+    position: fixed;
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 12px;
+    background: rgba(20, 20, 28, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--pui-border-bright);
+    color: var(--pui-fg);
+    font-family: var(--pui-font-mono);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    /* Suppress the iOS default tap highlight (we have :active). */
+    -webkit-tap-highlight-color: transparent;
+    /* Hard-pin sizing so user font-size / zoom doesn't reflow the
+       button, explicit width/height already do this, but `font` and
+       `box-sizing` keep the box from being inflated by inherited
+       styles. */
+    box-sizing: content-box;
+  }
+  .docs__menu-btn:active { transform: scale(0.94); }
+
+  /* Backdrop, not strictly needed when the drawer is full-screen,
+     but kept for the slide-in fade and to catch stray taps. */
+  .docs__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+  }
+  .docs--menu-open .docs__backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* On mobile the drawer has 72px+safe-area top padding so the
+     brand-row initially clears the fixed hamburger / close button.
+     The sticky offset matches so the row never scrolls under
+     the hamburger as the drawer content scrolls. */
+  .sidebar__brand-row {
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    margin: 0;
+    padding: 12px 4px;
+    border-bottom: 0;
+    background: transparent;
+  }
+
+  /* Sidebar becomes a FULL-SCREEN drawer on mobile. CSS px stays
+     fixed under iOS user-zoom, so a 280px drawer ends up looking
+     like a thin strip when the user zooms out. 100vw / 100vh
+     keeps the drawer visually full-screen at any zoom level. */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    /* 100dvh on browsers that support it, accounts for the iOS
+       address bar collapse. */
+    height: 100dvh;
+    width: 100vw;
+    max-width: none;
+    z-index: 50;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateX(-100%);
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: none;
+    /* Comfortable padding around the now-full-bleed content. */
+    padding: calc(72px + env(safe-area-inset-top, 0px))
+             calc(20px + env(safe-area-inset-right, 0px))
+             calc(40px + env(safe-area-inset-bottom, 0px))
+             calc(20px + env(safe-area-inset-left, 0px));
+  }
+  .docs--menu-open .sidebar {
+    transform: translateX(0);
+  }
+  /* Bigger nav targets on mobile, comfortable to tap, readable
+     at any zoom. */
+  .sidebar__link {
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  .sidebar__title {
+    font-size: 11px;
+    margin: 18px 8px 6px;
+  }
+  .sidebar__brand {
+    font-size: 17px;
+    padding: 2px 8px 18px;
+  }
+
+  /* Add a bit of top breathing room so the hamburger doesn't crowd
+     the StickyBanner or page heading. */
+  .cp-title { padding-right: 56px; }
+}
