@@ -1,76 +1,14 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { PersistedState } from 'runed';
-	import {
-		PRESETS,
-		FONT_PRESETS,
-		DEFAULT_RADIUS_PX,
-		defaultsFor,
-		themeEntries,
-		gradientPreview,
-		resolvePreset,
-		buildThemeCss,
-		type Base,
-		type Preset,
-		type ThemeState
-	} from './theme-presets';
+	import { PRESETS, gradientPreview } from './theme-presets';
+	import { siteThemeContext } from './theme.svelte';
 
-	let {
-		base = $bindable('dark')
-	}: {
-		/** The site's dark/light base, owned by the layout's theme store. */
-		base: Base;
-	} = $props();
-
-	// Which preset is applied site-wide. 'default' = stock theme (no overrides).
-	const activeId = new PersistedState<string>('pui-site-theme', 'default');
+	const theme = siteThemeContext.get();
 	let open = $state(false);
-
-	// Stable list of every custom-property name we ever set, for clean removal.
-	const PROP_NAMES = themeEntries({
-		base: 'dark',
-		colors: defaultsFor('dark'),
-		radiusPx: DEFAULT_RADIUS_PX,
-		font: FONT_PRESETS[0].value
-	}).map(([k]) => k);
-
-	let activePreset = $derived(PRESETS.find((p) => p.id === activeId.current) ?? null);
-
-	// Resolve the active preset against the live dark/light base so toggling the
-	// sun still flips surfaces while the preset's accent persists.
-	let activeState = $derived<ThemeState>(
-		activePreset
-			? resolvePreset(activePreset, base)
-			: { base, colors: defaultsFor(base), radiusPx: DEFAULT_RADIUS_PX, font: FONT_PRESETS[0].value }
-	);
-
-	// Push the active preset's tokens onto <html> (inline props win over the
-	// stylesheet). 'default' clears them so the stock theme + toggle take over.
-	// Re-runs when `base` changes so the dark/light toggle keeps working.
-	$effect(() => {
-		if (!browser) return;
-		const el = document.documentElement;
-		const preset = PRESETS.find((p) => p.id === activeId.current);
-		if (preset) {
-			for (const [k, v] of themeEntries(resolvePreset(preset, base))) el.style.setProperty(k, v);
-		} else {
-			for (const k of PROP_NAMES) el.style.removeProperty(k);
-		}
-	});
-
-	function applyPreset(preset: Preset) {
-		activeId.current = preset.id;
-		base = preset.base; // keep the layout's dark/light toggle in sync
-	}
-
-	function useDefault() {
-		activeId.current = 'default';
-	}
 
 	let copied = $state(false);
 	async function copyCss() {
 		try {
-			await navigator.clipboard.writeText(buildThemeCss(activeState));
+			await navigator.clipboard.writeText(theme.css);
 			copied = true;
 			setTimeout(() => (copied = false), 1500);
 		} catch {
@@ -139,9 +77,9 @@
 			<div class="tpop__grid">
 				<button
 					type="button"
-					class={'tpop__item' + (activeId.current === 'default' ? ' tpop__item--active' : '')}
-					aria-pressed={activeId.current === 'default'}
-					onclick={useDefault}
+					class={'tpop__item' + (theme.presetId === 'default' ? ' tpop__item--active' : '')}
+					aria-pressed={theme.presetId === 'default'}
+					onclick={() => theme.reset()}
 				>
 					<span class="tpop__swatch tpop__swatch--default"></span>
 					<span class="tpop__name">Default</span>
@@ -149,9 +87,9 @@
 				{#each PRESETS as preset (preset.id)}
 					<button
 						type="button"
-						class={'tpop__item' + (activeId.current === preset.id ? ' tpop__item--active' : '')}
-						aria-pressed={activeId.current === preset.id}
-						onclick={() => applyPreset(preset)}
+						class={'tpop__item' + (theme.presetId === preset.id ? ' tpop__item--active' : '')}
+						aria-pressed={theme.presetId === preset.id}
+						onclick={() => theme.apply(preset)}
 					>
 						<span class="tpop__swatch" style={`background: ${gradientPreview(preset.colors)};`}
 						></span>

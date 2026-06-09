@@ -56,13 +56,31 @@ export const COLOR_GROUPS: { title: string; tokens: ColorToken[] }[] = [
 
 export const ALL_TOKENS = COLOR_GROUPS.flatMap((g) => g.tokens);
 
-export const FONT_PRESETS: { label: string; value: string }[] = [
-	{ label: 'Inter', value: '"Inter", ui-sans-serif, system-ui, -apple-system, sans-serif' },
-	{ label: 'System UI', value: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif' },
-	{ label: 'Geist', value: '"Geist", ui-sans-serif, system-ui, sans-serif' },
-	{ label: 'Satoshi', value: '"Satoshi", ui-sans-serif, system-ui, sans-serif' },
-	{ label: 'Mono', value: '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace' }
+export interface FontPreset {
+	label: string;
+	value: string;
+	/** Coarse classification, shown as a muted tag in the font picker. */
+	kind: 'Sans' | 'Serif' | 'Mono';
+}
+
+export const FONT_PRESETS: FontPreset[] = [
+	{ label: 'Inter', kind: 'Sans', value: '"Inter", ui-sans-serif, system-ui, -apple-system, sans-serif' },
+	{ label: 'Figtree', kind: 'Sans', value: '"Figtree", ui-sans-serif, system-ui, sans-serif' },
+	{ label: 'Hanken Grotesk', kind: 'Sans', value: '"Hanken Grotesk", ui-sans-serif, system-ui, sans-serif' },
+	{ label: 'Space Grotesk', kind: 'Sans', value: '"Space Grotesk", ui-sans-serif, system-ui, sans-serif' },
+	{ label: 'DM Sans', kind: 'Sans', value: '"DM Sans", ui-sans-serif, system-ui, sans-serif' },
+	{ label: 'Montserrat', kind: 'Sans', value: '"Montserrat", ui-sans-serif, system-ui, sans-serif' },
+	{ label: 'System UI', kind: 'Sans', value: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif' },
+	{ label: 'Fraunces', kind: 'Serif', value: '"Fraunces", ui-serif, Georgia, serif' },
+	{ label: 'Newsreader', kind: 'Serif', value: '"Newsreader", ui-serif, Georgia, serif' },
+	{ label: 'Spectral', kind: 'Serif', value: '"Spectral", ui-serif, Georgia, serif' },
+	{ label: 'JetBrains Mono', kind: 'Mono', value: '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace' }
 ];
+
+/** Look up a font stack by its picker label. */
+export function fontStack(label: string): string {
+	return FONT_PRESETS.find((f) => f.label === label)?.value ?? FONT_PRESETS[0].value;
+}
 
 /** Default base radius (in px); the original theme ships 0.75rem = 12px. */
 export const DEFAULT_RADIUS_PX = 12;
@@ -254,6 +272,67 @@ export const PRESETS: Preset[] = [
 			'pui-grad-to': '#38bdf8'
 		},
 		{ radiusPx: 20 }
+	),
+	// Editorial, brand-flavoured presets (each ships a distinctive font).
+	mk(
+		'counsel',
+		'Counsel',
+		'light',
+		{
+			'pui-bg': '#ffffff',
+			'pui-bg-elev': '#f7f8fa',
+			'pui-bg-soft': '#eceef4',
+			'pui-border': '#e2e5ee',
+			'pui-border-bright': '#ccd1e0',
+			'pui-fg': '#19214b',
+			'pui-fg-dim': '#454c70',
+			'pui-fg-mute': '#828aa8',
+			'pui-grad-from': '#1e2a5e',
+			'pui-grad-mid': '#3b5bd0',
+			'pui-grad-to': '#6e8bff',
+			'pui-success': '#1eb89c'
+		},
+		{ radiusPx: 6, font: fontStack('Newsreader') }
+	),
+	mk(
+		'atelier',
+		'Atelier',
+		'light',
+		{
+			'pui-bg': '#faf6ee',
+			'pui-bg-elev': '#f3ecdf',
+			'pui-bg-soft': '#eae0cf',
+			'pui-border': '#e0d4bf',
+			'pui-border-bright': '#cdbd9f',
+			'pui-fg': '#1a1813',
+			'pui-fg-dim': '#5b5240',
+			'pui-fg-mute': '#8a7f68',
+			'pui-grad-from': '#cc785c',
+			'pui-grad-mid': '#d8a07a',
+			'pui-grad-to': '#b5835a',
+			'pui-warn': '#cc785c'
+		},
+		{ radiusPx: 12, font: fontStack('Fraunces') }
+	),
+	mk(
+		'vitals',
+		'Vitals',
+		'light',
+		{
+			'pui-bg': '#ffffff',
+			'pui-bg-elev': '#eff8f6',
+			'pui-bg-soft': '#e1f1ee',
+			'pui-border': '#cde8e2',
+			'pui-border-bright': '#a9d8ce',
+			'pui-fg': '#0b2e2a',
+			'pui-fg-dim': '#356159',
+			'pui-fg-mute': '#6f9a92',
+			'pui-grad-from': '#006298',
+			'pui-grad-mid': '#00a3e0',
+			'pui-grad-to': '#84bd00',
+			'pui-success': '#84bd00'
+		},
+		{ radiusPx: 16, font: fontStack('Montserrat') }
 	)
 ];
 

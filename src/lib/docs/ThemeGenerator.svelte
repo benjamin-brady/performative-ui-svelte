@@ -78,6 +78,31 @@
 			/* clipboard blocked, fail silently */
 		}
 	}
+
+	// Custom font picker so each option renders in its own typeface.
+	let fontOpen = $state(false);
+	let fontRoot: HTMLDivElement;
+	let currentFont = $derived(FONT_PRESETS.find((f) => f.value === fontSans));
+	function pickFont(value: string) {
+		fontSans = value;
+		activePreset = '';
+		fontOpen = false;
+	}
+	$effect(() => {
+		if (!fontOpen) return;
+		const onDown = (e: MouseEvent) => {
+			if (fontRoot && !fontRoot.contains(e.target as Node)) fontOpen = false;
+		};
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') fontOpen = false;
+		};
+		document.addEventListener('mousedown', onDown);
+		document.addEventListener('keydown', onKey);
+		return () => {
+			document.removeEventListener('mousedown', onDown);
+			document.removeEventListener('keydown', onKey);
+		};
+	});
 </script>
 
 <div class="tg">
@@ -163,12 +188,53 @@
 					/>
 				</div>
 				<div class="tg__field">
-					<label class="tg__field-label" for="tg-font">Sans font</label>
-					<select id="tg-font" class="tg__select" bind:value={fontSans}>
-						{#each FONT_PRESETS as preset (preset.label)}
-							<option value={preset.value}>{preset.label}</option>
-						{/each}
-					</select>
+					<span class="tg__field-label" id="tg-font-label">Sans font</span>
+					<div class="tg__font" bind:this={fontRoot}>
+						<button
+							type="button"
+							class="tg__font-trigger"
+							aria-haspopup="listbox"
+							aria-expanded={fontOpen}
+							aria-labelledby="tg-font-label"
+							onclick={() => (fontOpen = !fontOpen)}
+						>
+							<span class="tg__font-current" style={`font-family: ${fontSans};`}>
+								{currentFont?.label ?? 'Custom'}
+							</span>
+							<svg
+								class="tg__font-chevron"
+								viewBox="0 0 24 24"
+								width="14"
+								height="14"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="m6 9 6 6 6-6" />
+							</svg>
+						</button>
+						{#if fontOpen}
+							<ul class="tg__font-menu" role="listbox" aria-labelledby="tg-font-label">
+								{#each FONT_PRESETS as f (f.label)}
+									<li role="option" aria-selected={f.value === fontSans}>
+										<button
+											type="button"
+											class={'tg__font-opt' +
+												(f.value === fontSans ? ' tg__font-opt--active' : '')}
+											style={`font-family: ${f.value};`}
+											onclick={() => pickFont(f.value)}
+										>
+											<span class="tg__font-name">{f.label}</span>
+											<span class="tg__font-kind">{f.kind}</span>
+										</button>
+									</li>
+								{/each}
+							</ul>
+						{/if}
+					</div>
 				</div>
 			</fieldset>
 		</div>
