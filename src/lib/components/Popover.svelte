@@ -55,11 +55,16 @@ let isOpen = $derived(isControlled ? controlledOpen === true : internalOpen);
 let portalTarget = $derived(container ?? undefined);
 // svelte-ignore state_referenced_locally
 let dialogOpen = $state(controlledOpen ?? defaultOpen);
+const containedShortcutKeys = new Set(['[', ']', 'j', 'k', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
 
 function setOpen(next: boolean) {
 if (!isControlled) internalOpen = next;
 dialogOpen = isControlled ? (controlledOpen ?? next) : next;
 onOpenChange?.(next);
+}
+
+function containShortcutKeys(event: KeyboardEvent) {
+if (containedShortcutKeys.has(event.key)) event.stopPropagation();
 }
 
 $effect(() => {
@@ -90,6 +95,7 @@ class={cn(
 'fixed left-1/2 top-1/2 z-50 w-[min(calc(100vw-2rem),28rem)] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/70 bg-white/95 p-6 text-slate-950 shadow-2xl shadow-slate-950/20 outline-none backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/95 dark:text-slate-50',
 className
 )}
+onkeydowncapture={containShortcutKeys}
 >
 {#if title}
 <Dialog.Title
