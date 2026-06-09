@@ -14,7 +14,28 @@ npm install github:benjamin-brady/performative-ui-svelte
 
 The GitHub install runs the package `prepare` script, which builds `dist/` with `@sveltejs/package`. Keep lifecycle scripts enabled for this dependency.
 
-Import the global component styles once, then use the components:
+### Recommended: registry-first
+
+This project is designed for registry/copy-in usage so your app owns the
+Tailwind build, theme tokens, and generated utilities.
+
+### Package fallback
+
+The package fallback exports Svelte components that already contain Tailwind
+utility classes. It does **not** ship generated component CSS. Importing
+`performative-ui-svelte/styles.css` only provides shared animation keyframes.
+
+For package usage, your app must use Tailwind CSS v4, include the performative
+theme tokens from `src/app.css` (or copied registry theme), and scan the package
+components from your Tailwind entry:
+
+```css
+@import "tailwindcss";
+@source "../node_modules/performative-ui-svelte/dist";
+@import "performative-ui-svelte/styles.css";
+```
+
+Then use the components:
 
 ```svelte
 <script>

@@ -110,7 +110,7 @@ export const registryItems: RegistryItem[] = [
     type: "registry:style",
     title: "Performative UI styles",
     description:
-      "Shared CSS variables, component class styles, and animation keyframes for the current catalog.",
+      "Shared animation keyframes for components that rely on the performative Tailwind theme.",
     files: [
       file("src/lib/styles/pui.css", "$lib/styles/pui.css", "registry:style"),
     ],

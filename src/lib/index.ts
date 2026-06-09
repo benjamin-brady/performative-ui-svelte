@@ -3,7 +3,8 @@
  * performative AI-startup landing page tropes. Tongue firmly in cheek.
  */
 
-// Styles, imported here so consumers get them via the package entry.
+// Legacy keyframes only. Component styling uses Tailwind utilities and requires
+// consumers to compile this package's Svelte files with the performative theme.
 import './styles/pui.css';
 
 // Atoms

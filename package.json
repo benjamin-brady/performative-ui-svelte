@@ -56,7 +56,8 @@
 		"registry:build": "bun scripts/build-registry.ts"
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0"
+		"svelte": "^5.0.0",
+		"tailwindcss": "^4.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.1",

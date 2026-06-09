@@ -1,7 +1,9 @@
 /* performative-ui legacy package CSS.
-   Components are now styled in-source with Tailwind utilities. This file is
-   kept for consumers that import `performative-ui-svelte/styles.css` and only
-   provides shared animation keyframes used by copied components. */
+   Components are styled in-source with Tailwind utilities and theme tokens.
+   Importing `performative-ui-svelte/styles.css` only provides animation
+   keyframes; package consumers must compile Tailwind against this package's
+   Svelte files and include the performative theme tokens. Prefer the registry
+   workflow for production apps. */
 
 @keyframes pui-grad-shift {
   0%, 100% { background-position: 0% 50%; }
