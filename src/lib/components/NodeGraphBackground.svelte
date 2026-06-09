@@ -73,7 +73,7 @@ y: hMin + Math.random() * (hMax - hMin),
 vx: (Math.random() - 0.5) * speed * 2,
 vy: (Math.random() - 0.5) * speed * 2,
 r: 1 + Math.random() * 1.6,
-color: colors[Math.floor(Math.random() * colors.length)]
+color: colors.length ? colors[Math.floor(Math.random() * colors.length)] : '#a78bfa'
 }));
 };
 

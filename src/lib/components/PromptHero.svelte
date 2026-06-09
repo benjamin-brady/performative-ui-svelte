@@ -66,6 +66,7 @@
 		class="flex-1 border-0 bg-transparent py-3 font-sans text-[15px] text-pui-fg outline-0 placeholder:text-pui-fg-mute"
 		type="text"
 		{placeholder}
+		aria-label={placeholder}
 		value={v}
 		oninput={handleInput}
 		autocomplete="off"

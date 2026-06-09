@@ -4,7 +4,7 @@
 	import { type VariantProps, tv } from 'tailwind-variants';
 
 	export const buttonVariants = tv({
-		base: 'group/button relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[var(--pui-radius)] border text-sm font-semibold outline-none transition-all duration-200 ease-pui active:translate-y-px disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-55 disabled:active:translate-y-0 aria-busy:cursor-wait aria-busy:active:translate-y-0 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-55 aria-disabled:active:translate-y-0 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+		base: 'group/button relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[var(--pui-radius)] border text-sm font-semibold outline-none transition-all duration-200 ease-pui active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[var(--pui-grad-from)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-55 disabled:active:translate-y-0 aria-busy:cursor-wait aria-busy:active:translate-y-0 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-55 aria-disabled:active:translate-y-0 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
 		variants: {
 			variant: {
 				glow: 'border-[var(--pui-button-dark-border)] [background:var(--pui-button-dark-fill)] text-pui-fg shadow-[var(--pui-glow)] before:absolute before:inset-[-2px] before:-z-10 before:rounded-[calc(var(--pui-radius)+2px)] before:bg-[linear-gradient(120deg,var(--pui-grad-from),var(--pui-grad-mid),var(--pui-grad-to))] before:bg-[length:300%_300%] before:opacity-55 before:blur-xl before:animate-[pui-grad-shift_5s_ease_infinite] hover:shadow-[var(--pui-glow-strong)]',
@@ -62,6 +62,7 @@
 		loading = false,
 		block = false,
 		as = 'button',
+		type = 'button',
 		class: className,
 		disabled = false,
 		children,
@@ -70,10 +71,11 @@
 
 	let isButton = $derived(as === 'button');
 
-	// svelte:element exposes only generic HTMLAttributes, so `disabled` is
-	// applied via a spread record rather than a direct attribute.
+	// svelte:element exposes only generic HTMLAttributes, so `disabled` and
+	// `type` are applied via a spread record rather than direct attributes.
 	let attrs = $derived({
 		...rest,
+		type: isButton ? type : undefined,
 		disabled: isButton ? disabled || loading : undefined,
 		'aria-busy': loading || undefined
 	} as Record<string, unknown>);

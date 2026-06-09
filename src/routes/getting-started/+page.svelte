@@ -1,34 +1,72 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { PersistedState } from 'runed';
 	import CodeBlock from '$lib/docs/CodeBlock.svelte';
+	import CommandTabs from '$lib/docs/CommandTabs.svelte';
 
-	const installExample = `# Components are owned code — copy them in from the registry.
-pnpm dlx shadcn-svelte@latest add \\
-  https://benjamin-brady.github.io/performative-ui-svelte/registry/button.json`;
+	type ManagerId = 'npm' | 'pnpm' | 'bun' | 'yarn';
 
-	const usageExample = `<script>
-  import { Button, GradientText, Sparkle } from 'performative-ui-svelte';
+	interface Manager {
+		id: ManagerId;
+		label: string;
+		/** Run a package binary without installing (npx-equivalent). */
+		exec: string;
+		/** Install dependencies. */
+		install: string;
+		/** Run a package.json script (suffix the script name). */
+		run: string;
+	}
+
+	const managers: Manager[] = [
+		{ id: 'npm', label: 'npm', exec: 'npx', install: 'npm install', run: 'npm run' },
+		{ id: 'pnpm', label: 'pnpm', exec: 'pnpm dlx', install: 'pnpm install', run: 'pnpm' },
+		{ id: 'bun', label: 'bun', exec: 'bunx', install: 'bun install', run: 'bun' },
+		{ id: 'yarn', label: 'yarn', exec: 'yarn dlx', install: 'yarn install', run: 'yarn' }
+	];
+
+	const selected = new PersistedState<ManagerId>('pui-pkg-manager', 'npm');
+	const pm = $derived(managers.find((m) => m.id === selected.current) ?? managers[0]);
+	const tabs = managers.map((m) => ({ id: m.id, label: m.label }));
+
+	// `shadcn-svelte add` needs an absolute URL it can fetch, not a site-relative
+	// path. Use the published registry origin (matches the README) so the commands
+	// are copy-pasteable from anywhere, including the local dev preview.
+	const registryBase = 'https://benjamin-brady.github.io/performative-ui-svelte/registry';
+
+	const createProject = $derived(`# Scaffold a fresh SvelteKit app (Svelte 5)
+${pm.exec} sv create my-app
+
+# Pick: SvelteKit minimal · TypeScript · Tailwind CSS
+cd my-app
+${pm.install}`);
+
+	const addComponents = $derived(`# Pull owned-code components from the registry
+${pm.exec} shadcn-svelte@latest add ${registryBase}/button.json
+${pm.exec} shadcn-svelte@latest add ${registryBase}/gradient-text.json
+${pm.exec} shadcn-svelte@latest add ${registryBase}/sparkle.json`);
+
+	const tailwindCss = `@import "tailwindcss";
+
+/* Performative theme tokens + shared keyframes the components rely on. */
+@import "performative-ui-svelte/styles.css";`;
+
+	const demoPage = `<script lang="ts">
+	import { Button } from "$lib/components/ui/button";
+	import { GradientText } from "$lib/components/ui/gradient-text";
+	import { Sparkle } from "$lib/components/ui/sparkle";
 <\/script>
 
-<h1>
-  Ship <GradientText>agentic workflows</GradientText> <Sparkle />
-</h1>
-<Button variant="glow" sparkle>Deploy</Button>`;
+<main style="display:grid;place-items:center;min-height:100vh;gap:1.5rem;text-align:center">
+	<h1 style="font-size:2.5rem;font-weight:700">
+		Ship <GradientText>agentic workflows</GradientText> <Sparkle />
+	</h1>
 
-	const steps = [
-		{
-			title: 'Install the styles',
-			body: 'Import the package stylesheet once (after Tailwind) so the --pui-* tokens and utility mappings are available everywhere.'
-		},
-		{
-			title: 'Add components from the registry',
-			body: 'Each component is owned code you copy into your app via shadcn-svelte, so you can edit it freely — nothing is locked inside a dependency.'
-		},
-		{
-			title: 'Make it yours',
-			body: 'Re-skin the whole system by redefining a handful of CSS variables — or use the live Theme Generator on the Theming page.'
-		}
-	];
+	<Button variant="glow" sparkle>Generate</Button>
+</main>`;
+
+	const runDev = $derived(
+		selected.current === 'npm' ? 'npm run dev -- --open' : `${pm.run} dev --open`
+	);
 </script>
 
 <svelte:head>
@@ -39,54 +77,68 @@ pnpm dlx shadcn-svelte@latest add \\
 	<header class="cp-header">
 		<div class="cp-eyebrow"><span>Guide</span></div>
 		<h1 class="cp-title">Getting Started</h1>
-		<p class="cp-snark">AI-native Svelte components for products that need to look oversubscribed.</p>
+		<p class="cp-snark">From <code>npm create</code> to an oversubscribed-looking demo in five minutes.</p>
 	</header>
 
 	<section class="cp-section">
 		<p class="cp-description">
-			performative-ui-svelte is a set of opinionated, owned-code components — heroes, gradients,
-			glass cards, chat surfaces and more — built on Svelte 5 and Tailwind v4. Everything is
-			painted from a single layer of <code>--pui-*</code> CSS variables, so the whole library
-			re-skins from a few tokens.
+			This guide spins up a fresh SvelteKit project, adds a couple of
+			performative-ui-svelte components, and wires up a tiny demo page. Components
+			are installed as owned source via the shadcn-svelte registry, so your app
+			keeps the Tailwind build, theme tokens, and the component files themselves.
+		</p>
+		<p class="cp-description gs-note">
+			Requirements: Node 18+, Svelte 5, and Tailwind CSS v4. Pick your package
+			manager in any command block below — they all stay in sync.
 		</p>
 	</section>
 
 	<section class="cp-section">
-		<h2 class="cp-section__title">Add a component</h2>
-		<p class="cp-description">
-			Components are distributed as owned code through the registry. Pull one in and it lands in
-			your project, yours to edit.
+		<h2 class="cp-section__title">1 · Create a SvelteKit project</h2>
+		<p class="cp-install-copy">
+			Use the official <code>sv</code> CLI. When prompted, choose the
+			<strong>SvelteKit minimal</strong> template, <strong>TypeScript</strong>, and add the
+			<strong>Tailwind CSS</strong> plugin — that wires up Tailwind v4 for you.
 		</p>
-		<CodeBlock code={installExample} />
+		<CommandTabs {tabs} bind:active={selected.current} code={createProject} />
 	</section>
 
 	<section class="cp-section">
-		<h2 class="cp-section__title">Use it</h2>
-		<p class="cp-description">Import and compose — the tokens do the rest.</p>
-		<CodeBlock code={usageExample} />
+		<h2 class="cp-section__title">2 · Add a few components</h2>
+		<p class="cp-install-copy">
+			Pull just what the demo needs. Each command drops an owned-code component
+			into <code>src/lib/components/ui/</code>. Swap the slug for any entry in the
+			<a href="{base}/registry/index.json">registry</a>.
+		</p>
+		<CommandTabs {tabs} bind:active={selected.current} code={addComponents} />
 	</section>
 
 	<section class="cp-section">
-		<h2 class="cp-section__title">Three steps to shipped</h2>
-		<ol class="gs-steps">
-			{#each steps as step, i (step.title)}
-				<li class="gs-step">
-					<span class="gs-step__num">{i + 1}</span>
-					<div>
-						<h3 class="gs-step__title">{step.title}</h3>
-						<p class="gs-step__body">{step.body}</p>
-					</div>
-				</li>
-			{/each}
-		</ol>
+		<h2 class="cp-section__title">3 · Import the theme</h2>
+		<p class="cp-install-copy">
+			The components expect the performative theme tokens and a handful of shared
+			animation keyframes. Add one import to your Tailwind entry CSS (typically
+			<code>src/app.css</code>):
+		</p>
+		<CodeBlock code={tailwindCss} />
 	</section>
 
 	<section class="cp-section">
-		<h2 class="cp-section__title">Next</h2>
-		<p class="cp-description">
-			Head to <a class="gs-link" href="{base}/getting-started/theming">Theming</a> to learn the token
-			system and tweak a live theme with the generator — then browse the component catalog in the
-			sidebar.
+		<h2 class="cp-section__title">4 · Build a demo page</h2>
+		<p class="cp-install-copy">
+			Keep it deliberately small — three components is plenty to look like you
+			raised a Series B. Drop this into <code>src/routes/+page.svelte</code>:
+		</p>
+		<CodeBlock code={demoPage} />
+	</section>
+
+	<section class="cp-section">
+		<h2 class="cp-section__title">5 · Run it</h2>
+		<p class="cp-install-copy">Start the dev server and open the demo:</p>
+		<CommandTabs {tabs} bind:active={selected.current} code={runDev} />
+		<p class="cp-description gs-next">
+			That's the whole loop. Browse the sidebar for the other
+			components and copy them in the same way.
 		</p>
 	</section>
 </article>

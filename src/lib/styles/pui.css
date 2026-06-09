@@ -64,3 +64,21 @@
   from { background-position: 0% 50%, 0% 50%, -100% 50%; }
   to { background-position: 0% 50%, 0% 50%, 100% 50%; }
 }
+
+/* =============================================================
+   prefers-reduced-motion: freeze the library's decorative loops.
+   Scoped to [data-slot] elements so consumer markup is untouched.
+   Functional indicators (spinners/carets) collapse to a single,
+   near-instant iteration rather than disappearing entirely.
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  [data-slot],
+  [data-slot] *,
+  [data-slot]::before,
+  [data-slot]::after,
+  [data-slot] *::before,
+  [data-slot] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

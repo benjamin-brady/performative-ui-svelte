@@ -210,6 +210,34 @@ a { color: inherit; }
   color: var(--pui-fg-dim);
 }
 
+/* ---------- Getting Started guide prose ---------- */
+.cp-install-copy code,
+.cp-description code,
+.cp-snark code {
+  font-family: var(--pui-font-mono);
+  font-size: 0.9em;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--pui-bg-soft);
+  border: 1px solid var(--pui-border);
+  color: #c084fc;
+}
+.cp-install-copy a,
+.cp-description a {
+  color: var(--pui-fg);
+  border-bottom: 1px dashed rgba(124, 58, 237, 0.6);
+  text-decoration: none;
+}
+.cp-install-copy a:hover,
+.cp-description a:hover { border-bottom-style: solid; }
+.cp-description.gs-note {
+  margin-top: 14px;
+  font-family: var(--pui-font-mono);
+  font-size: 13px;
+  color: var(--pui-fg-mute);
+}
+.cp-description.gs-next { margin-top: 16px; }
+
 /* ---------- Install: package-manager tabs ---------- */
 .install-tabs {
   border: 1px solid var(--pui-border);
@@ -1166,51 +1194,3 @@ a { color: inherit; }
   line-height: 1.5;
   color: var(--pui-fg-mute);
 }
-
-/* Getting Started landing */
-.gs-steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 14px;
-}
-.gs-step {
-  display: flex;
-  gap: 14px;
-  padding: 16px;
-  border: 1px solid var(--pui-border);
-  border-radius: var(--pui-radius-lg);
-  background: var(--pui-bg-elev);
-}
-.gs-step__num {
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  background: var(--pui-grad);
-  color: #fff;
-  font-family: var(--pui-font-mono);
-  font-size: 13px;
-  font-weight: 600;
-}
-.gs-step__title {
-  margin: 2px 0 4px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--pui-fg);
-}
-.gs-step__body {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--pui-fg-dim);
-}
-.gs-link {
-  color: var(--pui-grad-mid);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.gs-link:hover { color: var(--pui-fg); }

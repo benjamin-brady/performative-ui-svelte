@@ -68,7 +68,7 @@
 			</span>
 		{/each}
 		{#each logos as item, i (itemKey(item, i + logos.length))}
-			<span data-slot="logo-marquee-item" class="mr-[var(--pui-marquee-gap,56px)] inline-flex items-center [&_img]:h-7 [&_img]:w-auto [&_img]:opacity-70 [&_img]:transition-[opacity,filter] [&_img]:duration-200 [&_img]:ease-pui [&_img]:[filter:var(--pui-logo-filter)] hover:[&_img]:opacity-100 hover:[&_img]:[filter:var(--pui-logo-filter-hover)]">
+			<span data-slot="logo-marquee-item" aria-hidden="true" class="mr-[var(--pui-marquee-gap,56px)] inline-flex items-center [&_img]:h-7 [&_img]:w-auto [&_img]:opacity-70 [&_img]:transition-[opacity,filter] [&_img]:duration-200 [&_img]:ease-pui [&_img]:[filter:var(--pui-logo-filter)] hover:[&_img]:opacity-100 hover:[&_img]:[filter:var(--pui-logo-filter-hover)]">
 				{#if item.kind === 'img'}
 					<img src={item.src} alt={item.alt ?? ''} />
 				{:else if typeof item.node === 'string'}
