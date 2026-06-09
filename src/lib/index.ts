@@ -3,10 +3,6 @@
  * performative AI-startup landing page tropes. Tongue firmly in cheek.
  */
 
-// Legacy keyframes only. Component styling uses Tailwind utilities and requires
-// consumers to compile this package's Svelte files with the performative theme.
-import './styles/pui.css';
-
 // Atoms
 export { default as Sparkle, type SparkleProps } from './components/Sparkle.svelte';
 export { default as GradientText, type GradientTextProps } from './components/GradientText.svelte';

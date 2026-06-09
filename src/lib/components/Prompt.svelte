@@ -77,6 +77,8 @@
 
 	let menuOpen = $state(false);
 	let modelWrapRef: HTMLDivElement | undefined = $state();
+	let menuRef: HTMLDivElement | undefined = $state();
+	let modelButtonRef: HTMLButtonElement | undefined = $state();
 
 	$effect(() => {
 		if (!menuOpen) return;
@@ -87,6 +89,14 @@
 		};
 		document.addEventListener('mousedown', onDown);
 		return () => document.removeEventListener('mousedown', onDown);
+	});
+
+	$effect(() => {
+		if (!menuOpen || !menuRef) return;
+		const active =
+			menuRef.querySelector<HTMLElement>('[aria-checked="true"]') ??
+			menuRef.querySelector<HTMLElement>('[role="menuitemradio"]');
+		active?.focus();
 	});
 
 	function setValue(v: string) {
@@ -119,6 +129,7 @@
 		oninput={(e) => setValue(e.currentTarget.value)}
 		onkeydown={handleKey}
 		{placeholder}
+		aria-label={placeholder}
 		{rows}
 	></textarea>
 	<div data-slot="prompt-toolbar" class="flex items-center gap-1.5">
@@ -140,6 +151,7 @@
 				<button
 					type="button"
 					class="inline-flex h-[30px] cursor-pointer items-center gap-1.5 rounded-lg border border-pui-border-bright bg-[var(--pui-overlay)] py-0 pl-3 pr-2.5 font-mono text-[12.5px] text-pui-fg-dim transition-[background,color,border-color] duration-150 ease-pui hover:border-[#3a3a4e] hover:bg-[var(--pui-overlay-strong)] hover:text-pui-fg"
+					bind:this={modelButtonRef}
 					onclick={() => (menuOpen = !menuOpen)}
 					aria-expanded={menuOpen}
 					aria-haspopup="menu"
@@ -150,7 +162,23 @@
 					</svg>
 				</button>
 				{#if menuOpen}
-					<div data-slot="prompt-menu" class="absolute bottom-[calc(100%+6px)] left-0 z-10 min-w-[220px] rounded-xl border border-pui-border-bright bg-pui-bg-elev p-1 shadow-[var(--pui-shadow-deep),0_0_0_1px_oklch(0.541_0.251_293/0.10)]" role="menu">
+					<div data-slot="prompt-menu" class="absolute bottom-[calc(100%+6px)] left-0 z-10 min-w-[220px] rounded-xl border border-pui-border-bright bg-pui-bg-elev p-1 shadow-[var(--pui-shadow-deep),0_0_0_1px_oklch(0.541_0.251_293/0.10)]" role="menu" tabindex="-1" bind:this={menuRef} onkeydown={(e) => {
+							const itemsEls = Array.from(
+								(e.currentTarget as HTMLElement).querySelectorAll<HTMLElement>('[role="menuitemradio"]')
+							);
+							const idx = itemsEls.indexOf(document.activeElement as HTMLElement);
+							if (e.key === 'ArrowDown') {
+								e.preventDefault();
+								itemsEls[(idx + 1) % itemsEls.length]?.focus();
+							} else if (e.key === 'ArrowUp') {
+								e.preventDefault();
+								itemsEls[(idx - 1 + itemsEls.length) % itemsEls.length]?.focus();
+							} else if (e.key === 'Escape') {
+								e.preventDefault();
+								menuOpen = false;
+								modelButtonRef?.focus();
+							}
+						}}>
 						{#each models as m (m)}
 							<button
 								type="button"
@@ -158,6 +186,7 @@
 								onclick={() => setModel(m)}
 								role="menuitemradio"
 								aria-checked={m === model}
+								tabindex={m === model ? 0 : -1}
 							>
 								<span>{m}</span>
 								{#if m === model}

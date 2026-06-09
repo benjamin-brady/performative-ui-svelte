@@ -82,6 +82,7 @@ class={cn(
 )}
 type="email"
 {placeholder}
+aria-label={placeholder}
 bind:value
 />
 <Button type="submit" variant="solid">

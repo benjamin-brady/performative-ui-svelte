@@ -107,8 +107,7 @@
 
 				const el = blobEls[i];
 				if (el) {
-					el.style.left = `${b.x}%`;
-					el.style.top = `${b.y}%`;
+					el.style.transform = `translate(${(b.x / b.size - 0.5) * 100}%, ${(b.y / b.size - 0.5) * 100}%)`;
 				}
 			}
 			raf = requestAnimationFrame(tick);
@@ -130,8 +129,8 @@
 		<div
 			bind:this={blobEls[i]}
 			data-slot="aurora-blob"
-			class="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,var(--pui-aurora-color)_0%,transparent_70%)]"
-			style="left:{b.x}%;top:{b.y}%;width:{size}%;height:{size}%;--pui-aurora-color:{b.color}"
+			class="pointer-events-none absolute left-0 top-0 rounded-full bg-[radial-gradient(circle_at_center,var(--pui-aurora-color)_0%,transparent_70%)] [will-change:transform]"
+			style="width:{size}%;height:{size}%;transform:translate({(b.x / size - 0.5) * 100}%, {(b.y / size - 0.5) * 100}%);--pui-aurora-color:{b.color}"
 		></div>
 	{/each}
 </div>

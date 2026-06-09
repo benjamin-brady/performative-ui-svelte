@@ -83,7 +83,7 @@ export const COMPONENTS: ComponentMeta[] = [
 		description:
 			'Text painted with the consensus AI gradient. Use `as` to wrap any element. Set `static` to keep it gradient-colored but stop the shift animation.',
 		props: [
-			{ name: 'as', type: 'ElementType', default: '\'span\'', desc: 'Tag to render.' },
+			{ name: 'as', type: 'string', default: '\'span\'', desc: 'Tag to render.' },
 			{ name: 'static', type: 'boolean', desc: 'Disable the gradient shift animation.' }
 		]
 	},
@@ -129,7 +129,7 @@ export const COMPONENTS: ComponentMeta[] = [
 			{ name: 'sparkle', type: 'boolean', desc: 'Append a ✦ after the label.' },
 			{ name: 'loading', type: 'boolean', desc: 'Show spinner + disable.' },
 			{ name: 'block', type: 'boolean', desc: 'Render full-width.' },
-			{ name: 'as', type: 'ElementType', default: '"button"', desc: 'Polymorphic tag.' }
+			{ name: 'as', type: 'string', default: '"button"', desc: 'Polymorphic tag.' }
 		]
 	},
 	{
@@ -147,7 +147,7 @@ export const COMPONENTS: ComponentMeta[] = [
 			'The sticky top announcement bar. Houses Series A news, beta tags, and \'now in W26\' brags. Renders full-width above the nav.',
 		props: [
 			{ name: 'hideSparkle', type: 'boolean', desc: 'Drop the leading ✦.' },
-			{ name: 'trailing', type: 'ReactNode', desc: 'Trailing accessory (arrow, etc.).' }
+			{ name: 'trailing', type: 'Snippet', desc: 'Trailing accessory (arrow, etc.).' }
 		]
 	},
 	{
@@ -164,7 +164,7 @@ export const COMPONENTS: ComponentMeta[] = [
 		description:
 			'The pill that sits above the H1 of every section. Defaults to a pulsing green status dot. Pass `icon={false}` to hide, or any node to replace.',
 		props: [
-			{ name: 'icon', type: 'ReactNode | false', default: '<StatusDot />', desc: 'Leading icon. False to hide.' },
+			{ name: 'icon', type: 'Snippet | false', default: 'StatusDot snippet', desc: 'Leading icon. False to hide.' },
 			{ name: 'statusColor', type: 'string', desc: 'Color of the default dot.' }
 		]
 	},
@@ -190,7 +190,7 @@ export const COMPONENTS: ComponentMeta[] = [
 			{ name: 'loop', type: 'boolean', default: 'true', desc: 'Restart at the start once finished.' },
 			{ name: 'cursor', type: 'string', default: '"▍"', desc: 'Cursor character.' },
 			{ name: 'hideCursor', type: 'boolean', desc: 'Hide the blinking cursor.' },
-			{ name: 'renderWord', type: '(word, index) => ReactNode', desc: 'Custom word renderer.' },
+			{ name: 'renderWord', type: '(word, index) => Snippet', desc: 'Custom word renderer.' },
 			{ name: 'onWordReached', type: '(word, index) => void', desc: 'Callback at end of type.' }
 		]
 	},
@@ -238,8 +238,8 @@ export const COMPONENTS: ComponentMeta[] = [
 			{ name: 'defaultValue', type: 'string', desc: 'Uncontrolled initial value.' },
 			{ name: 'onChange', type: '(value: string) => void', desc: 'Fired on every keystroke.' },
 			{ name: 'onSubmit', type: '(value: string) => void', desc: 'Fired on form submit.' },
-			{ name: 'leading', type: 'ReactNode | false', default: '<Sparkle />', desc: 'Leading icon.' },
-			{ name: 'ctaLabel', type: 'ReactNode', default: '"Generate"', desc: 'Submit button label.' },
+			{ name: 'leading', type: 'Snippet | false', default: 'Sparkle snippet', desc: 'Leading icon.' },
+			{ name: 'ctaLabel', type: 'Snippet', default: '"Generate"', desc: 'Submit button label.' },
 			{ name: 'hideCta', type: 'boolean', desc: 'Render input-only.' }
 		]
 	},
@@ -278,7 +278,7 @@ export const COMPONENTS: ComponentMeta[] = [
 			{ name: 'submitOnCmdEnter', type: 'boolean', default: 'true', desc: 'Submit when Cmd/Ctrl+Enter is pressed.' },
 			{
 				name: 'toolbarExtras',
-				type: 'ReactNode',
+				type: 'Snippet',
 				desc: 'Extra node rendered just before the mic + send buttons (e.g. a Cmd+↵ hint).'
 			}
 		]
@@ -475,7 +475,7 @@ export const COMPONENTS: ComponentMeta[] = [
 			{ name: 'charMs', type: '[number, number]', default: '[14, 42]', desc: 'Per-char delay range.' },
 			{
 				name: 'thinkingLabel',
-				type: 'ReactNode | false',
+				type: 'Snippet | false',
 				default: '"AI is writing…"',
 				desc: 'Pill label; false to hide.'
 			}
@@ -485,7 +485,7 @@ export const COMPONENTS: ComponentMeta[] = [
 				name: 'MockIDE.Chrome',
 				props: [
 					{ name: 'filename', type: 'string', desc: 'Tab label.' },
-					{ name: 'thinking', type: 'ReactNode | false', desc: 'Pill content.' }
+					{ name: 'thinking', type: 'Snippet | false', desc: 'Pill content.' }
 				]
 			},
 			{
@@ -513,9 +513,9 @@ export const COMPONENTS: ComponentMeta[] = [
 			'Chat bubbles for fake conversations. AI bubbles ship with a meta row (sparkle + agent name + thinking pill); replace any of those by passing props or `false`.',
 		props: [
 			{ name: 'role', type: '"user" | "ai"', required: true, desc: 'Bubble direction + styling.' },
-			{ name: 'agent', type: 'ReactNode', desc: 'Agent name (AI bubbles).' },
-			{ name: 'thinking', type: 'ReactNode | false', desc: 'Thinking pill content; false to hide.' },
-			{ name: 'icon', type: 'ReactNode | false', desc: 'Leading icon override.' }
+			{ name: 'agent', type: 'Snippet', desc: 'Agent name (AI bubbles).' },
+			{ name: 'thinking', type: 'Snippet | false', desc: 'Thinking pill content; false to hide.' },
+			{ name: 'icon', type: 'Snippet | false', desc: 'Leading icon override.' }
 		]
 	},
 	{
@@ -560,11 +560,11 @@ export const COMPONENTS: ComponentMeta[] = [
 		description:
 			'Bottom-right floating \'Ask AI\' button with a popover. Compose ChatFAB.Header and ChatFAB.Body for the popover contents; the close button uses context so it just works.',
 		props: [
-			{ name: 'label', type: 'ReactNode', default: '"Ask AI"', desc: 'Button label.' },
+			{ name: 'label', type: 'Snippet', default: '"Ask AI"', desc: 'Button label.' },
 			{ name: 'open', type: 'boolean', desc: 'Controlled open state.' },
 			{ name: 'defaultOpen', type: 'boolean', desc: 'Uncontrolled initial state.' },
 			{ name: 'onOpenChange', type: '(open: boolean) => void', desc: 'Open-state callback.' },
-			{ name: 'popover', type: 'ReactNode', desc: 'Popover contents.' }
+			{ name: 'popover', type: 'Snippet', desc: 'Popover contents.' }
 		]
 	},
 	{
@@ -604,7 +604,7 @@ export const COMPONENTS: ComponentMeta[] = [
 		description:
 			'Static row of logos with an uppercase eyebrow. Works equally well for \'Backed by\', \'From alumni of\', or \'As seen in\'.',
 		props: [
-			{ name: 'heading', type: 'ReactNode', desc: 'Uppercase header copy.' },
+			{ name: 'heading', type: 'Snippet', desc: 'Uppercase header copy.' },
 			{ name: 'logos', type: 'LogoRowItem[]', required: true, desc: 'Mix of img/node entries.' }
 		]
 	},
@@ -645,9 +645,9 @@ export const COMPONENTS: ComponentMeta[] = [
 			'The \'Star us on GitHub\' / \'Join the Discord\' tile. Pass `icon` for a URL or `iconNode` for full control.',
 		props: [
 			{ name: 'icon', type: 'string', desc: 'SVG URL (gets inverted via CSS filter).' },
-			{ name: 'iconNode', type: 'ReactNode', desc: 'Custom icon node.' },
-			{ name: 'title', type: 'ReactNode', required: true, desc: 'Primary label.' },
-			{ name: 'subtitle', type: 'ReactNode', required: true, desc: 'Secondary label (counts, captions).' },
+			{ name: 'iconNode', type: 'Snippet', desc: 'Custom icon node.' },
+			{ name: 'title', type: 'Snippet', required: true, desc: 'Primary label.' },
+			{ name: 'subtitle', type: 'Snippet', required: true, desc: 'Secondary label (counts, captions).' },
 			{ name: 'href', type: 'string', desc: 'Anchor target (renders as `<a>`).' }
 		]
 	},
@@ -678,7 +678,7 @@ export const COMPONENTS: ComponentMeta[] = [
 			{
 				name: 'PricingCard.Amount',
 				props: [
-					{ name: 'unit', type: 'ReactNode', desc: 'Suffix like /mo.' }
+					{ name: 'unit', type: 'Snippet', desc: 'Suffix like /mo.' }
 				]
 			},
 			{ name: 'PricingCard.Blurb', props: [] },
@@ -705,29 +705,29 @@ export const COMPONENTS: ComponentMeta[] = [
 		description:
 			'Side-by-side comparison. The left panel is muted + struck-through; the right glows. Pass `before`/`after` arrays for the lazy version, or compose subcomponents for full control.',
 		props: [
-			{ name: 'before', type: 'ReactNode[]', desc: 'Quick-form before items.' },
-			{ name: 'after', type: 'ReactNode[]', desc: 'Quick-form after items.' },
-			{ name: 'brand', type: 'ReactNode', desc: 'Name shown over the arrow.' },
-			{ name: 'beforeLabel', type: 'ReactNode', default: '"Before"', desc: 'Override label.' },
-			{ name: 'afterLabel', type: 'ReactNode', default: '"After"', desc: 'Override label.' }
+			{ name: 'before', type: 'Snippet[]', desc: 'Quick-form before items.' },
+			{ name: 'after', type: 'Snippet[]', desc: 'Quick-form after items.' },
+			{ name: 'brand', type: 'Snippet', desc: 'Name shown over the arrow.' },
+			{ name: 'beforeLabel', type: 'Snippet', default: '"Before"', desc: 'Override label.' },
+			{ name: 'afterLabel', type: 'Snippet', default: '"After"', desc: 'Override label.' }
 		],
 		subprops: [
 			{
 				name: 'BeforeAfter.Before',
 				props: [
-					{ name: 'label', type: 'ReactNode', desc: 'Tag label.' }
+					{ name: 'label', type: 'Snippet', desc: 'Tag label.' }
 				]
 			},
 			{
 				name: 'BeforeAfter.Arrow',
 				props: [
-					{ name: 'brand', type: 'ReactNode', desc: 'Brand label.' }
+					{ name: 'brand', type: 'Snippet', desc: 'Brand label.' }
 				]
 			},
 			{
 				name: 'BeforeAfter.After',
 				props: [
-					{ name: 'label', type: 'ReactNode', desc: 'Tag label.' }
+					{ name: 'label', type: 'Snippet', desc: 'Tag label.' }
 				]
 			}
 		]
@@ -748,13 +748,13 @@ export const COMPONENTS: ComponentMeta[] = [
 		props: [
 			{ name: 'placeholder', type: 'string', default: '"you@startup.ai"', desc: 'Input placeholder.' },
 			{ name: 'defaultValue', type: 'string', desc: 'Initial email value.' },
-			{ name: 'ctaLabel', type: 'ReactNode', default: '"Notify me"', desc: 'Submit button label.' },
+			{ name: 'ctaLabel', type: 'Snippet', default: '"Notify me"', desc: 'Submit button label.' },
 			{
 				name: 'leading',
-				type: 'ReactNode | false',
+				type: 'Snippet | false',
 				desc: 'Leading icon. Defaults to an envelope SVG; pass false to remove or any node to replace.'
 			},
-			{ name: 'footnote', type: 'ReactNode', desc: 'Small line of text rendered below the form.' },
+			{ name: 'footnote', type: 'Snippet', desc: 'Small line of text rendered below the form.' },
 			{ name: 'onSubmit', type: '(email: string) => void', desc: 'Submit callback.' }
 		]
 	},
@@ -771,11 +771,11 @@ export const COMPONENTS: ComponentMeta[] = [
 			{ name: 'defaultOpen', type: 'boolean', desc: 'Uncontrolled initial state.' },
 			{ name: 'onOpenChange', type: '(open: boolean) => void', desc: 'Open-state callback.' },
 			{ name: 'timer', type: 'number', default: '0', desc: 'ms before auto-opening once mounted. 0 disables.' },
-			{ name: 'title', type: 'ReactNode', desc: 'Title at the top of the popover.' },
-			{ name: 'children', type: 'ReactNode', desc: 'Body content (e.g. a WaitlistForm).' },
+			{ name: 'title', type: 'Snippet', desc: 'Title at the top of the popover.' },
+			{ name: 'children', type: 'Snippet', desc: 'Body content (e.g. a WaitlistForm).' },
 			{
 				name: 'closeLabel',
-				type: 'ReactNode | false',
+				type: 'Snippet | false',
 				default: '"Maybe later"',
 				desc: 'Small dismissal link rendered under the body. false to hide.'
 			},
