@@ -37,7 +37,7 @@
 			</span>
 		</h2>
 		<p class="lede">Components that signal how oversubscribed your funding round is.</p>
-		<div class="home-install">npm install performative-ui-svelte</div>
+		<div class="home-install">npm install github:benjamin-brady/performative-ui-svelte</div>
 		<div class="home-cta-row">
 			<a
 				class="pui-btn pui-btn--ghost pui-btn--sm"
