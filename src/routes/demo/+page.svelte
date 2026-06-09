@@ -38,7 +38,12 @@
 	import ChatFABHeader from '$lib/components/ChatFABHeader.svelte';
 	import ChatFABBody from '$lib/components/ChatFABBody.svelte';
 
+	import ThemePopover from '$lib/docs/ThemePopover.svelte';
+	import { siteThemeContext } from '$lib/docs/theme.svelte';
+
 	import './demo.css';
+
+	const theme = siteThemeContext.get();
 
 	const ic = (slug: string) => `https://cdn.jsdelivr.net/npm/simple-icons@11/icons/${slug}.svg`;
 
@@ -70,7 +75,7 @@
 	/>
 </svelte:head>
 
-<div class="synthetica" data-theme="dark">
+<div class="synthetica">
 	<a class="syn-back-link" href={base || '/'}>← back to docs</a>
 
 	<!-- 00 · Sticky pill -->
@@ -92,8 +97,29 @@
 			<a href="#customers">Customers</a>
 		</div>
 		<div class="syn-nav-cta">
-			<a class="syn-nav-login" href="#">Log in</a>
-			<Button as="a" href="#" variant="shimmer" size="sm" sparkle>Start building</Button>
+			<a class="syn-nav-login" href="#top">Log in</a>
+			<Button as="a" href="#top" variant="shimmer" size="sm" sparkle>Start building</Button>
+			<div class="sidebar__actions">
+				<ThemePopover />
+				<button
+					type="button"
+					class="sidebar__theme-toggle"
+					onclick={() => theme.toggleBase()}
+					aria-label={`Switch to ${theme.base === 'dark' ? 'light' : 'dark'} mode`}
+					title={`Switch to ${theme.base === 'dark' ? 'light' : 'dark'} mode`}
+				>
+					{#if theme.base === 'dark'}
+						<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="12" cy="12" r="4" />
+							<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+						</svg>
+					{:else}
+						<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+						</svg>
+					{/if}
+				</button>
+			</div>
 		</div>
 	</nav>
 
@@ -134,8 +160,8 @@
 			</div>
 
 			<div class="syn-hero__ctas">
-				<Button as="a" href="#" variant="ghost">Talk to sales →</Button>
-				<a class="syn-hero__secondary" href="#">
+				<Button as="a" href="#top" variant="ghost">Talk to sales →</Button>
+				<a class="syn-hero__secondary" href="#top">
 					<span class="syn-play" aria-hidden="true">▶</span>
 					<span>Watch the 90-second demo</span>
 				</a>
@@ -240,7 +266,7 @@
 					A frontier-class reasoning engine that thinks before it speaks. Multi-step. Multi-modal.
 					Multi-vendor.
 				</GlassCardBody>
-				<GlassCardLink href="#">Learn more</GlassCardLink>
+				<GlassCardLink href="#top">Learn more</GlassCardLink>
 			</GlassCard>
 			<GlassCard breathing>
 				<GlassCardIcon>◇</GlassCardIcon>
@@ -249,7 +275,7 @@
 					Bring your private knowledge to the model. Vector, hybrid, graph — we pick the right index
 					for every query, every time.
 				</GlassCardBody>
-				<GlassCardLink href="#">Learn more</GlassCardLink>
+				<GlassCardLink href="#top">Learn more</GlassCardLink>
 			</GlassCard>
 			<GlassCard breathing>
 				<GlassCardIcon>◆</GlassCardIcon>
@@ -258,7 +284,7 @@
 					Agents that don't just respond. They schedule, draft, deploy, and refund. With audit logs
 					your security team will actually like.
 				</GlassCardBody>
-				<GlassCardLink href="#">Learn more</GlassCardLink>
+				<GlassCardLink href="#top">Learn more</GlassCardLink>
 			</GlassCard>
 		</div>
 	</section>
@@ -346,7 +372,7 @@
 					<li>Community support</li>
 					<li>1 project</li>
 				</PricingFeatures>
-				<PricingCTA href="#">Start free</PricingCTA>
+				<PricingCTA href="#top">Start free</PricingCTA>
 			</PricingCard>
 			<PricingCard featured>
 				<PricingFlag>Most popular</PricingFlag>
@@ -359,7 +385,7 @@
 					<li>Unlimited projects</li>
 					<li>Eval dashboard</li>
 				</PricingFeatures>
-				<PricingCTA href="#">Upgrade</PricingCTA>
+				<PricingCTA href="#top">Upgrade</PricingCTA>
 			</PricingCard>
 			<PricingCard>
 				<PricingTier>Enterprise</PricingTier>
@@ -371,7 +397,7 @@
 					<li>VPC deploy</li>
 					<li>Dedicated SE</li>
 				</PricingFeatures>
-				<PricingCTA href="#">Talk to sales</PricingCTA>
+				<PricingCTA href="#top">Talk to sales</PricingCTA>
 			</PricingCard>
 		</div>
 	</section>
@@ -439,17 +465,17 @@
 
 	<!-- 15 · Community -->
 	<section class="syn-community" id="docs">
-		<CommunityBadge href="#" icon={ic('github')} title="Star us on GitHub">
+		<CommunityBadge href="#top" icon={ic('github')} title="Star us on GitHub">
 			{#snippet subtitle()}<strong>12,847</strong> stars · +184 this week{/snippet}
 		</CommunityBadge>
 		<CommunityBadge
-			href="#"
+			href="#top"
 			icon={ic('discord')}
 			title="Join the Discord"
 			subtitle="8,201 builders online now"
 		/>
 		<CommunityBadge
-			href="#"
+			href="#top"
 			icon={ic('x')}
 			title="Follow on X"
 			subtitle="build in public, always"
@@ -478,32 +504,32 @@
 			<div class="syn-footer__cols">
 				<div>
 					<h4>Product</h4>
-					<a href="#">Reason</a>
-					<a href="#">Retrieve</a>
-					<a href="#">Act</a>
-					<a href="#">Eval</a>
-					<a href="#">Changelog</a>
+					<a href="#top">Reason</a>
+					<a href="#top">Retrieve</a>
+					<a href="#top">Act</a>
+					<a href="#top">Eval</a>
+					<a href="#top">Changelog</a>
 				</div>
 				<div>
 					<h4>Company</h4>
-					<a href="#">About</a>
-					<a href="#">Manifesto</a>
-					<a href="#">Careers</a>
-					<a href="#">Press kit</a>
+					<a href="#top">About</a>
+					<a href="#top">Manifesto</a>
+					<a href="#top">Careers</a>
+					<a href="#top">Press kit</a>
 				</div>
 				<div>
 					<h4>Resources</h4>
 					<a href="#docs">Docs</a>
-					<a href="#">API reference</a>
-					<a href="#">Cookbook</a>
-					<a href="#">Status</a>
+					<a href="#top">API reference</a>
+					<a href="#top">Cookbook</a>
+					<a href="#top">Status</a>
 				</div>
 				<div>
 					<h4>Legal</h4>
-					<a href="#">Terms</a>
-					<a href="#">Privacy</a>
-					<a href="#">DPA</a>
-					<a href="#">Subprocessors</a>
+					<a href="#top">Terms</a>
+					<a href="#top">Privacy</a>
+					<a href="#top">DPA</a>
+					<a href="#top">Subprocessors</a>
 				</div>
 			</div>
 		</div>
