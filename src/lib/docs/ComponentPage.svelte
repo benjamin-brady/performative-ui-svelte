@@ -2,7 +2,7 @@
 	import type { Component } from 'svelte';
 	import { base } from '$app/paths';
 	import type { ComponentMeta } from './catalog';
-	import { ORDERED_COMPONENTS } from './catalog';
+	import { ORDERED_COMPONENTS, REGISTRY_BASE_URL } from './catalog';
 	import InstallTabs from './InstallTabs.svelte';
 	import PropsTable from './PropsTable.svelte';
 
@@ -29,7 +29,7 @@
 	<section class="cp-section">
 		<h2 class="cp-section__title">Install</h2>
 		<p class="cp-install-copy">Copy this owned-code component into your app from the registry.</p>
-		<InstallTabs url={`${base}/registry/${meta.slug}.json`} />
+		<InstallTabs url={`${REGISTRY_BASE_URL}/registry/${meta.slug}.json`} />
 	</section>
 
 	<section class="cp-section">

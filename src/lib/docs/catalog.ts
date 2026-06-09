@@ -30,6 +30,13 @@ export interface ComponentMeta {
 	subprops?: Array<{ name: string; props: PropSpec[] }>;
 }
 
+/**
+ * Absolute base URL where the shadcn-svelte registry JSON is published.
+ * Install commands must point here so they resolve for anyone, regardless
+ * of where the docs are being viewed (dev, preview, or production).
+ */
+export const REGISTRY_BASE_URL = 'https://benjamin-brady.github.io/performative-ui-svelte';
+
 export const CATEGORIES = [
 	'Atoms',
 	'Primitives',
