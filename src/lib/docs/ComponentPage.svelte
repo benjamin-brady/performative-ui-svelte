@@ -3,6 +3,7 @@
 	import { base } from '$app/paths';
 	import type { ComponentMeta } from './catalog';
 	import { ORDERED_COMPONENTS } from './catalog';
+	import CodeBlock from './CodeBlock.svelte';
 	import PropsTable from './PropsTable.svelte';
 
 	let { meta, examples }: { meta: ComponentMeta; examples?: Component } = $props();
@@ -26,6 +27,12 @@
 	</section>
 
 	<section class="cp-section">
+		<h2 class="cp-section__title">Install</h2>
+		<p class="cp-install-copy">Copy this owned-code component into your app from the registry.</p>
+		<CodeBlock code={`bunx shadcn-svelte@latest add ${base}/registry/${meta.slug}.json`} />
+	</section>
+
+	<section class="cp-section">
 		<h2 class="cp-section__title">Examples</h2>
 		{#if Examples}
 			<Examples />
@@ -36,10 +43,8 @@
 		<h2 class="cp-section__title">Props</h2>
 		<PropsTable props={meta.props} />
 		{#each meta.subprops ?? [] as sp (sp.name)}
-			<div style="margin-top:24px">
-				<div
-					style="font-family:var(--pui-font-mono);font-size:13px;margin-bottom:8px;color:var(--pui-fg)"
-				>
+			<div class="cp-subprops">
+				<div class="cp-subprops__title">
 					{sp.name}
 				</div>
 				<PropsTable props={sp.props} />

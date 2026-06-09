@@ -117,18 +117,16 @@
 			</div>
 		{/each}
 
-		<div
-			style="margin-top:8px;padding-top:20px;border-top:1px solid var(--pui-border);font-size:11px;line-height:1.6;color:var(--pui-fg-mute)"
-		>
+		<div class="sidebar__attribution">
 			Svelte port of
 			<a
-				style="color:var(--pui-fg-mute);text-decoration:underline"
+				class="sidebar__attribution-link"
 				href="https://github.com/vorpus/performativeUI"
 				target="_blank"
 				rel="noreferrer">performative-ui</a>
 			by
 			<a
-				style="color:var(--pui-fg-mute);text-decoration:underline"
+				class="sidebar__attribution-link"
 				href="https://github.com/vorpus"
 				target="_blank"
 				rel="noreferrer">vorpus</a>.
