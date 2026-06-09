@@ -32,7 +32,7 @@ class?: string;
 import { BROWSER as browser } from 'esm-env';
 import { cn } from '$lib/utils/cn';
 import { untrack } from 'svelte';
-import { Portal } from 'bits-ui';
+import { Dialog } from 'bits-ui';
 
 let {
 open: controlledOpen = undefined,
@@ -51,13 +51,20 @@ class: className
 // svelte-ignore state_referenced_locally
 let internalOpen = $state(defaultOpen);
 let isControlled = $derived(controlledOpen !== undefined);
-let isOpen = $derived(isControlled ? controlledOpen : internalOpen);
+let isOpen = $derived(isControlled ? controlledOpen === true : internalOpen);
 let portalTarget = $derived(container ?? undefined);
+// svelte-ignore state_referenced_locally
+let dialogOpen = $state(controlledOpen ?? defaultOpen);
 
 function setOpen(next: boolean) {
 if (!isControlled) internalOpen = next;
+dialogOpen = isControlled ? (controlledOpen ?? next) : next;
 onOpenChange?.(next);
 }
+
+$effect(() => {
+dialogOpen = isOpen;
+});
 
 $effect(() => {
 const snapshotTimer = untrack(() => timer);
@@ -66,61 +73,42 @@ if (!browser || snapshotTimer <= 0 || snapshotOpen) return;
 const id = window.setTimeout(() => setOpen(true), snapshotTimer);
 return () => window.clearTimeout(id);
 });
-
-$effect(() => {
-if (!browser || !isOpen || !closeOnEscape) return;
-const onKey = (e: KeyboardEvent) => {
-if (e.key === 'Escape') {
-e.preventDefault();
-setOpen(false);
-}
-};
-document.addEventListener('keydown', onKey);
-return () => document.removeEventListener('keydown', onKey);
-});
-
-$effect(() => {
-if (!browser || !isOpen) return;
-const onKey = (e: KeyboardEvent) => {
-if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-const blocked = ['[', ']', 'j', 'k', 'ArrowLeft', 'ArrowRight'];
-if (blocked.includes(e.key)) e.stopPropagation();
-};
-document.addEventListener('keydown', onKey, { capture: true });
-return () => document.removeEventListener('keydown', onKey, true);
-});
-
-$effect(() => {
-if (!browser || !isOpen) return;
-const prev = document.body.style.overflow;
-document.body.style.overflow = 'hidden';
-return () => {
-document.body.style.overflow = prev;
-};
-});
 </script>
 
-{#if isOpen && browser}
-<Portal to={portalTarget}>
-<div class="pui-popover-overlay" role="dialog" aria-modal="true">
-<div
-class="pui-popover-backdrop"
-aria-hidden="true"
-onclick={closeOnBackdrop ? () => setOpen(false) : undefined}
-></div>
-<div class={cn('pui-popover', className)}>
+{#if browser}
+<Dialog.Root bind:open={dialogOpen} onOpenChange={setOpen}>
+<Dialog.Portal to={portalTarget}>
+<Dialog.Overlay
+data-slot="popover-overlay"
+class="fixed inset-0 z-50 bg-slate-950/45 backdrop-blur-sm"
+/>
+<Dialog.Content
+data-slot="popover-content"
+escapeKeydownBehavior={closeOnEscape ? 'close' : 'ignore'}
+interactOutsideBehavior={closeOnBackdrop ? 'close' : 'ignore'}
+class={cn(
+'fixed left-1/2 top-1/2 z-50 w-[min(calc(100vw-2rem),28rem)] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/70 bg-white/95 p-6 text-slate-950 shadow-2xl shadow-slate-950/20 outline-none backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/95 dark:text-slate-50',
+className
+)}
+>
 {#if title}
-<div class="pui-popover__title">
+<Dialog.Title
+data-slot="popover-title"
+class="text-balance text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-50"
+>
 {#if typeof title === 'string'}{title}{:else}{@render title()}{/if}
-</div>
+</Dialog.Title>
 {/if}
-<div class="pui-popover__body">{@render children?.()}</div>
+<div data-slot="popover-body" class={cn('mt-4', !title && 'mt-0')}>{@render children?.()}</div>
 {#if closeLabel !== false}
-<button type="button" class="pui-popover__dismiss" onclick={() => setOpen(false)}>
+<Dialog.Close
+data-slot="popover-dismiss"
+class="mt-4 inline-flex w-full items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-slate-500 transition-colors hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 dark:text-slate-400 dark:hover:text-slate-50 dark:focus-visible:ring-slate-600 dark:focus-visible:ring-offset-slate-950"
+>
 {#if typeof closeLabel === 'string'}{closeLabel}{:else if closeLabel}{@render closeLabel()}{/if}
-</button>
+</Dialog.Close>
 {/if}
-</div>
-</div>
-</Portal>
+</Dialog.Content>
+</Dialog.Portal>
+</Dialog.Root>
 {/if}
