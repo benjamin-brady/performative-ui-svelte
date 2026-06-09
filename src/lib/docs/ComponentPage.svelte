@@ -3,7 +3,7 @@
 	import { base } from '$app/paths';
 	import type { ComponentMeta } from './catalog';
 	import { ORDERED_COMPONENTS } from './catalog';
-	import CodeBlock from './CodeBlock.svelte';
+	import InstallTabs from './InstallTabs.svelte';
 	import PropsTable from './PropsTable.svelte';
 
 	let { meta, examples }: { meta: ComponentMeta; examples?: Component } = $props();
@@ -29,7 +29,7 @@
 	<section class="cp-section">
 		<h2 class="cp-section__title">Install</h2>
 		<p class="cp-install-copy">Copy this owned-code component into your app from the registry.</p>
-		<CodeBlock code={`bunx shadcn-svelte@latest add ${base}/registry/${meta.slug}.json`} />
+		<InstallTabs url={`${base}/registry/${meta.slug}.json`} />
 	</section>
 
 	<section class="cp-section">
