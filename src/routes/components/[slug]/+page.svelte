@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.meta.name} · performative-ui</title>
+	<title>{data.meta.name} · performative-ui-svelte</title>
 </svelte:head>
 
 <ComponentPage meta={data.meta} {examples} />

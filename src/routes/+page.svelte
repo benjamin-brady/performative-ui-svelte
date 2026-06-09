@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>performative-ui · AI-native Svelte components</title>
+	<title>performative-ui-svelte · AI-native Svelte components</title>
 </svelte:head>
 
 <StickyBanner>Now generally available</StickyBanner>
@@ -41,13 +41,26 @@
 		<div class="home-cta-row">
 			<a
 				class="pui-btn pui-btn--ghost pui-btn--sm"
-				href="https://github.com/vorpus/performativeUI"
+				href="https://github.com/benjamin-brady/performative-ui-svelte"
 				target="_blank"
 				rel="noreferrer"
 			>
 				★ Star on GitHub
 			</a>
 		</div>
+		<p style="margin-top:16px;font-size:13px;color:var(--pui-fg-mute)">
+			A Svelte port of
+			<a
+				style="color:var(--pui-fg);text-decoration:underline"
+				href="https://github.com/vorpus/performativeUI"
+				target="_blank"
+				rel="noreferrer">performative-ui</a>, originally created by
+			<a
+				style="color:var(--pui-fg);text-decoration:underline"
+				href="https://github.com/vorpus"
+				target="_blank"
+				rel="noreferrer">vorpus</a>.
+		</p>
 	</div>
 </section>
 

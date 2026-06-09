@@ -78,7 +78,7 @@
 		<div class="sidebar__brand-row">
 			<a href={base || '/'} class="sidebar__brand">
 				<span class="sidebar__mark">◣</span>
-				<span>performative-ui</span>
+				<span>performative-ui-svelte</span>
 			</a>
 			<button
 				type="button"
@@ -116,6 +116,23 @@
 				</nav>
 			</div>
 		{/each}
+
+		<div
+			style="margin-top:8px;padding-top:20px;border-top:1px solid var(--pui-border);font-size:11px;line-height:1.6;color:var(--pui-fg-mute)"
+		>
+			Svelte port of
+			<a
+				style="color:var(--pui-fg-mute);text-decoration:underline"
+				href="https://github.com/vorpus/performativeUI"
+				target="_blank"
+				rel="noreferrer">performative-ui</a>
+			by
+			<a
+				style="color:var(--pui-fg-mute);text-decoration:underline"
+				href="https://github.com/vorpus"
+				target="_blank"
+				rel="noreferrer">vorpus</a>.
+		</div>
 	</aside>
 
 	<main class="docs__main">
