@@ -1,18 +1,44 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { PersistedState } from 'runed';
 	import CodeBlock from '$lib/docs/CodeBlock.svelte';
+	import CommandTabs from '$lib/docs/CommandTabs.svelte';
 
-	const createProject = `# Scaffold a fresh SvelteKit app (Svelte 5)
-npx sv create my-app
+	type ManagerId = 'npm' | 'pnpm' | 'bun' | 'yarn';
+
+	interface Manager {
+		id: ManagerId;
+		label: string;
+		/** Run a package binary without installing (npx-equivalent). */
+		exec: string;
+		/** Install dependencies. */
+		install: string;
+		/** Run a package.json script (suffix the script name). */
+		run: string;
+	}
+
+	const managers: Manager[] = [
+		{ id: 'npm', label: 'npm', exec: 'npx', install: 'npm install', run: 'npm run' },
+		{ id: 'pnpm', label: 'pnpm', exec: 'pnpm dlx', install: 'pnpm install', run: 'pnpm' },
+		{ id: 'bun', label: 'bun', exec: 'bunx', install: 'bun install', run: 'bun' },
+		{ id: 'yarn', label: 'yarn', exec: 'yarn dlx', install: 'yarn install', run: 'yarn' }
+	];
+
+	const selected = new PersistedState<ManagerId>('pui-pkg-manager', 'npm');
+	const pm = $derived(managers.find((m) => m.id === selected.current) ?? managers[0]);
+	const tabs = managers.map((m) => ({ id: m.id, label: m.label }));
+
+	const createProject = $derived(`# Scaffold a fresh SvelteKit app (Svelte 5)
+${pm.exec} sv create my-app
 
 # Pick: SvelteKit minimal · TypeScript · Tailwind CSS
 cd my-app
-npm install`;
+${pm.install}`);
 
-	const addComponents = `# Pull owned-code components from the registry
-npx shadcn-svelte@latest add ${base}/registry/button.json
-npx shadcn-svelte@latest add ${base}/registry/gradient-text.json
-npx shadcn-svelte@latest add ${base}/registry/sparkle.json`;
+	const addComponents = $derived(`# Pull owned-code components from the registry
+${pm.exec} shadcn-svelte@latest add ${base}/registry/button.json
+${pm.exec} shadcn-svelte@latest add ${base}/registry/gradient-text.json
+${pm.exec} shadcn-svelte@latest add ${base}/registry/sparkle.json`);
 
 	const tailwindCss = `@import "tailwindcss";
 
@@ -33,7 +59,9 @@ npx shadcn-svelte@latest add ${base}/registry/sparkle.json`;
 	<Button variant="glow" sparkle>Generate</Button>
 </main>`;
 
-	const runDev = `npm run dev -- --open`;
+	const runDev = $derived(
+		selected.current === 'npm' ? 'npm run dev -- --open' : `${pm.run} dev --open`
+	);
 </script>
 
 <svelte:head>
@@ -55,7 +83,8 @@ npx shadcn-svelte@latest add ${base}/registry/sparkle.json`;
 			keeps the Tailwind build, theme tokens, and the component files themselves.
 		</p>
 		<p class="cp-description gs-note">
-			Requirements: Node 18+, Svelte 5, and Tailwind CSS v4.
+			Requirements: Node 18+, Svelte 5, and Tailwind CSS v4. Pick your package
+			manager in any command block below — they all stay in sync.
 		</p>
 	</section>
 
@@ -66,7 +95,7 @@ npx shadcn-svelte@latest add ${base}/registry/sparkle.json`;
 			<strong>SvelteKit minimal</strong> template, <strong>TypeScript</strong>, and add the
 			<strong>Tailwind CSS</strong> plugin — that wires up Tailwind v4 for you.
 		</p>
-		<CodeBlock code={createProject} />
+		<CommandTabs {tabs} bind:active={selected.current} code={createProject} />
 	</section>
 
 	<section class="cp-section">
@@ -76,7 +105,7 @@ npx shadcn-svelte@latest add ${base}/registry/sparkle.json`;
 			into <code>src/lib/components/ui/</code>. Swap the slug for any entry in the
 			<a href="{base}/registry/index.json">registry</a>.
 		</p>
-		<CodeBlock code={addComponents} />
+		<CommandTabs {tabs} bind:active={selected.current} code={addComponents} />
 	</section>
 
 	<section class="cp-section">
@@ -101,7 +130,7 @@ npx shadcn-svelte@latest add ${base}/registry/sparkle.json`;
 	<section class="cp-section">
 		<h2 class="cp-section__title">5 · Run it</h2>
 		<p class="cp-install-copy">Start the dev server and open the demo:</p>
-		<CodeBlock code={runDev} />
+		<CommandTabs {tabs} bind:active={selected.current} code={runDev} />
 		<p class="cp-description gs-next">
 			That's the whole loop. Browse the sidebar for the other
 			components and copy them in the same way.
