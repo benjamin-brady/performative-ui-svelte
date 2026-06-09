@@ -35,20 +35,31 @@ font: FONT_PRESETS[0].value
 
 export class SiteTheme {
 #mode: PersistedState<Base>;
+// Active preset id. Owned locally (not derived from `page.url`) because
+// `replaceState` updates the address bar without reliably making
+// `page.url` reactive — reading it here meant the apply effect never
+// re-ran after the first switch. The URL is still seeded on load (below)
+// and written on change purely for shareable links.
+#presetId = $state('default');
 
 constructor(initialBase: Base) {
 this.#mode = new PersistedState<Base>('pui-theme', initialBase);
-// An explicit ?mode in a shared link wins over the visitor's stored choice.
+// A shared link's explicit ?mode / ?theme win over stored/default state.
 if (browser) {
-const m = new URLSearchParams(window.location.search).get('mode');
+const params = new URLSearchParams(window.location.search);
+const m = params.get('mode');
 if (m === 'dark' || m === 'light') this.#mode.current = m;
+const t = params.get('theme');
+if (t) this.#presetId = t;
 }
 }
 
 /** Mutate the URL search params without a navigation or history entry. */
 #writeParams(next: { theme?: string; mode?: Base }) {
 if (!browser) return;
-const url = new URL(page.url);
+// Build from the live location, not `page.url`, which can lag behind
+// successive `replaceState` calls.
+const url = new URL(window.location.href);
 if (next.theme !== undefined) {
 if (next.theme === 'default') url.searchParams.delete('theme');
 else url.searchParams.set('theme', next.theme);
@@ -66,9 +77,7 @@ this.#writeParams({ mode: v });
 }
 
 get presetId(): string {
-// Reactive: tracks `page.url` so getters re-run on shallow URL changes.
-const fromUrl = browser ? page.url.searchParams.get('theme') : null;
-return fromUrl ?? 'default';
+return this.#presetId;
 }
 
 get activePreset(): Preset | null {
@@ -94,10 +103,12 @@ return buildThemeCss(this.state);
 
 apply(preset: Preset) {
 this.#mode.current = preset.base;
+this.#presetId = preset.id;
 this.#writeParams({ theme: preset.id, mode: preset.base });
 }
 
 reset() {
+this.#presetId = 'default';
 this.#writeParams({ theme: 'default' });
 }
 
