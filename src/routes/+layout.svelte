@@ -11,6 +11,9 @@
 
 	let { children } = $props();
 
+	// Static top-of-sidebar guides, separate from the component catalog.
+	const GETTING_STARTED = [{ name: 'Theming', href: `${base}/getting-started/theming` }];
+
 	type Theme = 'dark' | 'light';
 
 	function detectInitialTheme(): Theme {
@@ -98,6 +101,20 @@
 					</svg>
 				{/if}
 			</button>
+		</div>
+
+		<div class="sidebar__section">
+			<p class="sidebar__title">Getting Started</p>
+			<nav class="sidebar__nav">
+				{#each GETTING_STARTED as item (item.href)}
+					<a
+						href={item.href}
+						class={'sidebar__link' + (pathname === item.href ? ' sidebar__link--active' : '')}
+					>
+						{item.name}
+					</a>
+				{/each}
+			</nav>
 		</div>
 
 		{#each CATEGORIES as cat (cat)}
