@@ -79,6 +79,11 @@ default as LogoRow,
 type LogoRowProps,
 type LogoRowItem
 } from './components/LogoRow.svelte';
+export {
+default as SlippyWords,
+type SlippyWordsProps,
+type SlippyWord
+} from './components/SlippyWords.svelte';
 export { default as StatCounter, type StatCounterProps } from './components/StatCounter.svelte';
 export {
 default as CommunityBadge,

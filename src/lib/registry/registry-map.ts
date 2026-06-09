@@ -324,6 +324,14 @@ export const registryItems: RegistryItem[] = [
     categories: ["Social Proof"],
   }),
   ui({
+    name: "slippy-words",
+    title: "SlippyWords",
+    description:
+      "Rows of word badges that slide horizontally in alternating directions, driven by scroll position.",
+    files: ["SlippyWords"],
+    categories: ["Social Proof"],
+  }),
+  ui({
     name: "stat-counter",
     title: "StatCounter",
     description:

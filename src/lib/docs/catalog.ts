@@ -609,6 +609,29 @@ export const COMPONENTS: ComponentMeta[] = [
 		]
 	},
 	{
+		slug: 'slippy-words',
+		category: 'Social Proof',
+		name: 'SlippyWords',
+		snark: 'Buzzwords that physically move when you scroll. Motion design, allegedly.',
+		sources: [
+			{ name: 'cursor.com', url: 'https://cursor.com' },
+			{ name: 'vercel.com', url: 'https://vercel.com' },
+			{ name: 'framer.com', url: 'https://framer.com' }
+		],
+		extra: 388,
+		description:
+			'Two or more rows of word badges that slide horizontally in alternating directions, driven by scroll position. Give each row more badges than fit so the edges never run dry. Pair it with an edge fade for the obligatory kinetic-typography strip. Honors prefers-reduced-motion (badges wrap and sit still).',
+		props: [
+			{ name: 'rows', type: 'SlippyWord[][]', required: true, desc: 'Rows of badges. A SlippyWord is a string or { label, key?, gradient? }.' },
+			{ name: 'intensity', type: 'number', default: '240', desc: 'Max horizontal travel in px across the full scroll range.' },
+			{ name: 'startDirection', type: '"left" | "right"', default: '"left"', desc: 'Direction the first row drifts on scroll down; rows alternate.' },
+			{ name: 'gap', type: 'number', default: '12', desc: 'Gap between badges (and between rows) in px.' },
+			{ name: 'fade', type: 'boolean', default: 'true', desc: 'Apply an edge-fade mask so badges dissolve at the sides.' },
+			{ name: 'gradient', type: 'boolean', default: 'false', desc: 'Render every badge with the gradient fill.' },
+			{ name: 'static', type: 'boolean', default: 'false', desc: 'Disable scroll coupling. Also forced under prefers-reduced-motion.' }
+		]
+	},
+	{
 		slug: 'stat-counter',
 		category: 'Social Proof',
 		name: 'StatCounter',

@@ -650,6 +650,50 @@
       "url": "https://benjamin-brady.github.io/performative-ui-svelte/registry/logo-row.json"
     },
     {
+      "name": "slippy-words",
+      "type": "registry:ui",
+      "title": "SlippyWords",
+      "description": "Rows of word badges that slide horizontally in alternating directions, driven by scroll position.",
+      "registryDependencies": [
+        "utils",
+        "theme",
+        "pui-styles"
+      ],
+      "categories": [
+        "Social Proof"
+      ],
+      "files": [
+        {
+          "path": "src/lib/components/SlippyWords.svelte",
+          "target": "$lib/components/SlippyWords.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "url": "https://benjamin-brady.github.io/performative-ui-svelte/registry/slippy-words.json"
+    },
+    {
+      "name": "slippy-words",
+      "type": "registry:ui",
+      "title": "SlippyWords",
+      "description": "Rows of word badges that slide horizontally in alternating directions, driven by scroll position.",
+      "registryDependencies": [
+        "utils",
+        "theme",
+        "pui-styles"
+      ],
+      "categories": [
+        "Social Proof"
+      ],
+      "files": [
+        {
+          "path": "src/lib/components/SlippyWords.svelte",
+          "target": "$lib/components/SlippyWords.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "url": "https://benjamin-brady.github.io/performative-ui-svelte/registry/slippy-words.json"
+    },
+    {
       "name": "stat-counter",
       "type": "registry:ui",
       "title": "StatCounter",
