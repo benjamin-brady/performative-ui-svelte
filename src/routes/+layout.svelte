@@ -100,6 +100,19 @@
 			</button>
 		</div>
 
+		<div class="sidebar__section">
+			<p class="sidebar__title">Guide</p>
+			<nav class="sidebar__nav">
+				<a
+					href="{base}/getting-started"
+					class={'sidebar__link' +
+						(pathname === `${base}/getting-started` ? ' sidebar__link--active' : '')}
+				>
+					Getting Started
+				</a>
+			</nav>
+		</div>
+
 		{#each CATEGORIES as cat (cat)}
 			<div class="sidebar__section">
 				<p class="sidebar__title">{cat}</p>

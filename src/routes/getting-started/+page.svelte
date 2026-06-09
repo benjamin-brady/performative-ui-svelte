@@ -1,0 +1,110 @@
+<script lang="ts">
+	import { base } from '$app/paths';
+	import CodeBlock from '$lib/docs/CodeBlock.svelte';
+
+	const createProject = `# Scaffold a fresh SvelteKit app (Svelte 5)
+npx sv create my-app
+
+# Pick: SvelteKit minimal · TypeScript · Tailwind CSS
+cd my-app
+npm install`;
+
+	const addComponents = `# Pull owned-code components from the registry
+npx shadcn-svelte@latest add ${base}/registry/button.json
+npx shadcn-svelte@latest add ${base}/registry/gradient-text.json
+npx shadcn-svelte@latest add ${base}/registry/sparkle.json`;
+
+	const tailwindCss = `@import "tailwindcss";
+
+/* Performative theme tokens + shared keyframes the components rely on. */
+@import "performative-ui-svelte/styles.css";`;
+
+	const demoPage = `<script lang="ts">
+	import { Button } from "$lib/components/ui/button";
+	import { GradientText } from "$lib/components/ui/gradient-text";
+	import { Sparkle } from "$lib/components/ui/sparkle";
+<\/script>
+
+<main style="display:grid;place-items:center;min-height:100vh;gap:1.5rem;text-align:center">
+	<h1 style="font-size:2.5rem;font-weight:700">
+		Ship <GradientText>agentic workflows</GradientText> <Sparkle />
+	</h1>
+
+	<Button variant="glow" sparkle>Generate</Button>
+</main>`;
+
+	const runDev = `npm run dev -- --open`;
+</script>
+
+<svelte:head>
+	<title>Getting Started · performative-ui-svelte</title>
+</svelte:head>
+
+<article>
+	<header class="cp-header">
+		<div class="cp-eyebrow"><span>Guide</span></div>
+		<h1 class="cp-title">Getting Started</h1>
+		<p class="cp-snark">From <code>npm create</code> to an oversubscribed-looking demo in five minutes.</p>
+	</header>
+
+	<section class="cp-section">
+		<p class="cp-description">
+			This guide spins up a fresh SvelteKit project, adds a couple of
+			performative-ui-svelte components, and wires up a tiny demo page. Components
+			are installed as owned source via the shadcn-svelte registry, so your app
+			keeps the Tailwind build, theme tokens, and the component files themselves.
+		</p>
+		<p class="cp-description gs-note">
+			Requirements: Node 18+, Svelte 5, and Tailwind CSS v4.
+		</p>
+	</section>
+
+	<section class="cp-section">
+		<h2 class="cp-section__title">1 · Create a SvelteKit project</h2>
+		<p class="cp-install-copy">
+			Use the official <code>sv</code> CLI. When prompted, choose the
+			<strong>SvelteKit minimal</strong> template, <strong>TypeScript</strong>, and add the
+			<strong>Tailwind CSS</strong> plugin — that wires up Tailwind v4 for you.
+		</p>
+		<CodeBlock code={createProject} />
+	</section>
+
+	<section class="cp-section">
+		<h2 class="cp-section__title">2 · Add a few components</h2>
+		<p class="cp-install-copy">
+			Pull just what the demo needs. Each command drops an owned-code component
+			into <code>src/lib/components/ui/</code>. Swap the slug for any entry in the
+			<a href="{base}/registry/index.json">registry</a>.
+		</p>
+		<CodeBlock code={addComponents} />
+	</section>
+
+	<section class="cp-section">
+		<h2 class="cp-section__title">3 · Import the theme</h2>
+		<p class="cp-install-copy">
+			The components expect the performative theme tokens and a handful of shared
+			animation keyframes. Add one import to your Tailwind entry CSS (typically
+			<code>src/app.css</code>):
+		</p>
+		<CodeBlock code={tailwindCss} />
+	</section>
+
+	<section class="cp-section">
+		<h2 class="cp-section__title">4 · Build a demo page</h2>
+		<p class="cp-install-copy">
+			Keep it deliberately small — three components is plenty to look like you
+			raised a Series B. Drop this into <code>src/routes/+page.svelte</code>:
+		</p>
+		<CodeBlock code={demoPage} />
+	</section>
+
+	<section class="cp-section">
+		<h2 class="cp-section__title">5 · Run it</h2>
+		<p class="cp-install-copy">Start the dev server and open the demo:</p>
+		<CodeBlock code={runDev} />
+		<p class="cp-description gs-next">
+			That's the whole loop. Browse the sidebar for the other
+			components and copy them in the same way.
+		</p>
+	</section>
+</article>
