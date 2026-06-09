@@ -15,7 +15,8 @@
 	// Static top-of-sidebar guide links, separate from the component catalog.
 	const GUIDE = [
 		{ name: 'Getting Started', href: `${base}/getting-started` },
-		{ name: 'Theming', href: `${base}/getting-started/theming` }
+		{ name: 'Theming', href: `${base}/getting-started/theming` },
+		{ name: 'Live Demo', href: `${base}/demo` }
 	];
 
 	type Theme = 'dark' | 'light';
@@ -29,6 +30,10 @@
 	let menuOpen = $state(false);
 
 	let pathname = $derived(page.url.pathname);
+
+	// The /demo route is a full-bleed standalone landing page that opts out of
+	// the docs sidebar/main chrome.
+	let isFullBleed = $derived(pathname === `${base}/demo` || pathname.startsWith(`${base}/demo/`));
 
 	// Apply the dark/light base to <html>.
 	$effect(() => {
@@ -70,7 +75,10 @@
 	});
 </script>
 
-<div class={'docs' + (menuOpen ? ' docs--menu-open' : '')}>
+{#if isFullBleed}
+	{@render children?.()}
+{:else}
+	<div class={'docs' + (menuOpen ? ' docs--menu-open' : '')}>
 	<button
 		class="docs__menu-btn"
 		aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
@@ -161,4 +169,5 @@
 	<main class="docs__main">
 		{@render children?.()}
 	</main>
-</div>
+	</div>
+{/if}
