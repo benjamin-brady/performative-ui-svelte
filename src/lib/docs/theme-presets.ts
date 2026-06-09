@@ -82,12 +82,27 @@ export interface Preset {
 	id: string;
 	name: string;
 	base: Base;
+	/** Accent tokens (gradient + semantic) — mode-independent, always applied. */
+	accent: Record<string, string>;
+	/** Surface/text overrides for the preset's own base. */
+	surfaces: Record<string, string>;
+	/** Fully-resolved palette for the preset's own base (preview + swatch). */
 	colors: Record<string, string>;
 	radiusPx: number;
 	font: string;
 }
 
-/** Build a preset, layering partial overrides onto the base defaults. */
+/** Tokens that re-tint the accent rather than the surfaces; safe in both modes. */
+const ACCENT_KEYS = new Set([
+	'pui-grad-from',
+	'pui-grad-mid',
+	'pui-grad-to',
+	'pui-success',
+	'pui-danger',
+	'pui-warn'
+]);
+
+/** Build a preset, splitting overrides into accent vs surface tokens. */
 function mk(
 	id: string,
 	name: string,
@@ -95,10 +110,17 @@ function mk(
 	overrides: Record<string, string>,
 	opts: { radiusPx?: number; font?: string } = {}
 ): Preset {
+	const accent: Record<string, string> = {};
+	const surfaces: Record<string, string> = {};
+	for (const [k, v] of Object.entries(overrides)) {
+		(ACCENT_KEYS.has(k) ? accent : surfaces)[k] = v;
+	}
 	return {
 		id,
 		name,
 		base,
+		accent,
+		surfaces,
 		colors: { ...defaultsFor(base), ...overrides },
 		radiusPx: opts.radiusPx ?? DEFAULT_RADIUS_PX,
 		font: opts.font ?? FONT_PRESETS[0].value
@@ -267,6 +289,26 @@ export function themeEntries(state: ThemeState): [string, string][] {
 /** A CSS gradient preview string for a preset's three stops. */
 export function gradientPreview(colors: Record<string, string>): string {
 	return `linear-gradient(120deg, ${colors['pui-grad-from']}, ${colors['pui-grad-mid']}, ${colors['pui-grad-to']})`;
+}
+
+/**
+ * Resolve a preset's colors for a given base mode. The preset's accent (gradient
+ * + semantic) always applies; its bespoke surfaces only apply in its own base,
+ * otherwise the mode defaults are used so the dark/light toggle keeps working.
+ */
+export function resolvePresetColors(preset: Preset, base: Base): Record<string, string> {
+	const surfaces = base === preset.base ? preset.surfaces : {};
+	return { ...defaultsFor(base), ...surfaces, ...preset.accent };
+}
+
+/** Resolve a preset into a full theme state for the given base mode. */
+export function resolvePreset(preset: Preset, base: Base): ThemeState {
+	return {
+		base,
+		colors: resolvePresetColors(preset, base),
+		radiusPx: preset.radiusPx,
+		font: preset.font
+	};
 }
 
 /** Serialise a theme state to a copy-pasteable CSS block. */

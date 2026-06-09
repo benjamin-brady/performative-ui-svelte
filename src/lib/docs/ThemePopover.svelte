@@ -8,6 +8,7 @@
 		defaultsFor,
 		themeEntries,
 		gradientPreview,
+		resolvePreset,
 		buildThemeCss,
 		type Base,
 		type Preset,
@@ -35,24 +36,23 @@
 
 	let activePreset = $derived(PRESETS.find((p) => p.id === activeId.current) ?? null);
 
-	function stateOf(preset: Preset): ThemeState {
-		return { base: preset.base, colors: preset.colors, radiusPx: preset.radiusPx, font: preset.font };
-	}
-
+	// Resolve the active preset against the live dark/light base so toggling the
+	// sun still flips surfaces while the preset's accent persists.
 	let activeState = $derived<ThemeState>(
 		activePreset
-			? stateOf(activePreset)
+			? resolvePreset(activePreset, base)
 			: { base, colors: defaultsFor(base), radiusPx: DEFAULT_RADIUS_PX, font: FONT_PRESETS[0].value }
 	);
 
 	// Push the active preset's tokens onto <html> (inline props win over the
 	// stylesheet). 'default' clears them so the stock theme + toggle take over.
+	// Re-runs when `base` changes so the dark/light toggle keeps working.
 	$effect(() => {
 		if (!browser) return;
 		const el = document.documentElement;
 		const preset = PRESETS.find((p) => p.id === activeId.current);
 		if (preset) {
-			for (const [k, v] of themeEntries(stateOf(preset))) el.style.setProperty(k, v);
+			for (const [k, v] of themeEntries(resolvePreset(preset, base))) el.style.setProperty(k, v);
 		} else {
 			for (const k of PROP_NAMES) el.style.removeProperty(k);
 		}
@@ -159,7 +159,7 @@
 					</button>
 				{/each}
 			</div>
-			<p class="tpop__hint">Re-skins the whole site. Copy grabs the matching CSS.</p>
+			<p class="tpop__hint">Re-skins the site and respects your dark/light toggle.</p>
 		</div>
 	{/if}
 </div>

@@ -997,12 +997,12 @@ a { color: inherit; }
 
 /* ---------- Nav theme-settings popover ---------- */
 .sidebar__actions {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 .tpop {
-  position: relative;
   display: inline-flex;
 }
 .tpop__panel {
@@ -1010,7 +1010,7 @@ a { color: inherit; }
   top: calc(100% + 8px);
   right: 0;
   z-index: 20;
-  width: 268px;
+  width: 240px;
   padding: 12px;
   border: 1px solid var(--pui-border-bright);
   border-radius: 12px;
@@ -1051,6 +1051,7 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
   padding: 6px 8px;
   border: 1px solid var(--pui-border);
   border-radius: 8px;
@@ -1079,6 +1080,7 @@ a { color: inherit; }
 }
 .tpop__name {
   font-size: 12px;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
