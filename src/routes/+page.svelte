@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { COMPONENTS, CATEGORIES } from '$lib/docs/catalog';
+	import { COMPONENTS, CATEGORIES, REGISTRY_BASE_URL } from '$lib/docs/catalog';
 	import StickyBanner from '$lib/components/StickyBanner.svelte';
 	import EyebrowPill from '$lib/components/EyebrowPill.svelte';
 	import GradientText from '$lib/components/GradientText.svelte';
@@ -37,7 +37,7 @@
 			</span>
 		</h2>
 		<p class="lede">Components that signal how oversubscribed your funding round is.</p>
-		<div class="home-install">bunx shadcn-svelte@latest add {base}/registry/button.json</div>
+		<div class="home-install">bunx shadcn-svelte@latest add {REGISTRY_BASE_URL}/registry/button.json</div>
 		<div class="home-cta-row">
 			<a
 				class="pui-btn pui-btn--ghost pui-btn--sm"
