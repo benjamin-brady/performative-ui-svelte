@@ -50,23 +50,6 @@
       "url": "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
     },
     {
-      "name": "pui-styles",
-      "type": "registry:file",
-      "title": "Performative UI styles",
-      "description": "Shared animation keyframes for components that rely on the performative Tailwind theme.",
-      "categories": [
-        "Utilities"
-      ],
-      "files": [
-        {
-          "path": "src/lib/styles/pui.css",
-          "target": "~/src/lib/styles/pui.css",
-          "type": "registry:file"
-        }
-      ],
-      "url": "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
-    },
-    {
       "name": "use-typewriter",
       "type": "registry:hook",
       "title": "useTypewriter",
@@ -141,8 +124,7 @@
       "description": "Four-point gradient sparkle glyph with optional twinkle animation.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Atoms"
@@ -163,8 +145,7 @@
       "description": "Gradient-clipped text wrapper with optional animated shift.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Atoms"
@@ -185,8 +166,7 @@
       "description": "Small status indicator with optional pulse animation.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Atoms"
@@ -211,7 +191,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
@@ -234,7 +213,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
@@ -257,7 +235,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/status-dot.json"
       ],
       "categories": [
@@ -280,7 +257,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-typewriter.json"
       ],
       "categories": [
@@ -302,8 +278,7 @@
       "description": "Vertical slide-roll word rotator for headline alternates.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Heroes"
@@ -325,7 +300,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/button.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
@@ -348,8 +322,7 @@
       "description": "Multi-line AI prompt box with toolbar and model menu.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Heroes"
@@ -371,7 +344,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-ascii-field.json"
       ],
       "categories": [
@@ -393,8 +365,7 @@
       "description": "Animated radial-gradient aurora background layer.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Backgrounds"
@@ -415,8 +386,7 @@
       "description": "Animated node graph canvas background.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Backgrounds"
@@ -437,8 +407,7 @@
       "description": "Ambient floating sparkle field for landing-page backgrounds.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Backgrounds"
@@ -459,8 +428,7 @@
       "description": "Glassmorphic card shell and compound content pieces.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Surfaces"
@@ -501,8 +469,7 @@
       "description": "Mock code editor surface with chrome and token-streaming body.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Surfaces"
@@ -534,7 +501,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
@@ -557,7 +523,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-token-stream.json"
       ],
       "categories": [
@@ -580,7 +545,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
@@ -612,8 +576,7 @@
       "description": "Scrolling logo or text marquee for social proof strips.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Social Proof"
@@ -634,8 +597,7 @@
       "description": "Centered row of customer logos or text marks.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Social Proof"
@@ -655,9 +617,8 @@
       "title": "SlippyWords",
       "description": "Rows of word badges that slide horizontally in alternating directions, driven by scroll position.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Social Proof"
@@ -665,7 +626,7 @@
       "files": [
         {
           "path": "src/lib/components/SlippyWords.svelte",
-          "target": "$lib/components/SlippyWords.svelte",
+          "target": "~/src/lib/components/SlippyWords.svelte",
           "type": "registry:ui"
         }
       ],
@@ -679,7 +640,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-counter.json"
       ],
       "categories": [
@@ -701,8 +661,7 @@
       "description": "Inline community/social proof badge with optional avatar stack.",
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Social Proof"
@@ -724,7 +683,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
@@ -777,7 +735,6 @@
       "registryDependencies": [
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
         "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [

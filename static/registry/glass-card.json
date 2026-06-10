@@ -6,8 +6,7 @@
   "description": "Glassmorphic card shell and compound content pieces.",
   "registryDependencies": [
     "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
-    "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
-    "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
   ],
   "categories": [
     "Surfaces"
