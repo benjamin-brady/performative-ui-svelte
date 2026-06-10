@@ -10,6 +10,7 @@
 	import Aurora from '$lib/components/Aurora.svelte';
 	import NodeGraphBackground from '$lib/components/NodeGraphBackground.svelte';
 	import FloatingSparkles from '$lib/components/FloatingSparkles.svelte';
+	import Waves from '$lib/components/Waves.svelte';
 	import PromptHero from '$lib/components/PromptHero.svelte';
 	import StatCounter from '$lib/components/StatCounter.svelte';
 	import LogoMarquee from '$lib/components/LogoMarquee.svelte';
@@ -136,6 +137,7 @@
 				]}
 			/>
 			<NodeGraphBackground density={55} />
+			<Waves lines={7} baseOpacity={0.4} />
 			<FloatingSparkles count={22} />
 		</div>
 

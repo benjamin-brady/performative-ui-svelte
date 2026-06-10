@@ -35,6 +35,7 @@ export {
 default as FloatingSparkles,
 type FloatingSparklesProps
 } from './components/FloatingSparkles.svelte';
+export { default as Waves, type WavesProps } from './components/Waves.svelte';
 
 // Surfaces
 export {

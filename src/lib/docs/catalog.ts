@@ -426,6 +426,39 @@ export const COMPONENTS: ComponentMeta[] = [
 		]
 	},
 	{
+		slug: 'waves',
+		category: 'Backgrounds',
+		name: 'Waves',
+		snark: 'Our roadmap, visualized as an ocean of momentum.',
+		sources: [
+			{ name: 'heidihealth.com', url: 'https://www.heidihealth.com' },
+			{ name: 'openai.com', url: 'https://openai.com' }
+		],
+		extra: 140,
+		description:
+			'Canvas-rendered flowing waveform lines. Each line sums several incommensurate harmonics under a wandering amplitude envelope, so it reads like an ocean swell rather than a scrolling sine. Zero JS dependencies. Drop inside any `position: relative` parent.',
+		props: [
+			{ name: 'lines', type: 'number', default: '6', desc: 'Number of flowing waveform lines.' },
+			{ name: 'colors', type: 'string[]', desc: 'Stroke colors, distributed across the lines.' },
+			{ name: 'amplitude', type: 'number', default: '46', desc: 'Peak vertical travel (px) of the swell.' },
+			{ name: 'speed', type: 'number', default: '1', desc: 'Animation rate. Higher flows faster.' },
+			{ name: 'lineWidth', type: 'number', default: '1.5', desc: 'Stroke width in px.' },
+			{ name: 'baseOpacity', type: 'number', default: '0.55', desc: 'Resting stroke opacity (0–1).' },
+			{
+				name: 'complexity',
+				type: 'number',
+				default: '4',
+				desc: 'Harmonics summed per line. More = choppier, more ocean-like.'
+			},
+			{
+				name: 'spread',
+				type: 'number',
+				default: '0.22',
+				desc: 'How far (0–1 of height) the lines fan out from the vertical centre.'
+			}
+		]
+	},
+	{
 		slug: 'glass-card',
 		category: 'Surfaces',
 		name: 'GlassCard',

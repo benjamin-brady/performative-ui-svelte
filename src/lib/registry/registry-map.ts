@@ -253,6 +253,13 @@ export const registryItems: RegistryItem[] = [
     categories: ["Backgrounds"],
   }),
   ui({
+    name: "waves",
+    title: "Waves",
+    description: "Organic flowing waveform lines canvas background.",
+    files: ["Waves"],
+    categories: ["Backgrounds"],
+  }),
+  ui({
     name: "glass-card",
     title: "GlassCard",
     description: "Glassmorphic card shell and compound content pieces.",
