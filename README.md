@@ -14,8 +14,31 @@ Production apps should install components from the shadcn-svelte-style registry
 so your app owns the component source, Tailwind build, theme tokens, and generated
 utilities.
 
+First initialize shadcn-svelte once (creates `components.json`; point the global
+CSS prompt at your Tailwind entry, e.g. `src/app.css`):
+
+```sh
+bunx shadcn-svelte@latest init
+```
+
+Then add any component. Its theme tokens, shared keyframes, and `cn` util come
+along automatically on first run:
+
 ```sh
 bunx shadcn-svelte@latest add https://benjamin-brady.github.io/performative-ui-svelte/registry/button.json
+```
+
+Components install as owned source into `src/lib/components/` (PascalCase
+`.svelte` files), so import them directly:
+
+```svelte
+<script>
+  import Button from "$lib/components/Button.svelte";
+  import GradientText from "$lib/components/GradientText.svelte";
+</script>
+
+<h1>Ship <GradientText>agentic workflows</GradientText></h1>
+<Button variant="glow" sparkle>Generate</Button>
 ```
 
 Swap `button.json` for any component in the registry. The full component list is

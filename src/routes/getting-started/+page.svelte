@@ -40,20 +40,18 @@ ${pm.exec} sv create my-app
 cd my-app
 ${pm.install}`);
 
+	const initProject = $derived(`# Create components.json (point the global CSS prompt at src/app.css)
+${pm.exec} shadcn-svelte@latest init`);
+
 	const addComponents = $derived(`# Pull owned-code components from the registry
 ${pm.exec} shadcn-svelte@latest add ${registryBase}/button.json
 ${pm.exec} shadcn-svelte@latest add ${registryBase}/gradient-text.json
 ${pm.exec} shadcn-svelte@latest add ${registryBase}/sparkle.json`);
 
-	const tailwindCss = `@import "tailwindcss";
-
-/* Performative theme tokens + shared keyframes the components rely on. */
-@import "performative-ui-svelte/styles.css";`;
-
 	const demoPage = `<script lang="ts">
-	import { Button } from "$lib/components/ui/button";
-	import { GradientText } from "$lib/components/ui/gradient-text";
-	import { Sparkle } from "$lib/components/ui/sparkle";
+	import Button from "$lib/components/Button.svelte";
+	import GradientText from "$lib/components/GradientText.svelte";
+	import Sparkle from "$lib/components/Sparkle.svelte";
 <\/script>
 
 <main style="display:grid;place-items:center;min-height:100vh;gap:1.5rem;text-align:center">
@@ -104,23 +102,26 @@ ${pm.exec} shadcn-svelte@latest add ${registryBase}/sparkle.json`);
 	</section>
 
 	<section class="cp-section">
-		<h2 class="cp-section__title">2 · Add a few components</h2>
+		<h2 class="cp-section__title">2 · Initialize shadcn-svelte</h2>
 		<p class="cp-install-copy">
-			Pull just what the demo needs. Each command drops an owned-code component
-			into <code>src/lib/components/ui/</code>. Swap the slug for any entry in the
-			<a href="{base}/registry/index.json">registry</a>.
+			Create a <code>components.json</code> so the registry knows where to drop
+			files. When prompted for your global stylesheet, point it at
+			<code>src/app.css</code> (the Tailwind entry imported from
+			<code>src/routes/+layout.svelte</code>) — the next step overwrites that file
+			with the performative theme tokens and the shared animation keyframes.
 		</p>
-		<CommandTabs {tabs} bind:active={selected.current} code={addComponents} />
+		<CommandTabs {tabs} bind:active={selected.current} code={initProject} />
 	</section>
 
 	<section class="cp-section">
-		<h2 class="cp-section__title">3 · Import the theme</h2>
+		<h2 class="cp-section__title">3 · Add a few components</h2>
 		<p class="cp-install-copy">
-			The components expect the performative theme tokens and a handful of shared
-			animation keyframes. Add one import to your Tailwind entry CSS (typically
-			<code>src/app.css</code>):
+			Pull just what the demo needs. Each command drops an owned-code component
+			into <code>src/lib/components/</code> and brings its theme + utils along on
+			first run. Swap the slug for any entry in the
+			<a href="{base}/registry/index.json">registry</a>.
 		</p>
-		<CodeBlock code={tailwindCss} />
+		<CommandTabs {tabs} bind:active={selected.current} code={addComponents} />
 	</section>
 
 	<section class="cp-section">
