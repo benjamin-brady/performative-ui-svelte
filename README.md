@@ -4,6 +4,8 @@ AI-native **Svelte 5** components that signal how oversubscribed your funding ro
 
 A Svelte port of [performative-ui](https://github.com/vorpus/performativeUI) by vorpus, with a live documentation site for every component.
 
+📚 **Docs:** https://benjamin-brady.github.io/performative-ui-svelte/
+
 ## Install
 
 ### Recommended: owned-code registry
