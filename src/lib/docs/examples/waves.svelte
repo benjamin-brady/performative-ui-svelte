@@ -6,46 +6,41 @@ import Waves from '$lib/components/Waves.svelte';
 <Example
 title="Default"
 stretch
-code={`<div style={{ position: "relative", height: 220 }}>
+code={`<div style={{ position: "relative", height: 260 }}>
   <Waves />
 </div>`}
 >
-<div style="position:relative;height:220px;overflow:hidden;background:#fafaf5">
+<div style="position:relative;height:260px;overflow:hidden;background:var(--pui-bg)">
 <Waves />
 </div>
 </Example>
 
 <Example
-title="Calmer swell"
+title="About to break"
 stretch
 code={`<Waves
-  lines={4}
-  amplitude={28}
-  speed={0.6}
-  complexity={3}
+  lines={5}
+  amplitude={104}
+  skew={0.85}
+  centerBias={0.8}
 />`}
 >
-<div style="position:relative;height:200px;overflow:hidden;background:#fafaf5">
-<Waves lines={4} amplitude={28} speed={0.6} complexity={3} />
+<div style="position:relative;height:240px;overflow:hidden;background:var(--pui-bg)">
+<Waves lines={5} amplitude={104} skew={0.85} centerBias={0.8} />
 </div>
 </Example>
 
 <Example
-title="Choppy + cyan"
+title="Calm, upright swell"
 stretch
 code={`<Waves
-  lines={9}
-  amplitude={54}
-  complexity={6}
-  colors={["#67e8f9", "#22d3ee", "#0ea5e9", "#a5f3fc"]}
+  lines={4}
+  complexity={2}
+  skew={0.15}
+  speed={0.1}
 />`}
 >
-<div style="position:relative;height:240px;overflow:hidden;background:#05080d">
-<Waves
-lines={9}
-amplitude={54}
-complexity={6}
-colors={['#67e8f9', '#22d3ee', '#0ea5e9', '#a5f3fc']}
-/>
+<div style="position:relative;height:220px;overflow:hidden;background:var(--pui-bg)">
+<Waves lines={4} complexity={2} skew={0.15} speed={0.1} />
 </div>
 </Example>

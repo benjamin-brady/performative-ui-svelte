@@ -4,24 +4,45 @@ import type { HTMLAttributes } from 'svelte/elements';
 export interface WavesProps extends HTMLAttributes<HTMLDivElement> {
 	/** Number of flowing waveform lines. Default 6. */
 	lines?: number;
-	/** Stroke colors, distributed across the lines. */
+	/**
+	 * Stroke colors, distributed across the lines. Any CSS color, including
+	 * `var(--…)` custom properties — resolved against the host element at
+	 * runtime. Defaults to the theme gradient tokens.
+	 */
 	colors?: string[];
-	/** Peak vertical travel (px) of the swell at full envelope. Default 46. */
+	/** Peak vertical travel (px) of a bulge at full envelope. Default 96. */
 	amplitude?: number;
-	/** Animation rate. Higher flows faster. Default 1. */
+	/** Animation rate. Higher moves the bulges faster. Default 0.16. */
 	speed?: number;
 	/** Stroke width in px. Default 1.5. */
 	lineWidth?: number;
 	/** Resting stroke opacity (0–1). Default 0.55. */
 	baseOpacity?: number;
 	/**
-	 * Number of harmonics summed per line. More = choppier, more ocean-like.
-	 * Default 4. Frequencies are incommensurate so the curve never looks
-	 * like a clean sine.
+	 * Number of harmonics summed per line. Each travels at its own speed and
+	 * slowly waxes/wanes, so crests form and dissolve rather than sliding as
+	 * one rigid shape. Fewer = longer, calmer swell; more = busier. Default 4.
 	 */
 	complexity?: number;
 	/** How far (0–1 of height) the lines fan out from the vertical centre. Default 0.22. */
 	spread?: number;
+	/**
+	 * Fraction (0–0.5) of the width over which each line fades to transparent
+	 * at the left and right ends. 0 disables the fade. Default 0.18.
+	 */
+	edgeFade?: number;
+	/**
+	 * How strongly the swell concentrates toward the horizontal centre (0–1).
+	 * 0 = uniform across the width; 1 = lines are flat at the ends and only
+	 * swell in the middle. Default 0.55.
+	 */
+	centerBias?: number;
+	/**
+	 * Forward lean of each crest, like an ocean wave about to break (0–1).
+	 * 0 = upright; higher shears each crest toward the travel direction so the
+	 * leading face steepens. Default 0.55.
+	 */
+	skew?: number;
 }
 </script>
 
@@ -30,13 +51,16 @@ import { cn } from '$lib/utils/cn';
 
 let {
 	lines = 6,
-	colors = ['#fde047', '#facc15', '#eab308', '#fef08a', '#ca8a04'],
-	amplitude = 46,
-	speed = 1,
+	colors = ['var(--pui-grad-from)', 'var(--pui-grad-mid)', 'var(--pui-grad-to)'],
+	amplitude = 72,
+	speed = 0.16,
 	lineWidth = 1.5,
 	baseOpacity = 0.55,
 	complexity = 4,
 	spread = 0.22,
+	edgeFade = 0.18,
+	centerBias = 0.55,
+	skew = 0.55,
 	class: className,
 	...rest
 }: WavesProps = $props();
@@ -57,7 +81,27 @@ $effect(() => {
 	let raf = 0;
 	let start = performance.now();
 
-	type Harmonic = { freq: number; amp: number; phase: number; drift: number };
+	// Resolve CSS custom properties (e.g. 'var(--pui-grad-from)') against the
+	// host so the canvas gets a concrete color it can paint.
+	const cssStyle = getComputedStyle(host);
+	const resolveColor = (c: string): string => {
+		const m = c.match(/var\(\s*(--[\w-]+)\s*\)/);
+		if (m) {
+			const v = cssStyle.getPropertyValue(m[1]).trim();
+			if (v) return v;
+		}
+		return c;
+	};
+
+	type Harmonic = {
+		freq: number;
+		amp: number;
+		phase: number;
+		w: number;
+		modFreq: number;
+		modPhase: number;
+		modDepth: number;
+	};
 	type Line = {
 		color: string;
 		offset: number;
@@ -65,7 +109,6 @@ $effect(() => {
 		envFreq: number;
 		envPhase: number;
 		envDrift: number;
-		flow: number;
 	};
 
 	let waves: Line[] = [];
@@ -74,30 +117,35 @@ $effect(() => {
 		const harmonicCount = Math.max(1, Math.round(complexity));
 		waves = Array.from({ length: Math.max(1, Math.round(lines)) }, (_, i) => {
 			const t = lines > 1 ? i / (lines - 1) : 0.5;
-			// Each line sums several sines whose frequencies are deliberately
-			// non-integer multiples — the result reads as an organic swell
-			// rather than a repeating waveform.
+			// Sum of sines where each component has its OWN phase velocity (w)
+			// and a slow amplitude modulation. Because the components travel at
+			// different speeds, crests continuously build and dissolve — a real
+			// swell, not a rigid shape sliding sideways.
 			let weight = 0;
 			const harmonics: Harmonic[] = Array.from({ length: harmonicCount }, (_, k) => {
-				const amp = 1 / (k + 1.35);
+				const freq = 0.45 + k * 0.55 + Math.random() * 0.35;
+				const amp = 1 / (k + 1.3);
 				weight += amp;
 				return {
-					freq: 0.6 + k * 0.85 + Math.random() * 0.5,
+					freq,
 					amp,
 					phase: Math.random() * Math.PI * 2,
-					drift: (0.12 + Math.random() * 0.5) * (Math.random() < 0.5 ? -1 : 1)
+					// Deep-water-ish dispersion: longer waves move faster. Negative
+					// so crests travel left → right. Jittered per component.
+					w: -(0.6 + Math.sqrt(freq) * 0.9) * (0.85 + Math.random() * 0.5),
+					modFreq: 0.15 + Math.random() * 0.35,
+					modPhase: Math.random() * Math.PI * 2,
+					modDepth: 0.35 + Math.random() * 0.3
 				};
 			});
-			// Normalise so the summed amplitude stays ~1 regardless of complexity.
 			for (const h of harmonics) h.amp /= weight;
 			return {
-				color: colors.length ? colors[i % colors.length] : '#facc15',
+				color: colors.length ? resolveColor(colors[i % colors.length]) : resolveColor('var(--pui-grad-from)'),
 				offset: (t - 0.5) * 2 * spread,
 				harmonics,
-				envFreq: 0.5 + Math.random() * 0.7,
+				envFreq: 0.4 + Math.random() * 0.5,
 				envPhase: Math.random() * Math.PI * 2,
-				envDrift: 0.1 + Math.random() * 0.18,
-				flow: 0.18 + Math.random() * 0.14
+				envDrift: 0.1 + Math.random() * 0.18
 			};
 		});
 	};
@@ -114,13 +162,17 @@ $effect(() => {
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	};
 
+	// Signed displacement (~-1..1) for a line at normalized x `nx` (0..1).
 	const sample = (line: Line, nx: number, time: number): number => {
 		let y = 0;
 		for (const h of line.harmonics) {
-			y += h.amp * Math.sin(nx * h.freq * Math.PI * 2 + h.phase + time * h.drift);
+			// Each component drifts at its own phase velocity; its amplitude
+			// slowly breathes so the swell waxes and wanes over time.
+			const mod = 1 - h.modDepth + h.modDepth * (0.5 + 0.5 * Math.sin(time * h.modFreq + h.modPhase));
+			y += h.amp * mod * Math.sin(nx * h.freq * Math.PI * 2 + h.phase + time * h.w);
 		}
-		// A slow envelope that wanders along x so the swell bunches and flattens
-		// in places, the way real water does.
+		// A slow envelope that itself drifts, so calm and rough patches move
+		// along the line instead of sitting still.
 		const env =
 			0.45 + 0.55 * (0.5 + 0.5 * Math.sin(nx * line.envFreq * Math.PI * 2 + line.envPhase + time * line.envDrift));
 		return y * env;
@@ -130,7 +182,7 @@ $effect(() => {
 		ctx.clearRect(0, 0, width, height);
 		const time = ((now - start) / 1000) * speed;
 		const centreY = height / 2;
-		const step = 6;
+		const step = 5;
 		ctx.lineWidth = lineWidth;
 		ctx.lineCap = 'round';
 		ctx.lineJoin = 'round';
@@ -140,20 +192,47 @@ $effect(() => {
 			ctx.beginPath();
 			let first = true;
 			for (let x = -step; x <= width + step; x += step) {
-				// Scroll the waveform horizontally by shifting the sample point.
-				const nx = x / width + time * line.flow;
-				const y = baseY + sample(line, nx, time) * amplitude;
+				const disp = sample(line, x / width, time) * amplitude * centreEnv(x);
+				// Shear the crest toward the travel direction (left → right) so it
+				// leans like an ocean wave about to break.
+				const xDraw = x + skew * disp;
+				const yDraw = baseY - disp;
 				if (first) {
-					ctx.moveTo(x, y);
+					ctx.moveTo(xDraw, yDraw);
 					first = false;
 				} else {
-					ctx.lineTo(x, y);
+					ctx.lineTo(xDraw, yDraw);
 				}
 			}
-			ctx.strokeStyle = withAlpha(line.color, baseOpacity);
+			ctx.globalAlpha = Math.max(0, Math.min(1, baseOpacity));
+			ctx.strokeStyle = strokeFor(line.color);
 			ctx.stroke();
 		}
+		ctx.globalAlpha = 1;
 		raf = requestAnimationFrame(tick);
+	};
+
+	// Bell-shaped horizontal envelope: tallest swell mid-background, tapering
+	// toward the ends by `centerBias`.
+	const centreEnv = (x: number): number => {
+		const bias = Math.max(0, Math.min(1, centerBias));
+		if (bias <= 0 || width <= 0) return 1;
+		const tx = Math.max(0, Math.min(1, x / width));
+		const bell = Math.sin(Math.PI * tx);
+		return 1 - bias + bias * bell;
+	};
+
+	// Opacity comes from ctx.globalAlpha; the gradient only handles the
+	// horizontal fade so any CSS color (incl. oklch) works on canvas.
+	const strokeFor = (color: string): string | CanvasGradient => {
+		const fade = Math.max(0, Math.min(0.5, edgeFade));
+		if (fade <= 0 || width <= 0) return color;
+		const grad = ctx.createLinearGradient(0, 0, width, 0);
+		grad.addColorStop(0, 'transparent');
+		grad.addColorStop(fade, color);
+		grad.addColorStop(1 - fade, color);
+		grad.addColorStop(1, 'transparent');
+		return grad;
 	};
 
 	const ro = new ResizeObserver(resize);
@@ -168,23 +247,6 @@ $effect(() => {
 		ro.disconnect();
 	};
 });
-
-function withAlpha(color: string, a: number): string {
-	if (color.startsWith('#')) {
-		let r: number, g: number, b: number;
-		if (color.length === 4) {
-			r = parseInt(color[1] + color[1], 16);
-			g = parseInt(color[2] + color[2], 16);
-			b = parseInt(color[3] + color[3], 16);
-		} else {
-			r = parseInt(color.slice(1, 3), 16);
-			g = parseInt(color.slice(3, 5), 16);
-			b = parseInt(color.slice(5, 7), 16);
-		}
-		return `rgba(${r},${g},${b},${a})`;
-	}
-	return color;
-}
 </script>
 
 <div
