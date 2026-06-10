@@ -475,7 +475,9 @@ a { color: inherit; }
   margin: 0 auto 28px;
   font-size: 18px;
   line-height: 1.55;
-  color: var(--pui-fg-dim);
+  /* Track the real (global) hero text colour instead of the forced
+     dark-theme token, which is too light on the light background. */
+  color: color-mix(in oklch, currentColor 80%, transparent);
 }
 
 .home-hero__ascii {
@@ -501,10 +503,10 @@ a { color: inherit; }
 .home-attribution {
   margin-top: 16px;
   font-size: 13px;
-  color: var(--pui-fg-mute);
+  color: color-mix(in oklch, currentColor 65%, transparent);
 }
 .home-attribution__link {
-  color: var(--pui-fg);
+  color: currentColor;
   text-decoration: underline;
 }
 .home-category-title {
