@@ -5,10 +5,10 @@
   "title": "BeforeAfter",
   "description": "Before/after comparison layout with compound panels and center arrow.",
   "registryDependencies": [
-    "utils",
-    "theme",
-    "pui-styles",
-    "sparkle"
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
   ],
   "categories": [
     "Pricing & Conversion"
@@ -16,25 +16,25 @@
   "files": [
     {
       "path": "src/lib/components/BeforeAfter.svelte",
-      "target": "$lib/components/BeforeAfter.svelte",
+      "target": "~/src/lib/components/BeforeAfter.svelte",
       "type": "registry:ui",
       "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport { default as BeforeAfterAfter } from './BeforeAfterAfter.svelte';\nexport { default as BeforeAfterArrow } from './BeforeAfterArrow.svelte';\nexport { default as BeforeAfterBefore } from './BeforeAfterBefore.svelte';\n\nexport interface BeforeAfterProps extends HTMLAttributes<HTMLDivElement> {\n/** Quick form: pass arrays and get the canonical layout. */\nbefore?: Content[];\nafter?: Content[];\n/** Brand name shown over the arrow (\"with Synthetica\"). */\nbrand?: Content;\n/** Optional override labels. */\nbeforeLabel?: Content;\nafterLabel?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\nimport BeforePanel from './BeforeAfterBefore.svelte';\nimport AfterPanel from './BeforeAfterAfter.svelte';\nimport Arrow from './BeforeAfterArrow.svelte';\n\nlet {\nbefore,\nafter,\nbrand,\nbeforeLabel = 'Before',\nafterLabel = 'After',\nclass: className,\nchildren,\n...rest\n}: BeforeAfterProps = $props();\n</script>\n\n<div data-slot=\"before-after\" class={cn('grid grid-cols-1 items-stretch gap-[18px] font-sans md:grid-cols-[1fr_auto_1fr]', className)} {...rest}>\n{#if children}\n{@render children()}\n{:else}\n<BeforePanel label={beforeLabel}>\n<ul>\n{#each before ?? [] as item, i (i)}\n<li>{#if typeof item === 'string'}{item}{:else if item}{@render item()}{/if}</li>\n{/each}\n</ul>\n</BeforePanel>\n<Arrow {brand} />\n<AfterPanel label={afterLabel}>\n<ul>\n{#each after ?? [] as item, i (i)}\n<li>{#if typeof item === 'string'}{item}{:else if item}{@render item()}{/if}</li>\n{/each}\n</ul>\n</AfterPanel>\n{/if}\n</div>\n"
     },
     {
       "path": "src/lib/components/BeforeAfterBefore.svelte",
-      "target": "$lib/components/BeforeAfterBefore.svelte",
+      "target": "~/src/lib/components/BeforeAfterBefore.svelte",
       "type": "registry:ui",
       "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface BeforeAfterBeforeProps extends HTMLAttributes<HTMLDivElement> {\nlabel?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { label = 'Before', class: className, children, ...rest }: BeforeAfterBeforeProps = $props();\n</script>\n\n<div data-slot=\"before-after-before\" class={cn('rounded-[var(--pui-radius-xl)] border border-pui-border bg-pui-bg-elev p-7 text-pui-fg opacity-55 grayscale-[45%] [&_li]:border-b [&_li]:border-dashed [&_li]:border-pui-border [&_li]:py-3 [&_li]:text-[15px] [&_li]:text-pui-fg-dim [&_li]:line-through [&_li]:decoration-white/25 [&_li:last-child]:border-b-0 [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-0', className)} {...rest}>\n<div data-slot=\"before-after-tag\" class=\"mb-3 font-mono text-[11px] uppercase tracking-[0.1em] text-pui-fg-mute\">\n{#if typeof label === 'string'}{label}{:else if label}{@render label()}{/if}\n</div>\n{@render children?.()}\n</div>\n"
     },
     {
       "path": "src/lib/components/BeforeAfterAfter.svelte",
-      "target": "$lib/components/BeforeAfterAfter.svelte",
+      "target": "~/src/lib/components/BeforeAfterAfter.svelte",
       "type": "registry:ui",
       "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface BeforeAfterAfterProps extends HTMLAttributes<HTMLDivElement> {\nlabel?: Content;\nchildren?: Snippet;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\n\nlet { label = 'After', class: className, children, ...rest }: BeforeAfterAfterProps = $props();\n</script>\n\n<div data-slot=\"before-after-after\" class={cn('rounded-[var(--pui-radius-xl)] border border-[oklch(0.541_0.251_293/0.45)] bg-[linear-gradient(180deg,oklch(0.541_0.251_293/0.06),var(--pui-bg-elev))] p-7 text-pui-fg shadow-[0_0_60px_oklch(0.541_0.251_293/0.2)] [&_li]:border-b [&_li]:border-dashed [&_li]:border-pui-border [&_li]:py-3 [&_li]:text-[15px] [&_li]:text-pui-fg [&_li:last-child]:border-b-0 [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-0', className)} {...rest}>\n<div data-slot=\"before-after-tag\" class=\"mb-3 font-mono text-[11px] uppercase tracking-[0.1em] text-pui-fg-mute\">\n{#if typeof label === 'string'}{label}{:else if label}{@render label()}{/if}\n</div>\n{@render children?.()}\n</div>\n"
     },
     {
       "path": "src/lib/components/BeforeAfterArrow.svelte",
-      "target": "$lib/components/BeforeAfterArrow.svelte",
+      "target": "~/src/lib/components/BeforeAfterArrow.svelte",
       "type": "registry:ui",
       "content": "<script lang=\"ts\" module>\nimport type { Snippet } from 'svelte';\nimport type { HTMLAttributes } from 'svelte/elements';\n\ntype Content = string | Snippet;\n\nexport interface BeforeAfterArrowProps extends HTMLAttributes<HTMLDivElement> {\nbrand?: Content;\n}\n</script>\n\n<script lang=\"ts\">\nimport { cn } from '$lib/utils/cn';\nimport Sparkle from './Sparkle.svelte';\n\nlet { brand, class: className, ...rest }: BeforeAfterArrowProps = $props();\n</script>\n\n<div data-slot=\"before-after-arrow\" class={cn('self-center inline-flex flex-col items-center gap-1.5 text-xs uppercase tracking-[0.1em] text-pui-fg-dim [&>:first-child]:text-2xl [&>:last-child]:text-[22px]', className)} {...rest}>\n<Sparkle />\n{#if brand}\n<span>with {#if typeof brand === 'string'}{brand}{:else}{@render brand()}{/if}</span>\n{:else}\n<span>after</span>\n{/if}\n<span>→</span>\n</div>\n"
     }

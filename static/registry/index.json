@@ -26,7 +26,7 @@
       "files": [
         {
           "path": "src/lib/utils/cn.ts",
-          "target": "$lib/utils/cn.ts",
+          "target": "~/src/lib/utils/cn.ts",
           "type": "registry:lib"
         }
       ],
@@ -34,7 +34,7 @@
     },
     {
       "name": "theme",
-      "type": "registry:style",
+      "type": "registry:file",
       "title": "Performative UI Tailwind theme",
       "description": "Tailwind v4 imports, source directives, OKLCH tokens, data variants, base styles, and shared keyframes.",
       "categories": [
@@ -44,14 +44,14 @@
         {
           "path": "src/app.css",
           "target": "src/app.css",
-          "type": "registry:style"
+          "type": "registry:file"
         }
       ],
       "url": "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
     },
     {
       "name": "pui-styles",
-      "type": "registry:style",
+      "type": "registry:file",
       "title": "Performative UI styles",
       "description": "Shared animation keyframes for components that rely on the performative Tailwind theme.",
       "categories": [
@@ -60,8 +60,8 @@
       "files": [
         {
           "path": "src/lib/styles/pui.css",
-          "target": "$lib/styles/pui.css",
-          "type": "registry:style"
+          "target": "~/src/lib/styles/pui.css",
+          "type": "registry:file"
         }
       ],
       "url": "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
@@ -77,7 +77,7 @@
       "files": [
         {
           "path": "src/lib/hooks/useTypewriter.svelte.ts",
-          "target": "$lib/hooks/useTypewriter.svelte.ts",
+          "target": "~/src/lib/hooks/useTypewriter.svelte.ts",
           "type": "registry:hook"
         }
       ],
@@ -94,7 +94,7 @@
       "files": [
         {
           "path": "src/lib/hooks/useCounter.svelte.ts",
-          "target": "$lib/hooks/useCounter.svelte.ts",
+          "target": "~/src/lib/hooks/useCounter.svelte.ts",
           "type": "registry:hook"
         }
       ],
@@ -111,7 +111,7 @@
       "files": [
         {
           "path": "src/lib/hooks/useTokenStream.svelte.ts",
-          "target": "$lib/hooks/useTokenStream.svelte.ts",
+          "target": "~/src/lib/hooks/useTokenStream.svelte.ts",
           "type": "registry:hook"
         }
       ],
@@ -128,7 +128,7 @@
       "files": [
         {
           "path": "src/lib/hooks/useAsciiField.svelte.ts",
-          "target": "$lib/hooks/useAsciiField.svelte.ts",
+          "target": "~/src/lib/hooks/useAsciiField.svelte.ts",
           "type": "registry:hook"
         }
       ],
@@ -140,9 +140,9 @@
       "title": "Sparkle",
       "description": "Four-point gradient sparkle glyph with optional twinkle animation.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Atoms"
@@ -150,7 +150,7 @@
       "files": [
         {
           "path": "src/lib/components/Sparkle.svelte",
-          "target": "$lib/components/Sparkle.svelte",
+          "target": "~/src/lib/components/Sparkle.svelte",
           "type": "registry:ui"
         }
       ],
@@ -162,9 +162,9 @@
       "title": "GradientText",
       "description": "Gradient-clipped text wrapper with optional animated shift.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Atoms"
@@ -172,7 +172,7 @@
       "files": [
         {
           "path": "src/lib/components/GradientText.svelte",
-          "target": "$lib/components/GradientText.svelte",
+          "target": "~/src/lib/components/GradientText.svelte",
           "type": "registry:ui"
         }
       ],
@@ -184,9 +184,9 @@
       "title": "StatusDot",
       "description": "Small status indicator with optional pulse animation.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Atoms"
@@ -194,7 +194,7 @@
       "files": [
         {
           "path": "src/lib/components/StatusDot.svelte",
-          "target": "$lib/components/StatusDot.svelte",
+          "target": "~/src/lib/components/StatusDot.svelte",
           "type": "registry:ui"
         }
       ],
@@ -209,10 +209,10 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "sparkle"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
         "Primitives"
@@ -220,7 +220,7 @@
       "files": [
         {
           "path": "src/lib/components/Button.svelte",
-          "target": "$lib/components/Button.svelte",
+          "target": "~/src/lib/components/Button.svelte",
           "type": "registry:ui"
         }
       ],
@@ -232,10 +232,10 @@
       "title": "StickyBanner",
       "description": "Sticky announcement banner for funding news and beta badges.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "sparkle"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
         "Banners"
@@ -243,7 +243,7 @@
       "files": [
         {
           "path": "src/lib/components/StickyBanner.svelte",
-          "target": "$lib/components/StickyBanner.svelte",
+          "target": "~/src/lib/components/StickyBanner.svelte",
           "type": "registry:ui"
         }
       ],
@@ -255,10 +255,10 @@
       "title": "EyebrowPill",
       "description": "Rounded eyebrow badge with a default status dot.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "status-dot"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/status-dot.json"
       ],
       "categories": [
         "Primitives"
@@ -266,7 +266,7 @@
       "files": [
         {
           "path": "src/lib/components/EyebrowPill.svelte",
-          "target": "$lib/components/EyebrowPill.svelte",
+          "target": "~/src/lib/components/EyebrowPill.svelte",
           "type": "registry:ui"
         }
       ],
@@ -278,10 +278,10 @@
       "title": "Rotator",
       "description": "Type, hold, delete, and rotate through headline words.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "use-typewriter"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-typewriter.json"
       ],
       "categories": [
         "Heroes"
@@ -289,7 +289,7 @@
       "files": [
         {
           "path": "src/lib/components/Rotator.svelte",
-          "target": "$lib/components/Rotator.svelte",
+          "target": "~/src/lib/components/Rotator.svelte",
           "type": "registry:ui"
         }
       ],
@@ -301,9 +301,9 @@
       "title": "WordRoll",
       "description": "Vertical slide-roll word rotator for headline alternates.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Heroes"
@@ -311,7 +311,7 @@
       "files": [
         {
           "path": "src/lib/components/WordRoll.svelte",
-          "target": "$lib/components/WordRoll.svelte",
+          "target": "~/src/lib/components/WordRoll.svelte",
           "type": "registry:ui"
         }
       ],
@@ -323,11 +323,11 @@
       "title": "PromptHero",
       "description": "Single-line AI prompt hero with CTA and rotating placeholders.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "button",
-        "sparkle"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/button.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
         "Heroes"
@@ -335,7 +335,7 @@
       "files": [
         {
           "path": "src/lib/components/PromptHero.svelte",
-          "target": "$lib/components/PromptHero.svelte",
+          "target": "~/src/lib/components/PromptHero.svelte",
           "type": "registry:ui"
         }
       ],
@@ -347,9 +347,9 @@
       "title": "Prompt",
       "description": "Multi-line AI prompt box with toolbar and model menu.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Heroes"
@@ -357,7 +357,7 @@
       "files": [
         {
           "path": "src/lib/components/Prompt.svelte",
-          "target": "$lib/components/Prompt.svelte",
+          "target": "~/src/lib/components/Prompt.svelte",
           "type": "registry:ui"
         }
       ],
@@ -369,10 +369,10 @@
       "title": "AsciiHero",
       "description": "Canvas-rendered ASCII particle hero field.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "use-ascii-field"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-ascii-field.json"
       ],
       "categories": [
         "Heroes"
@@ -380,7 +380,7 @@
       "files": [
         {
           "path": "src/lib/components/AsciiHero.svelte",
-          "target": "$lib/components/AsciiHero.svelte",
+          "target": "~/src/lib/components/AsciiHero.svelte",
           "type": "registry:ui"
         }
       ],
@@ -392,9 +392,9 @@
       "title": "Aurora",
       "description": "Animated radial-gradient aurora background layer.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Backgrounds"
@@ -402,7 +402,7 @@
       "files": [
         {
           "path": "src/lib/components/Aurora.svelte",
-          "target": "$lib/components/Aurora.svelte",
+          "target": "~/src/lib/components/Aurora.svelte",
           "type": "registry:ui"
         }
       ],
@@ -414,9 +414,9 @@
       "title": "NodeGraphBackground",
       "description": "Animated node graph canvas background.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Backgrounds"
@@ -424,7 +424,7 @@
       "files": [
         {
           "path": "src/lib/components/NodeGraphBackground.svelte",
-          "target": "$lib/components/NodeGraphBackground.svelte",
+          "target": "~/src/lib/components/NodeGraphBackground.svelte",
           "type": "registry:ui"
         }
       ],
@@ -436,9 +436,9 @@
       "title": "FloatingSparkles",
       "description": "Ambient floating sparkle field for landing-page backgrounds.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Backgrounds"
@@ -446,7 +446,7 @@
       "files": [
         {
           "path": "src/lib/components/FloatingSparkles.svelte",
-          "target": "$lib/components/FloatingSparkles.svelte",
+          "target": "~/src/lib/components/FloatingSparkles.svelte",
           "type": "registry:ui"
         }
       ],
@@ -458,9 +458,9 @@
       "title": "GlassCard",
       "description": "Glassmorphic card shell and compound content pieces.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Surfaces"
@@ -468,27 +468,27 @@
       "files": [
         {
           "path": "src/lib/components/GlassCard.svelte",
-          "target": "$lib/components/GlassCard.svelte",
+          "target": "~/src/lib/components/GlassCard.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/GlassCardIcon.svelte",
-          "target": "$lib/components/GlassCardIcon.svelte",
+          "target": "~/src/lib/components/GlassCardIcon.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/GlassCardTitle.svelte",
-          "target": "$lib/components/GlassCardTitle.svelte",
+          "target": "~/src/lib/components/GlassCardTitle.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/GlassCardBody.svelte",
-          "target": "$lib/components/GlassCardBody.svelte",
+          "target": "~/src/lib/components/GlassCardBody.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/GlassCardLink.svelte",
-          "target": "$lib/components/GlassCardLink.svelte",
+          "target": "~/src/lib/components/GlassCardLink.svelte",
           "type": "registry:ui"
         }
       ],
@@ -500,9 +500,9 @@
       "title": "MockIDE",
       "description": "Mock code editor surface with chrome and token-streaming body.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Surfaces"
@@ -510,17 +510,17 @@
       "files": [
         {
           "path": "src/lib/components/MockIDE.svelte",
-          "target": "$lib/components/MockIDE.svelte",
+          "target": "~/src/lib/components/MockIDE.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/MockIDEChrome.svelte",
-          "target": "$lib/components/MockIDEChrome.svelte",
+          "target": "~/src/lib/components/MockIDEChrome.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/MockIDEBody.svelte",
-          "target": "$lib/components/MockIDEBody.svelte",
+          "target": "~/src/lib/components/MockIDEBody.svelte",
           "type": "registry:ui"
         }
       ],
@@ -532,10 +532,10 @@
       "title": "ChatBubble",
       "description": "Assistant or user chat bubble with optional sparkle affordance.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "sparkle"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
         "Conversation"
@@ -543,7 +543,7 @@
       "files": [
         {
           "path": "src/lib/components/ChatBubble.svelte",
-          "target": "$lib/components/ChatBubble.svelte",
+          "target": "~/src/lib/components/ChatBubble.svelte",
           "type": "registry:ui"
         }
       ],
@@ -555,10 +555,10 @@
       "title": "TokenStream",
       "description": "Streaming token renderer backed by a headless Svelte hook.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "use-token-stream"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-token-stream.json"
       ],
       "categories": [
         "Conversation"
@@ -566,7 +566,7 @@
       "files": [
         {
           "path": "src/lib/components/TokenStream.svelte",
-          "target": "$lib/components/TokenStream.svelte",
+          "target": "~/src/lib/components/TokenStream.svelte",
           "type": "registry:ui"
         }
       ],
@@ -578,10 +578,10 @@
       "title": "ChatFAB",
       "description": "Floating chat button with composable popover header and body.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "sparkle"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
         "Conversation"
@@ -589,17 +589,17 @@
       "files": [
         {
           "path": "src/lib/components/ChatFAB.svelte",
-          "target": "$lib/components/ChatFAB.svelte",
+          "target": "~/src/lib/components/ChatFAB.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/ChatFABHeader.svelte",
-          "target": "$lib/components/ChatFABHeader.svelte",
+          "target": "~/src/lib/components/ChatFABHeader.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/ChatFABBody.svelte",
-          "target": "$lib/components/ChatFABBody.svelte",
+          "target": "~/src/lib/components/ChatFABBody.svelte",
           "type": "registry:ui"
         }
       ],
@@ -611,9 +611,9 @@
       "title": "LogoMarquee",
       "description": "Scrolling logo or text marquee for social proof strips.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Social Proof"
@@ -621,7 +621,7 @@
       "files": [
         {
           "path": "src/lib/components/LogoMarquee.svelte",
-          "target": "$lib/components/LogoMarquee.svelte",
+          "target": "~/src/lib/components/LogoMarquee.svelte",
           "type": "registry:ui"
         }
       ],
@@ -633,9 +633,9 @@
       "title": "LogoRow",
       "description": "Centered row of customer logos or text marks.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Social Proof"
@@ -643,7 +643,7 @@
       "files": [
         {
           "path": "src/lib/components/LogoRow.svelte",
-          "target": "$lib/components/LogoRow.svelte",
+          "target": "~/src/lib/components/LogoRow.svelte",
           "type": "registry:ui"
         }
       ],
@@ -655,10 +655,10 @@
       "title": "StatCounter",
       "description": "Animated count-up statistic powered by a reusable counter hook.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "use-counter"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/use-counter.json"
       ],
       "categories": [
         "Social Proof"
@@ -666,7 +666,7 @@
       "files": [
         {
           "path": "src/lib/components/StatCounter.svelte",
-          "target": "$lib/components/StatCounter.svelte",
+          "target": "~/src/lib/components/StatCounter.svelte",
           "type": "registry:ui"
         }
       ],
@@ -678,9 +678,9 @@
       "title": "CommunityBadge",
       "description": "Inline community/social proof badge with optional avatar stack.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json"
       ],
       "categories": [
         "Social Proof"
@@ -688,7 +688,7 @@
       "files": [
         {
           "path": "src/lib/components/CommunityBadge.svelte",
-          "target": "$lib/components/CommunityBadge.svelte",
+          "target": "~/src/lib/components/CommunityBadge.svelte",
           "type": "registry:ui"
         }
       ],
@@ -700,10 +700,10 @@
       "title": "PricingCard",
       "description": "Composable pricing card shell with tier, amount, feature, flag, and CTA pieces.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "sparkle"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
         "Pricing & Conversion"
@@ -711,37 +711,37 @@
       "files": [
         {
           "path": "src/lib/components/PricingCard.svelte",
-          "target": "$lib/components/PricingCard.svelte",
+          "target": "~/src/lib/components/PricingCard.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/PricingTier.svelte",
-          "target": "$lib/components/PricingTier.svelte",
+          "target": "~/src/lib/components/PricingTier.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/PricingAmount.svelte",
-          "target": "$lib/components/PricingAmount.svelte",
+          "target": "~/src/lib/components/PricingAmount.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/PricingBlurb.svelte",
-          "target": "$lib/components/PricingBlurb.svelte",
+          "target": "~/src/lib/components/PricingBlurb.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/PricingFeatures.svelte",
-          "target": "$lib/components/PricingFeatures.svelte",
+          "target": "~/src/lib/components/PricingFeatures.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/PricingFlag.svelte",
-          "target": "$lib/components/PricingFlag.svelte",
+          "target": "~/src/lib/components/PricingFlag.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/PricingCTA.svelte",
-          "target": "$lib/components/PricingCTA.svelte",
+          "target": "~/src/lib/components/PricingCTA.svelte",
           "type": "registry:ui"
         }
       ],
@@ -753,10 +753,10 @@
       "title": "BeforeAfter",
       "description": "Before/after comparison layout with compound panels and center arrow.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "pui-styles",
-        "sparkle"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/sparkle.json"
       ],
       "categories": [
         "Pricing & Conversion"
@@ -764,22 +764,22 @@
       "files": [
         {
           "path": "src/lib/components/BeforeAfter.svelte",
-          "target": "$lib/components/BeforeAfter.svelte",
+          "target": "~/src/lib/components/BeforeAfter.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/BeforeAfterBefore.svelte",
-          "target": "$lib/components/BeforeAfterBefore.svelte",
+          "target": "~/src/lib/components/BeforeAfterBefore.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/BeforeAfterAfter.svelte",
-          "target": "$lib/components/BeforeAfterAfter.svelte",
+          "target": "~/src/lib/components/BeforeAfterAfter.svelte",
           "type": "registry:ui"
         },
         {
           "path": "src/lib/components/BeforeAfterArrow.svelte",
-          "target": "$lib/components/BeforeAfterArrow.svelte",
+          "target": "~/src/lib/components/BeforeAfterArrow.svelte",
           "type": "registry:ui"
         }
       ],
@@ -791,9 +791,9 @@
       "title": "WaitlistForm",
       "description": "Email capture form that composes the performative Button component.",
       "registryDependencies": [
-        "utils",
-        "theme",
-        "button"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/button.json"
       ],
       "categories": [
         "Pricing & Conversion"
@@ -801,7 +801,7 @@
       "files": [
         {
           "path": "src/lib/components/WaitlistForm.svelte",
-          "target": "$lib/components/WaitlistForm.svelte",
+          "target": "~/src/lib/components/WaitlistForm.svelte",
           "type": "registry:ui"
         }
       ],
@@ -817,8 +817,8 @@
         "esm-env"
       ],
       "registryDependencies": [
-        "utils",
-        "theme"
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+        "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json"
       ],
       "categories": [
         "Pricing & Conversion"
@@ -826,7 +826,7 @@
       "files": [
         {
           "path": "src/lib/components/Popover.svelte",
-          "target": "$lib/components/Popover.svelte",
+          "target": "~/src/lib/components/Popover.svelte",
           "type": "registry:ui"
         }
       ],

@@ -16,6 +16,13 @@ import {
 const root = resolve(import.meta.dir, "..");
 const outputDir = resolve(root, "static/registry");
 
+// Allow overriding the published base URL (e.g. to build a registry that points
+// at a local server for end-to-end testing of the install flow).
+const baseUrl = (process.env.REGISTRY_BASE_URL ?? REGISTRY_BASE_URL).replace(
+  /\/$/,
+  "",
+);
+
 interface BuiltRegistryFile extends RegistryFile {
   content: string;
 }
@@ -38,6 +45,41 @@ const withoutEmpty = <T extends Record<string, unknown>>(value: T): T => {
   return value;
 };
 
+const isAbsoluteUrl = (value: string) => /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
+
+// shadcn-svelte resolves bare registryDependencies names against the default
+// registry origin, which fails for components installed from this registry's
+// item URLs. Emit fully-qualified URLs so dependency resolution works when a
+// component is added directly by URL.
+const resolveRegistryDeps = (
+  deps: string[] | undefined,
+): string[] | undefined =>
+  deps?.map((dep) =>
+    isAbsoluteUrl(dep) ? dep : `${baseUrl}/${dep}.json`,
+  );
+
+// shadcn-svelte's file-target resolver only alias-resolves a leading "~/"
+// (project root). A "$lib/..." target is instead joined onto the type's base
+// directory, producing a literal "$lib" folder (e.g.
+// src/lib/components/ui/$lib/components/Button.svelte) and bypassing the intended
+// layout. Rewrite "$lib/" code-file targets to project-root ("~/src/lib/")
+// targets so installs land exactly where component imports expect them. CSS
+// (registry:style/theme) is merged into the app stylesheet and keeps its target.
+const STYLE_TYPES = new Set(["registry:style", "registry:theme"]);
+
+const resolveFileTarget = (file: RegistryFile): string | undefined => {
+  const target = file.target;
+  if (!target || file.type === undefined) return target;
+  if (STYLE_TYPES.has(file.type)) return target;
+  if (target.startsWith("$lib/")) {
+    return `~/src/lib/${target.slice("$lib/".length)}`;
+  }
+  return target;
+};
+
+const normalizeFiles = <T extends RegistryFile>(files: T[]): T[] =>
+  files.map((file) => ({ ...file, target: resolveFileTarget(file) }));
+
 const toSummary = (item: RegistryItem) =>
   withoutEmpty({
     name: item.name,
@@ -46,15 +88,15 @@ const toSummary = (item: RegistryItem) =>
     description: item.description,
     dependencies: item.dependencies,
     devDependencies: item.devDependencies,
-    registryDependencies: item.registryDependencies,
+    registryDependencies: resolveRegistryDeps(item.registryDependencies),
     categories: item.categories,
-    files: item.files,
-    url: `${REGISTRY_BASE_URL}/${item.name}.json`,
+    files: normalizeFiles(item.files),
+    url: `${baseUrl}/${item.name}.json`,
   });
 
 const buildItem = async (item: RegistryItem): Promise<BuiltRegistryItem> => {
   const files = await Promise.all(
-    item.files.map(async (file) => ({
+    normalizeFiles(item.files).map(async (file) => ({
       ...file,
       content: await Bun.file(resolve(root, file.path)).text(),
     })),
@@ -68,7 +110,7 @@ const buildItem = async (item: RegistryItem): Promise<BuiltRegistryItem> => {
     description: item.description,
     dependencies: item.dependencies,
     devDependencies: item.devDependencies,
-    registryDependencies: item.registryDependencies,
+    registryDependencies: resolveRegistryDeps(item.registryDependencies),
     categories: item.categories,
     files,
   });

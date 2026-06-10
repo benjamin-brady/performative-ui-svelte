@@ -5,10 +5,10 @@
   "title": "EyebrowPill",
   "description": "Rounded eyebrow badge with a default status dot.",
   "registryDependencies": [
-    "utils",
-    "theme",
-    "pui-styles",
-    "status-dot"
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/utils.json",
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/theme.json",
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/pui-styles.json",
+    "https://benjamin-brady.github.io/performative-ui-svelte/registry/status-dot.json"
   ],
   "categories": [
     "Primitives"
@@ -16,7 +16,7 @@
   "files": [
     {
       "path": "src/lib/components/EyebrowPill.svelte",
-      "target": "$lib/components/EyebrowPill.svelte",
+      "target": "~/src/lib/components/EyebrowPill.svelte",
       "type": "registry:ui",
       "content": "<script lang=\"ts\" module>\n\timport type { Snippet } from 'svelte';\n\timport type { HTMLAttributes } from 'svelte/elements';\n\n\texport interface EyebrowPillProps extends HTMLAttributes<HTMLSpanElement> {\n\t\t/** Provide a custom icon snippet, or pass false to hide the dot entirely. */\n\t\ticon?: Snippet | false;\n\t\t/** Status dot color (when using the default dot icon). */\n\t\tstatusColor?: string;\n\t\tchildren?: Snippet;\n\t}\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from '$lib/utils/cn';\n\timport StatusDot from './StatusDot.svelte';\n\n\tlet { icon, statusColor, class: className, children, ...rest }: EyebrowPillProps = $props();\n</script>\n\n<span\n\tdata-slot=\"eyebrow-pill\"\n\tclass={cn(\n\t\t'inline-flex items-center gap-2 rounded-full border border-pui-border-bright bg-[var(--pui-glass-soft)] px-3.5 py-1.5 font-sans text-[13px] text-pui-fg-dim backdrop-blur-md transition-colors hover:border-pui-fg-mute hover:text-pui-fg',\n\t\tclassName\n\t)}\n\t{...rest}\n>\n\t{#if icon === false}\n\t\t<!-- hidden -->\n\t{:else if icon}\n\t\t{@render icon()}\n\t{:else}\n\t\t<StatusDot color={statusColor} />\n\t{/if}\n\t<span>{@render children?.()}</span>\n</span>\n"
     }

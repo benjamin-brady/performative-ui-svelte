@@ -1,6 +1,7 @@
 export type RegistryItemType =
   | "registry:block"
   | "registry:component"
+  | "registry:file"
   | "registry:hook"
   | "registry:lib"
   | "registry:style"
@@ -98,21 +99,26 @@ export const registryItems: RegistryItem[] = [
   },
   {
     name: "theme",
-    type: "registry:style",
+    // registry:file (not registry:style) so shadcn-svelte writes the stylesheet
+    // to disk. The installer ignores file content for registry:style/theme items
+    // and only applies their structured cssVars/css fields, which this
+    // hand-authored Tailwind v4 entry does not use.
+    type: "registry:file",
     title: "Performative UI Tailwind theme",
     description:
       "Tailwind v4 imports, source directives, OKLCH tokens, data variants, base styles, and shared keyframes.",
-    files: [file("src/app.css", "src/app.css", "registry:style")],
+    files: [file("src/app.css", "src/app.css", "registry:file")],
     categories: ["Utilities"],
   },
   {
     name: "pui-styles",
-    type: "registry:style",
+    // See note on "theme": shipped as registry:file so the keyframes are written.
+    type: "registry:file",
     title: "Performative UI styles",
     description:
       "Shared animation keyframes for components that rely on the performative Tailwind theme.",
     files: [
-      file("src/lib/styles/pui.css", "$lib/styles/pui.css", "registry:style"),
+      file("src/lib/styles/pui.css", "$lib/styles/pui.css", "registry:file"),
     ],
     categories: ["Utilities"],
   },

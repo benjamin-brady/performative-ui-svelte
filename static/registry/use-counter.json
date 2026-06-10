@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "src/lib/hooks/useCounter.svelte.ts",
-      "target": "$lib/hooks/useCounter.svelte.ts",
+      "target": "~/src/lib/hooks/useCounter.svelte.ts",
       "type": "registry:hook",
       "content": "import { untrack } from 'svelte';\n\nexport interface UseCounterOptions {\n\ttarget: number;\n\t/** ms of total animation. */\n\tdurationMs?: number;\n\t/** Starting value. Defaults to 0. */\n\tfrom?: number;\n\t/** Easing fn (t∈[0,1]). Default ease-out-cubic. */\n\tease?: (t: number) => number;\n}\n\nexport interface UseCounterResult {\n\treadonly value: number;\n}\n\n/**\n * Animates a number from `from` to `target` over `durationMs`. Mirrors the\n * React hook's mount-only animation with a run-once option snapshot.\n */\nexport function useCounter(options: UseCounterOptions): UseCounterResult {\n\tlet value = $state(options.from ?? 0);\n\n\t$effect(() => {\n\t\tconst { target, durationMs, from, ease } = untrack(() => ({\n\t\t\ttarget: options.target,\n\t\t\tdurationMs: options.durationMs ?? 1800,\n\t\t\tfrom: options.from ?? 0,\n\t\t\tease: options.ease ?? ((t: number) => 1 - Math.pow(1 - t, 3))\n\t\t}));\n\n\t\tvalue = from;\n\t\tlet raf = 0;\n\t\tconst start = performance.now();\n\t\tconst step = (now: number) => {\n\t\t\tconst t = Math.min(1, (now - start) / durationMs);\n\t\t\tvalue = Math.floor(from + (target - from) * ease(t));\n\t\t\tif (t < 1) raf = requestAnimationFrame(step);\n\t\t};\n\t\traf = requestAnimationFrame(step);\n\t\treturn () => cancelAnimationFrame(raf);\n\t});\n\n\treturn {\n\t\tget value() {\n\t\t\treturn value;\n\t\t}\n\t};\n}\n"
     }
